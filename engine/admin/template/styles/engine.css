@@ -1,0 +1,88 @@
+.apadana-message-error {
+	border: #D49E34 1px solid;
+	background: #F4DE64;
+	margin-bottom: 6px
+}
+.apadana-message-error span {
+    background: #FFF url(../images/message-error.gif) no-repeat 99% 50%;
+	padding:10px 50px 10px 10px;
+    margin: 6px;
+	cursor:default;
+	display:block
+}
+.apadana-message-success {
+	border: #249224 1px solid;
+	background: #8CDA5C;
+	margin-bottom: 6px
+}
+.apadana-message-success span {
+    background: #FFF url(../images/message-success.gif) no-repeat 99% 50%;
+	padding:10px 50px 10px 10px;
+    margin: 6px;
+	cursor:default;
+	display:block
+}
+.apadana-message-info {
+	border: #266AAD 1px solid;
+	background: #ECF5FF;
+	margin-bottom: 6px
+}
+.apadana-message-info span {
+    background: #FFF url(../images/message-info.gif) no-repeat 99% 50%;
+	padding:10px 50px 10px 10px;
+    margin: 6px;
+	cursor:default;
+	display:block
+}
+#apadana-loading-layer {
+    background: Black;
+	color: White;
+	cursor:default;
+	text-shadow: 1px 1px 0px Black;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	padding: 18px 20px;
+}
+div#apadana-tooltip {
+	background: White;
+	border: 1px solid #AAAAAA;
+	border-radius: 5px;
+	box-shadow: 0px 0px 8px #999999;
+	color: #000000;
+	direction: rtl;
+	display: none;
+	font-size: 9pt;
+	-moz-border-radius: 5px;
+	-moz-box-shadow: 0px 0px 8px #999999;
+	padding: 5px;
+	position: absolute;
+	text-shadow: 1px 1px 0px White;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 8px #999999;
+	z-index: 99999999999;
+}
+table.apadana-table {
+	width: 100%;
+	text-align: center;
+	margin: 0px;
+	cursor:default
+}
+table.apadana-table tr, table.apadana-table tr.apadana-even {background: #EEEEEE;}
+table.apadana-table tr.apadana-odd {background: White;}
+table.apadana-table tr:hover, table.apadana-table tr.apadana-even:hover, table.apadana-table tr.apadana-odd:hover {background: #F1F5FA;}
+table.apadana-table td {
+	border-bottom: #BBBBBB 1px dashed;
+	padding: 5px
+}
+table.apadana-table th {
+	background: #AAAAAA;
+	color: White;
+	text-shadow: 1px 1px 0px Black;
+	padding: 9px
+}
+#apadana-info-box-screen{position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background: #000000; opacity: 0.5; filter: alpha(opacity=50); z-index: 9999990; display: none}
+#apadana-info-box{position:fixed;top:20%;left:22%;width:50%;background:#FFFFFF;border: #000 2px solid;padding: 0px 20px 20px 20px; overflow: hidden; z-index: 9999999; display: none}
+#apadana-info-box li{overflow: hidden; margin: 13px 0px}

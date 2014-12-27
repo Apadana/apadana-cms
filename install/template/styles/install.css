@@ -1,0 +1,131 @@
+body {
+  background: #DBDBDB url(../images/bg.png) no-repeat top center;
+  font-family: Tahoma;
+  font-size: 9pt;
+  color: Black;
+  padding: 0px;
+  margin: 0px 0px 20px 0px;
+}
+a {
+  text-decoration: none;
+  color: Black;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
+}
+a:hover {color: Blue}
+a:active {color: Red}
+img { max-width: 99%;border: none}
+table {
+  width: 100%;
+  font-size: 9pt;
+}
+input, textarea {
+  font-size: 9pt;
+  font-family: Tahoma;
+  background: #EEEEEE;
+  border: #CCCCCC 1px solid;
+  padding: 5px;
+  color: #0099CC;
+  font-weight: bold;
+}
+input:focus, textarea:focus {
+  background: #F7F7F7;
+}
+button {
+  float: left;
+  font-size: 9pt;
+  font-family: Tahoma;
+  background: #CCCCCC;
+  border: #888888 1px solid;
+  padding: 5px;
+  color: #000000;
+  cursor: pointer;
+}
+button[disabled] {
+  cursor: default;
+  background: #DBDBDB;
+  border: #AAAAAA 1px solid;
+  color: #777777;
+}
+button#install {
+  float: none;
+  font-size: 9pt;
+  font-family: Tahoma;
+  background: #339900;
+  border: #666666 1px solid;
+  padding: 10px;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+button#upgrade {
+  float: none;
+  font-size: 9pt;
+  font-family: Tahoma;
+  background: #0099CC;
+  border: #666666 1px solid;
+  padding: 10px;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+#apadana-loading-layer {
+    background: Black;
+	color: White;
+	text-shadow: 1px 1px 0px Black;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	padding: 18px 20px;
+}
+#content {
+  width: 656px;
+  margin-top: 120px;
+  text-align: right;
+}
+#top {
+  position: relative;
+  width: 656px;
+  height: 58px;
+  background: url(../images/top.png) no-repeat center;
+}
+#top #percent {
+  position: absolute;
+  top: 20px;
+  right: 21px;
+  width: 0px; /* max = 615px */
+  height: 38px;
+  background: #B3B3B3;
+}
+#main {
+  background: url(../images/main.png) repeat-y center;
+  padding: 10px 20px 0px 20px;
+}
+#bottom {
+  width: 656px;
+  height: 27px;
+  background: url(../images/bottom.png) no-repeat center
+}
+table.padding td{
+  padding: 10px 0px
+}
+.info {
+  background: #EEEEEE;
+  border: #CCCCCC 1px solid;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.info h1{
+  font-size: 11pt;
+  color: #888888;
+  margin: 0px 0px 5px 0px;
+}
+.license {
+  padding: 0px;
+  width: 615px;
+  height: 400px;
+  margin-bottom: 10px;
+  border: #CCCCCC 1px solid;
+}
+.clear {
+  clear: both;
+}

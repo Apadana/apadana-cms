@@ -1,0 +1,105 @@
+body {
+	background: White url(../images/bg.jpg);
+	color: Black;
+	direction: rtl;
+	font-family: Tahoma;
+	font-size: 9pt;
+	margin: 0px;
+	padding: 0px;
+	cursor:default
+}
+a {
+	color: #494949;
+	text-decoration: none;
+}
+a:hover {
+	color: #339900;
+}
+a:active {
+	color: Red;
+}
+img {
+	border: none;
+	max-width: 99%;
+}
+input, textarea, select, button {
+	background: #ffffff;
+	font-family: Tahoma;
+	font-size: 9pt;
+	padding: 2px;
+}
+input[type=submit], input[type=button] , input[type=reset], button {
+	background: #D8E1ED;
+	border: #b0c7d9 1px solid;
+	color: #444444;
+	cursor: pointer;
+	text-shadow: 1px 1px 0px #ffffff;
+}
+#apadana-wrap {
+	width: 400px;
+	margin-top: 10%;
+}
+input.input {
+	width: 384px;
+	font-size: 10pt;
+	font-weight: bold;
+	direction: ltr;
+	color: #c0c0c0;
+	padding: 5px 7px;
+	margin-bottom: 5px;
+	border: #969696 1px solid;
+	border-bottom: #e10000 3px solid;
+}
+input.input:focus {
+	color: #e10000;
+	border-bottom: #008000 3px solid;
+}
+input#submit {
+	float: right;
+	width: 250px;
+	padding: 5px 7px;
+	background: #75cc60;
+	border: #00ae00 1px solid;
+	color: #ffffff;
+	text-shadow: 1px 1px 0px #818181;
+}
+input#lostpassword {
+	float: left;
+	width: 145px;
+	padding: 5px 7px;
+	background: #f07b75;
+	border: #e22929 1px solid;
+	color: #ffffff;
+	text-shadow: 1px 1px 0px #818181;
+}
+input#submit:active, input#lostpassword:active {
+	background: #858585;
+	border: #2e2e2e 1px solid;
+	color: #f5f5f5;
+	text-shadow: 1px 1px 0px #000000;
+}
+#apadana-error {
+	padding: 7px 7px;
+	background: #e49f10;
+	border: #c78a0e 1px solid;
+	color: #ffffff;
+	text-shadow: 1px 1px 0px #818181;
+	margin-bottom: 5px;
+}
+#apadana-copyright {
+	direction: ltr;
+	color: #666666;
+	margin: 10px 0px;
+}
+#apadana-copyright a{
+	color: #666666;
+}
+#apadana-copyright a:hover{
+	color: #e10000;
+}
+#apadana-loader {
+	color: #666666;
+}
+.apadana-clear {
+	clear: both
+}

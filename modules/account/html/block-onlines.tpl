@@ -1,0 +1,3 @@
+<div id="apadana-block-onlines" style="max-height:150px;overflow-y:auto">
+[for online]<div>[flag]<img src="{site-url}modules/counter/images/flags/{flag}.gif" width="15" height="9" title="{country}" />&nbsp;[/flag]<a href="{page}" title="مشاهده صفحه در حال نمایش برای این کاربر" rel="nofollow"><img src="{site-url}engine/images/blocks/account/chain.png" width="15" height="9" alt="chain" /></a>&nbsp;[user]<a href="{a href='account/profile/{member}'}" title="پروفایل {member}">{name}</a>[/user][guest]{name}[/guest]</div>
+[/for online]</div>

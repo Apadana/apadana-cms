@@ -1,0 +1,64 @@
+.module-shoutbox {
+	cursor:default;
+	margin: 1px;
+}
+.module-shoutbox #shoutbox-smiles .apadana-smiles {
+	cursor:pointer
+}
+.module-shoutbox .shoutbox-header {
+	background: #AAD5FF;
+	text-align: center;
+	font-weight: bold;
+	color: #006699;
+	padding: 4px;
+}
+.module-shoutbox .shoutbox-content {
+	background: #FFFFFF;
+	border: #BBBBBB 1px solid;
+}
+.module-shoutbox .shoutbox-row {
+	background: #ECF5FF;
+	color: #444444;
+	font-size: 8pt;
+	padding: 3px;
+}
+.module-shoutbox .shoutbox-time {
+	font-size: 7pt;
+	color: #BBBBBB;
+}
+.module-shoutbox .apadana-even {
+	background: #FFFFFF;
+}
+.module-shoutbox .shoutbox-textarea {
+	margin-top: 6px;
+	width: 97.5%;
+	height: 60px;
+}
+.module-shoutbox .shoutbox-error {
+	width: 100%;
+	background: #FF82A2;
+	color: #FFFFFF;
+	padding: 2px;
+	margin-top: 6px;
+	text-shadow: 1px 1px 0px #818181;
+}
+.module-shoutbox .shoutbox-success {
+	width: 100%;
+	background: #3FC100;
+	color: #FFFFFF;
+	padding: 2px;
+	margin-top: 6px;
+	text-shadow: 1px 1px 0px #818181;
+}
+.module-shoutbox .shoutbox-content .shoutbox-error, .module-shoutbox .shoutbox-content .shoutbox-success {
+	font-size: 8pt;
+	margin-top: 0px;
+}
+#shoutbox-form-options {
+	background: #E1EAF4;
+	padding: 5px;
+	margin: 5px 0px;
+	border: #AFC8E2 1px solid;
+	cursor:default;
+	font-size:8pt
+}

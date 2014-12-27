@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /engine/
+Disallow: /modules/
+Disallow: /templates/
+Sitemap: sitemap.xml

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+	<ShortName>{site-title}</ShortName>
+	<Description>{site-slogan}</Description>
+	<Contact>{site-mail}</Contact>
+	<Url type="text/html" template="{site-url}index.php?a=search&amp;b=result&amp;story={searchTerms}" />
+	<LongName>{site-title}</LongName>
+	<Image height="64" width="64" type="image/png">{site-url}logo.png</Image>
+	<Image height="16" width="16" type="image/vnd.microsoft.icon">{site-url}favicon.ico</Image>
+	<Developer>Apadana Group (http://www.apadanacms.ir)</Developer>
+	<Attribution>
+		Apadana Cms Copyright (c) {year} by Iman Moodi (www.apadanacms.ir).
+	</Attribution>
+	<SyndicationRight>open</SyndicationRight>
+	<AdultContent>false</AdultContent>
+	<Language>fa-ir</Language>
+	<OutputEncoding>UTF-8</OutputEncoding>
+	<InputEncoding>UTF-8</InputEncoding>
+</OpenSearchDescription>
