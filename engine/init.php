@@ -46,6 +46,7 @@ define('rtl', true);
 require_once(engine_dir.'config.inc.php');
 require_once(engine_dir.'version.inc.php');
 require_once(engine_dir.'functions.php');
+// require_once(engine_dir.'error.inc.php');
 require_once(engine_dir.'hook.function.php');
 require_once(engine_dir.'cache.function.php');
 require_once(engine_dir.'filter.function.php');
@@ -63,8 +64,8 @@ require_once(engine_dir.'html.class.php');
 
 error_reporting(error_reporting? E_ALL : 0);
 
-# Determine Magic Quotes Status (< PHP 6.0)
-if (version_compare(PHP_VERSION, '6.0', '<'))
+# Determine Magic Quotes Status (< PHP 5.4)
+if (version_compare(PHP_VERSION, '5.4', '<'))
 {
 	if (@get_magic_quotes_gpc())
 	{
@@ -194,7 +195,7 @@ else
 			set_cache('options-offline-message', $options['offline-message'], 0);
 		}
 	
-		if (file_exists(engine_dir.'templates/offline.tpl') && is_readable(engine_dir.'templates/offline.tpl'))
+		if (file_exists(template_dir.'offline.tpl') && is_readable(template_dir.'offline.tpl'))
 		{
 			@Header('Content-type: text/html; charset='.charset);
 			$tpl = new template('offline.tpl', template_dir);

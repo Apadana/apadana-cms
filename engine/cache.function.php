@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -64,7 +64,8 @@ function get_cache($name, $life = true)
 
 	if (file_exists($cache) && is_readable($cache))
 	{
-		if ($life == true)
+		//Fixed in 1.0.5 : We can't use == for here!!!
+		if ($life === true)
 		{
 			return maybe_unserialize(file_get_contents($cache));
 		}

@@ -4,9 +4,6 @@
          url('../fonts/BKoodakBold.woff') format('woff'),
          url('../fonts/BKoodakBold.ttf') format('truetype');
 }
-html {
-	border-top: White 3px solid;
-}
 body {
 	background: #D2D2D2 url(../images/bg.jpg);
 	font-family: Tahoma;
@@ -45,10 +42,22 @@ input:focus, textarea:focus, select:focus {
     border: #8c8c8c 1px solid;
 }
 input[type=submit] , input[type=button] , input[type=reset], button {
-    background: #339900;
-    color: White;
-    border: Black 1px solid;
+    color: #FFF;
+    border: 1px solid #000;
     cursor: pointer;
+    background-image: linear-gradient(to bottom, #5CB85C 0px, #419641 100%);
+    border-radius: 5px;
+    border-color: #398439;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.15) inset, 0px 1px 1px rgba(0, 0, 0, 0.075);
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+input[type=submit]:hover , input[type=button]:hover , input[type=reset]:hover, button:hover,
+input[type=submit]:focus , input[type=button]:focus , input[type=reset]:focus, button:focus {
+	background-image: linear-gradient(to top, #5CB85C 0px, #419641 100%);
+	border-color: #398439;
 }
 input[type=radio] , input[type=checkbox] {
     background: none;
@@ -81,7 +90,6 @@ ul,li{
 	float: right;
 	width: 109px;
 	height: 48px;
-	background: url(../images/icon.png) no-repeat top right
 }
 #wrap #header #menu{
 	float: left;
@@ -95,67 +103,73 @@ ul,li{
 	height: 45px;
 	margin-right: 5px
 }
+#wrap #header #menu a,#wrap #header #logo {
+	background: url(../images/icon.png) no-repeat top right;
+}
 #wrap #header #menu #menu-icon-home {
-	background: url(../images/icon.png) no-repeat left bottom;
+	background-position: left bottom;
 }
 #wrap #header #menu #menu-icon-home:hover {
-	background: url(../images/icon.png) no-repeat left top
+	background-position: left top
 }
 #wrap #header #menu #menu-icon-counter {
-	background: url(../images/icon.png) no-repeat -45px -45px;
+	background-position: -45px -45px;
 }
 #wrap #header #menu #menu-icon-counter:hover {
-	background: url(../images/icon.png) no-repeat -45px 0px;
+	background-position: -45px 0px;
 }
 #wrap #header #menu #menu-icon-blocks {
-	background: url(../images/icon.png) no-repeat -90px -45px;
+	background-position: -90px -45px;
 }
 #wrap #header #menu #menu-icon-blocks:hover {
-	background: url(../images/icon.png) no-repeat -90px 0px;
+	background-position: -90px 0px;
 }
 #wrap #header #menu #menu-icon-new-post {
 	width: 41px;
-	background: url(../images/icon.png) no-repeat -135px -45px;
+	background-position: -135px -45px;
 }
 #wrap #header #menu #menu-icon-new-post:hover {
-	background: url(../images/icon.png) no-repeat -135px 0px;
+	background-position: -135px 0px;
 }
 #wrap #header #menu #menu-icon-account {
 	width: 39px;
-	background: url(../images/icon.png) no-repeat -176px -45px;
+	background-position: -176px -45px;
 }
 #wrap #header #menu #menu-icon-account:hover {
-	background: url(../images/icon.png) no-repeat -176px 0px;
+	background-position: -176px 0px;
 }
 #wrap #header #menu #menu-icon-modules {
 	width: 44px;
-	background: url(../images/icon.png) no-repeat -218px -45px;
+	background-position: -218px -45px;
 }
 #wrap #header #menu #menu-icon-modules:hover {
-	background: url(../images/icon.png) no-repeat -218px 0px;
+	background-position: -218px 0px;
 }
 #wrap #header #menu #menu-icon-backup {
 	width: 41px;
-	background: url(../images/icon.png) no-repeat -263px -45px;
+	background-position: -263px -45px;
 }
 #wrap #header #menu #menu-icon-backup:hover {
-	background: url(../images/icon.png) no-repeat -263px 0px;
+	background-position: -263px 0px;
 }
 #wrap #header #menu #menu-icon-exit {
 	width: 45px;
-	background: url(../images/icon.png) no-repeat -305px -45px;
+	background-position: -305px -45px;
 }
 #wrap #header #menu #menu-icon-exit:hover {
-	background: url(../images/icon.png) no-repeat -305px 0px;
+	background-position: -305px 0px;
 }
 .content{
+	margin-bottom: 1px;
 	width: 892px;
-	margin-bottom: 10px
+	background-color: #FFF;
+	border-radius: 3px 3px 0 0;
+	box-shadow: 0px 0px 5px 0px #000;
 }
 .content .content-tabs{
 	width: 892px;
-	height: 43px;
-	background: url(../images/top-content.png) no-repeat top center;
+	height: 33px;
+	border-radius: 3px 3px 0px 0px;
 	font-family: BKoodakBold, Tahoma;
 	font-size: 13pt;
 	color: #777777;
@@ -163,7 +177,8 @@ ul,li{
 }
 .content .content-tabs ul{
 	height: 32px;
-	margin: 10px 9px 0px 10px
+	border-bottom: 1px solid #B3B3B3;
+	background: -moz-linear-gradient(center top , #EFEFEF, #D8D8D8) repeat scroll 0% 0% / 100% auto #EAEAEA;
 }
 .content .content-tabs ul li{
 	float: right;
@@ -174,8 +189,12 @@ ul,li{
 }
 .content .content-tabs ul li.tab-on{
 	background: White;
-	border-right: #D9D9D9 1px solid;
-	border-left: #D9D9D9 1px solid
+	border-right: #B3B3B3 1px solid;
+	border-left: #B3B3B3 1px solid;
+	border-bottom: 1px solid #FFF;
+}
+.content .content-tabs ul li:first-child{
+	border-right: none;
 }
 .content .content-tabs ul li:hover{
 	background: #D9D9D9;
@@ -184,7 +203,6 @@ ul,li{
 .content .content-title{
 	width: 892px;
 	height: 43px;
-	background: url(../images/top-content.png) no-repeat top center;
 	font-family: BKoodakBold, Tahoma;
 	font-size: 13pt;
 	line-height: 52px;
@@ -201,19 +219,19 @@ ul,li{
 .content .content-top{
 	width: 892px;
 	height: 8px;
-	background: url(../images/top-content.png) no-repeat top center;
+	background: url(../images/top-content1.png) no-repeat top center;
 }
 .content .content-main{
 	width: 892px;
-	background: url(../images/main-content.png) repeat-y top center;
+	/*background: url(../images/main-content.png) repeat-y top center;*/
 }
 .content .content-space{
-	padding: 4px 10px 1px 10px
+	padding: 10px
 }
 .content .content-bottom{
 	width: 892px;
 	height: 8px;
-	background: url(../images/bottom-content.png) no-repeat top center;
+	/*background: url(../images/bottom-content.png) no-repeat top center;*/
 }
 .fast-panel {
 	background: #E1EAF4;
@@ -224,7 +242,10 @@ ul,li{
 }
 #footer {
 	cursor: default;
-	margin: 5px 0px 5px 0px;
+	padding: 5px;
+	background: #E3E3E3;
+	border-radius: 0 0 3px 3px;
+	box-shadow: #000 0px 2px 5px 0px;
 	color:#666666
 }
 #footer a{
@@ -245,4 +266,20 @@ ul,li{
 }
 .clear{
 	clear: both;
+}
+.label {
+    display: inline-block;
+    padding: 0.4em 0.6em 0.4em;
+    font-size: 75%;
+    line-height: 1;
+    color: #FFF;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+    margin: 4px 2px;
+    font-size: 15px;
+    background-color: #F0AD4E;
+    font-family: 'BKoodakBold';
+    cursor: default;
 }

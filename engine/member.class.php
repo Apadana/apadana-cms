@@ -18,7 +18,7 @@ class member
     static private $info;
 	
 	static function is($type = 'member')
-    {
+    {	
 		if (!isset($_COOKIE['account']) || empty($_COOKIE['account']))
 		{
 			return false;

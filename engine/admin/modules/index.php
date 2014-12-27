@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -93,71 +93,12 @@ foreach ($admin as $row)
 }
 
 
-if (member::check_admin_page_access('counter'))
-{
-	set_head('<script type="text/javascript" src="'.url.'engine/openChart/js/swfobject.js"></script>');
-	set_head('<style type="text/css">.break{margin-right:6px;color:#3E6D8E;background-color:#E0EAF1;border-bottom:1px solid #3E6D8E;border-right:1px solid #7F9FB6;padding:3px 4px 3px 4px;margin:2px 2px 2px 0;text-decoration:none;font-size:90%;line-height:2.4;white-space:nowrap;cursor:default}</style>');
-
-	$start = date('Y-m-d',strtotime(date('Y-m-d').' -9 days'));
-	$time = array();
-	for ($i=0; $i<=9; $i++)
-	{
-		$time[$i] = $start.' +'.$i.' days';
-		$time[$i] = jdate('Y-m-d', strtotime($time[$i]));
-	}
-
-	$result = $d->query("
-		SELECT (SELECT `counter_value` FROM #__counter WHERE counter_name='Day-".$time[0]."' AND counter_version='') value0,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[1]."' AND counter_version='') value1,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[2]."' AND counter_version='') value2,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[3]."' AND counter_version='') value3,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[4]."' AND counter_version='') value4,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[5]."' AND counter_version='') value5,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[6]."' AND counter_version='') value6,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[7]."' AND counter_version='') value7,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[8]."' AND counter_version='') value8,
-		(SELECT counter_value FROM #__counter WHERE counter_name='Day-".$time[9]."' AND counter_version='') value9;
-	");
-
-	$countData = $d->fetch($result);
-	$d->freeResult($result);
-
-	$chartValue[0] = intval($countData['value0']);
-	$chartValue[1] = intval($countData['value1']);
-	$chartValue[2] = intval($countData['value2']);
-	$chartValue[3] = intval($countData['value3']);
-	$chartValue[4] = intval($countData['value4']);
-	$chartValue[5] = intval($countData['value5']);
-	$chartValue[6] = intval($countData['value6']);
-	$chartValue[7] = intval($countData['value7']);
-	$chartValue[8] = intval($countData['value8']);
-	$chartValue[9] = intval($countData['value9']);
-	unset($countData);
-
-	foreach ($chartValue as $i => $c)
-	{
-		$itpl->assign(array(
-			'{chart-value-'.$i.'}' => $c,
-			'{chart-dete-'.$i.'}' => $time[$i]
-		));
-	}
-	
-	$itpl->assign('{chart-url}', urlencode(admin_page.'&module=counter&chart=4'));
-	
-	$itpl->assign(array(
-		'[counter]' => null,
-		'[/counter]' => null,
-	));
-	$itpl->block('#\\[not-counter\\](.*?)\\[/not-counter\\]#s', '');
-}
-else
-{
 	$itpl->assign(array(
 		'[not-counter]' => null,
 		'[/not-counter]' => null,
 	));
 	$itpl->block('#\\[counter\\](.*?)\\[/counter\\]#s', '');
-}
+
 
 $t = strtotime(date('Y-m-d'));
 $t2 = strtotime(date('Y-m-d').' -1 days');
@@ -173,12 +114,7 @@ $result .= "(SELECT `member_name` FROM `#__members` WHERE `member_id`=memberNewI
 $result .= "(SELECT COUNT(`post_id`) FROM `#__posts` WHERE post_approve='1' AND post_date <= '".time_now."') postsCount,".n;
 $result .= "(SELECT COUNT(*) FROM `#__comments`) commentsCount,".n;
 $result .= "(SELECT COUNT(`comment_id`) FROM `#__comments` WHERE comment_approve='0') commentsCount2,".n;
-$result .= is_module('simple-links')? "(SELECT COUNT(`link_id`) FROM `#__simple_links` WHERE `link_active`='1') linksCount,".n : null;
-$result .= "(SELECT COUNT(`member_id`) FROM `#__members` WHERE `member_newsletter`='1') newsletterCount,".n;
-$result .= "(SELECT `counter_value` FROM `#__counter` WHERE `counter_name`='Total') totalCount,".n;
-$result .= "(SELECT `counter_value` FROM `#__counter` WHERE `counter_name`='Year-".jdate('Y')."') yearCount,".n;
-$result .= "(SELECT `counter_value` FROM `#__counter` WHERE `counter_name`='Month-".jdate('Y-m')."') monthCount,".n;
-$result .= "(SELECT `counter_value` FROM `#__counter` WHERE `counter_name`='Day-".jdate('Y-m-d')."') dayCount;".n;
+$result .= "(SELECT option_value FROM `#__options` WHERE `option_name`='admin-notes') admin_note;".n;
 
 $result = $d->query($result);
 $countData = $d->fetch($result);
@@ -193,12 +129,6 @@ $array['{memberNewName}'] = $countData['memberNewName'];
 $array['{postsCount}'] = (int) $countData['postsCount'];
 $array['{commentsCount}'] = (int) $countData['commentsCount'];
 $array['{commentsCount2}'] = (int) $countData['commentsCount2'];
-$array['{linksCount}'] = isset($countData['linksCount'])? $countData['linksCount'] : 0;
-$array['{newsletterCount}'] = $countData['newsletterCount'];
-$array['{totalCount}'] = (int) $countData['totalCount'];
-$array['{yearCount}'] = (int) $countData['yearCount'];
-$array['{monthCount}'] = (int) $countData['monthCount'];
-$array['{dayCount}'] = (int) $countData['dayCount'];
 $array['{version}'] = $options['version'];
 $array['{error-reporting}'] = error_reporting? '<font color=red><b>فعال</b></font>' : '<font color=green><b>غیرفعال</b></font>';
 $array['{offline}'] = $options['offline']==0? '<font color=green><b>فعال</b></font>' : '<font color=red><b>غیرفعال</b></font>';
@@ -207,8 +137,47 @@ $array['{default-module}'] = $options['default-module'];
 $array['{theme}'] = $options['theme'];
 $array['{http-referer}'] = $options['http-referer']==1? 'فعال' : 'غیرفعال';
 $array['{admin}'] = $options['admin'];
+$array['{admin-note}'] = $countData['admin_note'];
 
 $itpl->assign($array);
+
+if(! $server = get_cache('admin-server-info',86400)){
+	$server = array();
+	$server['{server-os}'] = (@php_uname( "s" ) . " " . @php_uname( "r" )) == '' ? 'تعریف نشده' : php_uname( "s" ) . " " . php_uname( "r" );
+	$server['{server-php}'] = @phpversion() == '' ? 'تعریف نشده' : phpversion();
+	$server['{server-mysql}'] = $d->version() == '' ? 'تعریف نشده' : $d->version();
+	$server['{server-mysqli}'] = @extension_loaded('mysqli') ? '<font color=green><b>فعال</b></font>' : '<font color=red><b>غیرفعال</b></font>';
+	
+	$d->query( "SHOW TABLE STATUS" );
+	$d_size = 0;
+	while ( $data = $d->fetch() ) {
+		if( strpos( $data['Name'], database_prefix ) !== false ) $d_size += $data['Data_length'] + $data['Index_length'];
+	}
+	$server['{server-mysql-space}'] = $d_size == 0 ? 'تعریف نشده' : file_size($d_size);
+	$server['{server-cache-space}'] = file_size(get_size(engine_dir.'cache'));
+	$max_upload = ((int) @ini_get('upload_max_filesize')) * 1024 * 1024;
+	$server['{server-upload-limit}'] = $max_upload == 0 ? 'تعریف نشده' : file_size($max_upload);
+	$max_memory = ((int) @ini_get('memory_limit')) * 1024 * 1024;
+	$server['{server-memory-limit}'] = $max_memory == 0 ? 'تعریف نشده' : file_size($max_memory);
+	$server['{server-free}'] = disk_free_space('.') ? file_size(disk_free_space('.')) : 'تعریف نشده';
+
+	if( function_exists( 'apache_get_modules' ) ) {
+		if( array_search( 'mod_rewrite', apache_get_modules() ) ) {
+			$server['{server-rewrite}']= '<font color=green><b>فعال</b></font>';
+		} else {
+			$server['{server-rewrite}']= '<font color=red><b>غیرفعال</b></font>';
+		}
+	} else {
+		$server['{server-rewrite}']= 'تعریف نشده';
+	}
+
+	$server['{server-zlib}'] = @extension_loaded('zlib') ? '<font color=green><b>فعال</b></font>' : '<font color=red><b>غیرفعال</b></font>';
+	$server['{server-gd}'] = @extension_loaded('gd') ? '<font color=green><b>فعال</b></font>' : '<font color=red><b>غیرفعال</b></font>';
+
+	set_cache('admin-server-info',$server);
+}
+
+$itpl->assign($server);
 
 $tpl->assign('{content}', $itpl->get_var());
 unset($itpl, $html);

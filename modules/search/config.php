@@ -31,7 +31,7 @@ function module_search_run()
 		exit;
 	}
 
-	global $page, $d, $options, $modules, $member;
+	global $page, $d, $options, $modules, $member,$tpl;
 
 	$message = null;
 	$search = array();

@@ -66,8 +66,8 @@ if (!defined('no_template') || no_template !== true)
 	if (admin_page === false && !is_ajax())
 	{
 		require_once(engine_dir.'http-referer.function.php');
-		module_counter_update();
 		http_referer();
+		update_session();
 	}
 
 	if (!defined('no_blocks') || no_blocks !== true)

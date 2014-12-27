@@ -30,7 +30,7 @@
 {content}
 
 <div id="footer">
-<span id="left">Powered by <a href="http://www.apadanacms.ir/?ref=admin" target="_blank" rel="copyright">Apadana Cms</a> copyright &copy; {function name="date" args="Y"} by Iman Moodi.</span>
+<span id="left">Powered by <a href="http://www.apadanacms.ir/?ref=admin" target="_blank" rel="copyright">Apadana Cms</a> copyright &copy; {function name="date" args="Y"}</span>
 <span id="right">تعداد ارتباط با دیتابیس: {num-queries} / حافظه درگیر سیستم: {memory-get-usage} / زمان ایجاد صفحه {creation-time} ثانیه</span>
 <div class="clear"></div>
 </div>

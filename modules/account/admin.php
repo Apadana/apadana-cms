@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -18,7 +18,7 @@ function module_account_info()
 		'version' => '1.0',
 		'creationDate' => '2012-07-21 18:00:03',
 		'description' => 'ماژول سامانه کاربری آپادانا',
-		'author' => 'iman moodi',
+		'author' => 'Apadana Development Team',
 		'authorEmail' => 'imanmoodi@yahoo.com',
 		'authorUrl' => 'http://www.apadanacms.ir',
 		'license' => 'GNU/GPL',
@@ -46,6 +46,10 @@ function module_account_admin()
 		
 		case 'options';
 		_options();
+		break;
+
+		case 'new';
+		_new();
 		break;
 		
 		default:

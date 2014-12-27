@@ -3,7 +3,7 @@
 /*<![CDATA[*/
 function account_ajax(id)
 {
-    if (id == 1)
+    if (id == 2)
 	{
 		apadana.ajax({
             method: 'get',
@@ -12,19 +12,19 @@ function account_ajax(id)
             loading: 'no',
             beforeSend: function()
             {
-				apadana.html('option-id-1', '<p><center><img src="{site-url}engine/images/loading/loader-9.gif" width="54" height="55"></center></p>');
+				apadana.html('option-id-2', '<p><center><img src="{site-url}engine/images/loading/loader-9.gif" width="54" height="55"></center></p>');
             },
             success: function(data)
             {
-				$('#option-id-1').slideUp('slow', function(){
-					$('#option-id-1').html(data).slideDown('slow')
+				$('#option-id-2').slideUp('slow', function(){
+					$('#option-id-2').html(data).slideDown('slow')
 				})
            }
 		})
 	}
-	else if (id == 2)
+	else if (id == 3)
 	{
-        apadana.changeTab(1, 2)
+        apadana.changeTab(1, 3)
         alert('ابتدا یک کاربر را برای ویرایش انتخاب کنید!');
 	}
 }
@@ -33,12 +33,30 @@ function account_list(url)
 	apadana.ajax({
 		method: 'get',
 		action: url,
-		id: 'option-id-1'
+		id: 'option-id-2'
 	})
+}
+function account_new()
+{
+	$('#option-ajax-1').slideUp('slow')
+
+	apadana.ajax({
+        method: 'post',
+        action: '{admin-page}&module=account&do=new',
+        data: apadana.serialize('form-new-user'),
+        loading: 'yes',
+        success: function(data)
+        {
+			$('#option-ajax-1').slideUp('slow', function(){
+				$('#option-ajax-1').html(data).slideDown('slow')
+			})
+       }
+	})
+
 }
 function account_edit(ID)
 {
-	$('#option-ajax-2').slideUp('slow')
+	$('#option-ajax-3').slideUp('slow')
 	if (ID == 'save')
 	{
 		ID = apadana.value('account-edit-id');
@@ -48,15 +66,15 @@ function account_edit(ID)
 			data: apadana.serialize('form-edit-account'),
 			success: function(data)
 			{
-				$('#option-ajax-2').slideUp('slow', function(){
-					$('#option-ajax-2').html(data).slideDown('slow')
+				$('#option-ajax-3').slideUp('slow', function(){
+					$('#option-ajax-3').html(data).slideDown('slow')
 				})
 			}
 		})
 	}
 	else
 	{
-		apadana.changeTab(2, 2);
+		apadana.changeTab(3, 3);
 		apadana.value('account-edit-id', ID);
 		apadana.value('account-edit-name', apadana.value('data-account-name-'+ID));
 		apadana.value('account-edit-alias', apadana.value('data-account-alias-'+ID));
@@ -141,14 +159,51 @@ function account_status(ID)
 <div class="content">
 <div class="content-tabs">
 <ul>
-  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2, function(){account_ajax(1)})">لست کاربران</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 2, function(){account_ajax(2)})">ویرایش کاربر</li>
+  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 3)">ایجاد کاربر جدید</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){account_ajax(2)})">لیست کاربران</li>
+  <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(2, 3, function(){account_ajax(3)})">ویرایش کاربر</li>
 </ul>
 </div>
 <div class="content-main">
 <div class="content-space">
 
 <div id="option-id-1" style="display:block">
+	<div id="option-ajax-1" ></div>
+	<form id="form-new-user" onsubmit="account_new();return false;">
+	<table  cellpadding="6" cellspacing="0">
+		<tr>
+			<td>نام کاربری</td>
+			<td><input type="text" size="30" value="" name="member[name]"  dir="ltr" id="account-new-name" /></td>
+		 </tr>
+		 <tr>
+			<td>پست الکترونیکی</td>
+			<td><input type="text" size="30" value="" name="member[email]"  dir="ltr" id="account-new-email" /></td>
+		 </tr>
+		 <tr>
+			<td>رمز عبور</td>
+			<td><input type="password" size="30" value="" name="member[pass]"  dir="ltr" id="account-new-pass" /></td>
+		 </tr>
+		 <tr>
+			<td>تکرار رمزعبور</td>
+			<td><input type="password" size="30" value="" name="member[pass2]"  dir="ltr" id="account-new-pass2" /></td>
+		 </tr>
+		 <tr>
+			<td>گروه کاربری</td>
+			<td><select name="member[group]" size="1" >[for groups]<option value="{id}">{name}</option>[/for groups]</select></td>
+		 </tr>
+		 <tr>
+			<td width="150">ارسال ایمیل شامل نام کاربری و رمز عبور به کاربر؟</td>
+			<td><input type="checkbox" name="member[send_email]" value="1"/></td>
+		 </tr>
+		 <tr>
+			<td></td>
+		 	<td><input type="submit" value="ایجاد کاربر" /></td>
+		 </tr>
+	 </table>
+	 </form>
+</div>
+
+<div id="option-id-2" style="display:none">
 [/not-ajax]
 <form id="form-options-show" class="fast-panel">
 چینش&nbsp;&raquo;&nbsp;
@@ -221,9 +276,9 @@ function account_status(ID)
 [not-members]{function name="message" args="برای جستجوی <u>{search}</u> هیچ نتیجه ای یافت نشد!|error"}[/not-members]
 [not-ajax]
 </div>
-<!-- /option-id-1 -->
-<div id="option-id-2" style="display:none">
-<div id="option-ajax-2"></div>
+<!-- /option-id-2 -->
+<div id="option-id-3" style="display:none">
+<div id="option-ajax-3"></div>
 <form id="form-edit-account" onsubmit="account_edit('save');return false">
 <table cellpadding="6" cellspacing="0">
   <tr>
@@ -251,7 +306,7 @@ function account_status(ID)
 	<td><label><input type="radio" name="member[gender]" value="male" checked="checked" id="account-edit-gender-male" />مرد</label> <label><input type="radio" name="member[gender]" value="female" id="account-edit-gender-female" />زن</label> </td>
   </tr>
   <tr>
-	<td>ایمیل</td>
+	<td>پست الکترونیکی</td>
 	<td><input name="member[email]" type="text" size="30" value="" id="account-edit-email" dir="ltr" /></td>
   </tr>
   <tr>
@@ -268,14 +323,14 @@ function account_status(ID)
   </tr>
   <tr>
 	<td></td>
-	<td>در صورتی که نمی خواهید پسورد کاربر را تغییر دهید فیلدهای آن را خالی رها کنید.</td>
+	<td>در صورتی که نمی خواهید رمز عبور کاربر را تغییر دهید فیلدهای آن را خالی رها کنید.</td>
   </tr>
   <tr>
-	<td>پسورد</td>
+	<td>رمز عبور</td>
 	<td><input name="member[pass1]" type="password" size="30" value="" dir="ltr" /></td>
   </tr>
   <tr>
-	<td>تکرار پسورد</td>
+	<td>تکرار رمز عبور</td>
 	<td><input name="member[pass2]" type="password" size="30" value="" dir="ltr" /></td>
   </tr>
   <tr>
@@ -285,7 +340,7 @@ function account_status(ID)
 </table>
 </form>
 </div>
-<!-- /option-id-2 -->
+<!-- /option-id-3 -->
 
 <div class="clear"></div>
 </div>

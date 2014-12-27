@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -346,6 +346,40 @@ function file_size($size)
 	return $size? round($size / pow(1024, ($i = floor(log($size, 1024)))), 2).' '.$name[$i] : $size.' Bytes';
 }
 
+function get_size($file) {
+	
+	if(  is_file( $file ) ) return filesize( $file );
+
+	if( ! is_dir( $file ) ) return false;
+	
+	$size = 0;
+	$dir = opendir( $file );
+
+	if ( $dir ) {
+		
+		while ( ($dirfile = readdir( $dir )) !== false ) {
+			
+			if( $dirfile == '.' || $dirfile == '..' ) continue;
+			
+			if( @is_file( $file . '/' . $dirfile ) ) $size += filesize( $file . '/' . $dirfile );
+			
+			else if( @is_dir( $file . '/' . $dirfile ) ) {
+				
+				$dirSize = dirsize( $file . '/' . $dirfile );
+				if( $dirSize >= 0 ) $size += $dirSize;
+				else return - 1;
+			
+			}
+		
+		}
+		
+	closedir( $dir );
+	
+	}
+	
+	return $size;
+
+}
 /* Author: Amir Hossein Hodjaty Pour ~ Boplo.ir */
 function get_past_time($time, $year=1, $month=1, $day=1, $hour=1, $minute=1, $second=0)
 {
@@ -454,6 +488,11 @@ function dump($var, $filter = 1, $stop = 1)
 
 	if ($stop == 1)
 		exit;
+}
+
+function is_cli()
+{
+	return (PHP_SAPI === 'cli' OR defined('STDIN'));
 }
 
 function html_compaction($html)

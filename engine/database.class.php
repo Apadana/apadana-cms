@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -443,7 +443,8 @@ class database
 
 	public function version() 
 	{
-		return preg_replace('/[^0-9.].*/', '', mysql_get_server_info($this->result));
+		//Fixed in 1.0.5 : we shouldn't use result variable
+		return preg_replace('/[^0-9.].*/', '', mysql_get_server_info($this->connect));
 	}
 
 	public function close() 

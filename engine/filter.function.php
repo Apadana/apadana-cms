@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Apadana CMS Development Team
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -62,8 +62,9 @@ function nohtml($string)
 function unhtmlentities($string)
 {
 	# Replace numeric entities
-	$string = preg_replace('~&#x([0-9a-f]+);~ei', 'unichr(hexdec("\\1"))', $string);
-	$string = preg_replace('~&#([0-9]+);~e', 'unichr("\\1")', $string);
+	$match=null;
+	$string = preg_replace('~&#x([0-9a-f]+);~i',create_function($match,'return unichr(hexdec($match[1]));'), $string);
+	$string = preg_replace('~&#([0-9]+);~', create_function($match,'return unichr($match[1]);'), $string);
 	# Replace literal entities
 	$trans_tbl = get_html_translation_table(HTML_ENTITIES);
 	$trans_tbl = array_flip($trans_tbl);

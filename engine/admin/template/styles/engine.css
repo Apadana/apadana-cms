@@ -70,11 +70,12 @@ table.apadana-table {
 	margin: 0px;
 	cursor:default
 }
-table.apadana-table tr, table.apadana-table tr.apadana-even {background: #EEEEEE;}
-table.apadana-table tr.apadana-odd {background: White;}
-table.apadana-table tr:hover, table.apadana-table tr.apadana-even:hover, table.apadana-table tr.apadana-odd:hover {background: #F1F5FA;}
-table.apadana-table td {
-	border-bottom: #BBBBBB 1px dashed;
+.apadana-table tr, .apadana-table tr.apadana-table-even {background: #EEEEEE;}
+.apadana-table tr.apadana-table-odd {background: White;}
+.apadana-table tr.apadana-table-delete {background: #FFBAA8;}
+.apadana-table tr:hover, .apadana-table tr.apadana-table-even:hover, .apadana-table .apadana-table-odd:hover, .apadana-table .apadana-table-delete:hover {background: #D6E2F0;}
+.apadana-table td {
+	border-bottom: #D6D6D6 1px solid;
 	padding: 5px
 }
 table.apadana-table th {

@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -31,7 +31,7 @@ function antiflood()
 	if ($numrow > 7)
 	{
 		Header('HTTP/1.0 403 Forbidden');
-		exit('<title>AntiFlood<title><br><br><center><b>Sorry, too many page loads in so little time!</b></center>');
+		exit('<title>AntiFlood</title><br><br><center><b>Sorry, too many page loads in so little time!</b></center>');
 	}
 
 	unset($ip, $numrow);

@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -342,6 +342,116 @@ function _edit()
 		}
 	}
 	exit;
+}
+
+function _new()
+{
+	global $d,$member_groups;
+
+	member::check_admin_page_access('account') or warning('عدم دسترسی!', 'شما دسترسی لازم برای مشاهده این بخش را ندارید!');
+
+	$options_account = account_options();
+
+	$member = get_param($_POST,'member');
+
+	$msg = array();
+
+	if (isset($member) && is_array($member) && count($member))
+	{
+		$member['name'] = strtolower($member['name']);
+		$member['email'] = nohtml($member['email']);
+		$member['group'] = (int) $member['group'];
+		$member['send_email'] = isset($member['send_email']) && $member['send_email'] == 1 ? true : false;
+		if (!validate_email($member['email']))
+		{
+			$msg[] = 'ایمیل وارد شده معتبر نیست!';
+		}
+		else
+		{
+			if ($options_account['email'] == 1 && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escapeString($member['email'])."'", true) >= 1)
+			{
+				$msg[] = 'این ایمیل قبلا ثبت شده است، یک ایمیل دیگر انتخاب کنید!';
+			}
+		}
+
+		if (empty($member['pass']))
+		{
+			$msg[] = 'فیلد پسورد خالی است!';
+		}
+
+		if ($member['pass'] != $member['pass2'])
+		{
+			$msg[] = 'پسوردهای وارد شده مشابه نیستند!';
+		}
+
+		if (!is_alphabet($member['name']))
+		{
+			$msg[] = 'نام کاربری فقط می تواند شامل حروف و اعداد انگلیسی باشد!';
+		}
+		else
+		{
+			if (apadana_strlen($member['name']) > 40)
+			{
+				$msg[] = 'نام کاربری نباید از 40 حرف بیشتر باشد!';
+			}
+			elseif (member::exists($member['name']))
+			{
+				$msg[] = 'این نام کاربری قبلا ثبت شده است!';
+			}
+		}
+
+		if (in_array($member['group'], $member_groups))
+		{
+			$msg[] = 'گروه کاربری انتخاب شده وجود ندارد!';
+		}
+
+		if (count($msg))
+		{
+			$msg = message(implode('<br/>', $msg), 'error');
+		}
+		else
+		{
+			$member['pass'] = member::password($member['pass']);
+
+			$id = $d->insert('members', array(
+				'member_name' => $member['name'],
+				'member_alias' => $member['name'],
+				'member_email' => $member['email'],
+				'member_password' => $member['pass'],
+				'member_date' => time(),
+				'member_lastvisit' => time(),
+				'member_ip' => get_ip(),
+				'member_lastip' => get_ip(),
+				'member_group' => $member['group'],
+				'member_key' => '',
+			));
+
+			if ($d->affectedRows())
+			{
+				$msg = message("کاربر {$member['name']} با موفقیت اضافه شد!", 'success');
+				if($member['send_mail']){
+					require_once(engine_dir.'mail.function.php');
+					global $options;
+					$Body  = 'عضویت شما با موفقیت انجام شد.<br />';				
+					$Body .= 'نام کاربری شما: '.$member['name'].'<br />';				
+					$Body .= 'ایمیل: '.$member['email'];				
+					send_mail($member['name'], $member['email'], $options['title'], $options['mail'], 'عضویت در سایت '.$options['title'], $Body);
+				}
+			}
+			else
+			{
+				$msg = message('در ذخیره اطلاعات خطایی رخ داده، مجدد تلاش کنید!', 'error');
+			}
+		}
+
+	}
+	else
+	{
+		$msg = message('در ذخیره اطلاعات خطایی رخ داده، مجدد تلاش کنید!', 'error');
+	}
+
+	echo $msg;
+	define('no_template',true);
 }
 
 function _status()

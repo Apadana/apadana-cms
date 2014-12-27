@@ -16,7 +16,7 @@ if (!defined('admin_page') || !isset($_GET['admin']) || !is_alphabet($_GET['admi
 	exit('Hacking attempt!');
 }
 
-if (!$admin = get_cache('admin', 'always'))
+if (!$admin = get_cache('admin'))
 {
 	$admin = $d->get_row("SELECT * FROM `#__admin` ORDER BY admin_rights ASC", 'assoc', 'admin_right');
 	ksort($admin);
