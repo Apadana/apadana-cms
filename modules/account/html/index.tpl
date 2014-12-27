@@ -50,8 +50,4 @@
     <td>امضا</td>
     <td>{signature}</td>
   </tr>[/signature]
-  <tr>
-    <td>آدرس کوتاه</td>
-    <td><a href="javascript:void(0)" onClick="apadana.hideID('link-profile-{name}');apadana.showID('show-profile-{name}')" id="link-profile-{name}">مشاهده آدرس</a><span id="show-profile-{name}" style="display:none"><a href="{site-url}u@{name}" target="_blank"  dir="ltr" title="آدرس کوتاه پروفایل شما در سایت ما"><b>{site-url}u@{name}</b></a>&nbsp;&nbsp;<a href="javascript:void(0)" onClick="apadana.showID('link-profile-{name}');apadana.hideID('show-profile-{name}')"><font size="1" color="#999999">(مخفی کن!)</font></a></span></td>
-  </tr>
 </table>

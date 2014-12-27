@@ -257,7 +257,7 @@ function _edit()
 			$message .= 'گروه انتخاب شده برای کاربر معتبر نیست!<br>';
 		}
 
-		if ($postMember['id']==1 && $postMember['group'] != 1)
+		if ($postMember['id'] == 1 && $postMember['group'] != 1)
 		{
 			$message .= 'این کاربر باید مدیرکل سایت باشد!<br>';
 		}

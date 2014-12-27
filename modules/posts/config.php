@@ -200,7 +200,7 @@ function get_posts($do)
 
 function posts_options()
 {
-	if (!$options = get_cache('posts-options'))
+	if (!$options = get_cache('options-posts'))
 	{
 		global $d;
 
@@ -595,7 +595,7 @@ function module_posts_feed(&$feeds)
 {
 	global $d, $options;
 
-	$query = "SELECT post_title, post_text, post_date, post_name, post_id FROM `#__posts` WHERE post_approve='1' AND post_date <= '".time_now."' ORDER BY post_date DESC LIMIT 1000";
+	$query = "SELECT post_title, post_text, post_date, post_name, post_id FROM `#__posts` WHERE post_approve='1' AND post_date <= '".time_now."' ORDER BY post_date DESC LIMIT ".intval($options['feed-limit']);
 	$posts = $d->get_row($query);
 
 	if (is_array($posts) && count($posts))

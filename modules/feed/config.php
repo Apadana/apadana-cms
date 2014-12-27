@@ -22,6 +22,8 @@ function module_feed_run()
 	$_GET['c'] = $_GET['c']=='atom'? 'atom' : 'rss';
 	$type = $_GET['c']=='atom'? 'AtomGenerator' : 'RSSGenerator';
 	
+	($hook = get_hook('feed'))? eval($hook) : null;
+
 	if (function_exists('module_'.str_replace('-', '_', $_GET['b']).'_feed'))
 	{
 		try

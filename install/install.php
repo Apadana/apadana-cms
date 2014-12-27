@@ -126,15 +126,15 @@ switch ($_GET['action'])
 	print_info('دسترسی فایل ها', 'آپادانا نیاز دارد تا بتواند این فایل ها و پوشه ها را ویرایش کند.');
 	echo '<table cellpadding="0" cellspacing="0" class="padding">'."\n";
 	echo '<tr>'."\n";
-	echo '	<td style="width:290px">فایل پیکربندی <font color="#CCCCCC" size="1" dir="ltr">(engine/config.inc.php)</font></td>'."\n";
+	echo '	<td style="width:290px">فایل پیکربندی <font color="#CCCCCC" size="1" dir="ltr">(/engine/config.inc.php)</font></td>'."\n";
 	echo '	<td>'.(file_exists('../engine/config.inc.php')?(is_writable('../engine/config.inc.php')? '<b><font color="green">قابل نوشتن</font></b>' : '<b><font color="red">غیرقابل نوشتن</font></b>'):(is_writable('../engine')? '<b><font color="green">قابل نوشتن</font></b>' : '<b><font color="red">غیرقابل نوشتن</font></b>')).'</td>'."\n";
 	echo '</tr>'."\n";
 	echo '<tr>'."\n";
-	echo '	<td>پوشه کش <font color="#CCCCCC" size="1" dir="ltr">(engine/cache/)</font></td>'."\n";
+	echo '	<td>پوشه کش <font color="#CCCCCC" size="1" dir="ltr">(/engine/cache/)</font></td>'."\n";
 	echo '	<td>'.(is_writable('../engine/cache')? '<b><font color="green">قابل نوشتن</font></b>' : '<b><font color="red">غیرقابل نوشتن</font></b>').'</td>'."\n";
 	echo '</tr>'."\n";
 	echo '<tr>'."\n";
-	echo '	<td>پوشه فایل های پشتیبان <font color="#CCCCCC" size="1" dir="ltr">(engine/admin/backups/)</font></td>'."\n";
+	echo '	<td>پوشه فایل های پشتیبان <font color="#CCCCCC" size="1" dir="ltr">(/engine/admin/backups/)</font></td>'."\n";
 	echo '	<td>'.(is_writable('../engine/admin/backups')? '<b><font color="green">قابل نوشتن</font></b>' : '<b><font color="red">غیرقابل نوشتن</font></b>').'</td>'."\n";
 	echo '</tr>'."\n";
 	echo '<tr>'."\n";
@@ -142,7 +142,11 @@ switch ($_GET['action'])
 	echo '	<td>'.(is_writable('../uploads')? '<b><font color="green">قابل نوشتن</font></b>' : '<b><font color="red">غیرقابل نوشتن</font></b>').'</td>'."\n";
 	echo '</tr>'."\n";
 	echo '<tr>'."\n";
-	echo '	<td>فایل روبات ها <font color="#CCCCCC" size="1" dir="ltr">(robots.txt)</font></td>'."\n";
+	echo '	<td>فایل <font color="#CCCCCC" size="1" dir="ltr">(/.htaccess)</font></td>'."\n";
+	echo '	<td>'.(is_writable('../.htaccess')? '<b><font color="green">قابل نوشتن</font></b>' : '<b><font color="red">غیرقابل نوشتن</font></b>').'</td>'."\n";
+	echo '</tr>'."\n";
+	echo '<tr>'."\n";
+	echo '	<td>فایل روبات ها <font color="#CCCCCC" size="1" dir="ltr">(/robots.txt)</font></td>'."\n";
 	echo '	<td>'.(is_writable('../robots.txt')? '<b><font color="green">قابل نوشتن</font></b>' : '<b><font color="red">غیرقابل نوشتن</font></b>').'</td>'."\n";
 	echo '</tr>'."\n";
 	echo '</table>'."\n";
@@ -183,7 +187,7 @@ switch ($_GET['action'])
 	echo '<table cellpadding="0" cellspacing="0" class="padding">'."\n";
 	echo '  <tr>'."\n";
 	echo '    <td style="width:230px">دامنه سایت <font color="#CCCCCC" size="1" dir="ltr" style="float: left">(Domain)</font></td>'."\n";
-	echo '    <td><input name="config[domain]" id="input-domain" type="text" value="'.str_replace('www.', '', $_SERVER['SERVER_NAME']).'" style="width:350px; float: left; direction: ltr" /></td>'."\n";
+	echo '    <td><input name="config[domain]" id="input-domain" type="text" value="'.str_replace('www.', '', $_SERVER['HTTP_HOST']).'" style="width:350px; float: left; direction: ltr" /></td>'."\n";
 	echo '  </tr>'."\n";
 	echo '  <tr>'."\n";
 	echo '    <td>محل نصب سایت <font color="#CCCCCC" size="1" dir="ltr" style="float: left">(Path)</font></td>'."\n";
@@ -191,7 +195,7 @@ switch ($_GET['action'])
 	echo '  </tr>'."\n";
 	echo '  <tr>'."\n";
 	echo '    <td>آدرس کامل سایت <font color="#CCCCCC" size="1" dir="ltr" style="float: left">(Full Url)</font></td>'."\n";
-	echo '    <td><input name="config[url]" id="input-url" type="text" style="width:350px; float: left; direction: ltr" value="http://'.trim(str_replace('www.', '', $_SERVER['SERVER_NAME']).my_path(), '/').'/" /></td>'."\n";
+	echo '    <td><input name="config[url]" id="input-url" type="text" style="width:350px; float: left; direction: ltr" value="http://'.trim($_SERVER['HTTP_HOST'].my_path(), '/').'/" /></td>'."\n";
 	echo '  </tr>'."\n";
 	echo '  <tr>'."\n";
 	echo '    <td></td>'."\n";
@@ -262,7 +266,7 @@ switch ($_GET['action'])
 		$php .= ' * @email: info@apadanacms.ir'."\r\n";
 		$php .= ' * @link: http://www.apadanacms.ir'."\r\n";
 		$php .= ' * @license: http://www.gnu.org/licenses/'."\r\n";
-		$php .= ' * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.'."\r\n";
+		$php .= ' * @copyright: Copyright © 2012-'.date('Y').' ApadanaCms.ir. All rights reserved.'."\r\n";
 		$php .= ' * @Apadana CMS is a Free Software'."\r\n";
 		$php .= ' */'."\r\n\r\n";
 		$php .= 'defined(\'security\') or exit(\'Nice TRY!\');'."\r\n\r\n";
@@ -283,6 +287,26 @@ switch ($_GET['action'])
 
 		if (file_put_contents('../engine/config.inc.php', $php))
 		{
+			$ht  = 'DirectoryIndex index.php index.html index.htm'."\n\n";
+			$ht .= 'ErrorDocument 400 '.$_POST['config']['path'].'index.php?a=error&b=400'."\n";
+			$ht .= 'ErrorDocument 403 '.$_POST['config']['path'].'index.php?a=error&b=403'."\n";
+			$ht .= 'ErrorDocument 404 '.$_POST['config']['path'].'index.php?a=error&b=404'."\n";
+			$ht .= 'ErrorDocument 500 '.$_POST['config']['path'].'index.php?a=error&b=500'."\n";
+			$ht .= 'ErrorDocument 503 '.$_POST['config']['path'].'index.php?a=error&b=503'."\n\n";
+			$ht .= '<IfModule mod_rewrite.c>'."\n";
+			$ht .= '	RewriteEngine On'."\n";
+			$ht .= '	RewriteBase '.$_POST['config']['path'].''."\n";
+			$ht .= '	RewriteRule ^index\.php$ - [L]'."\n";
+			$ht .= '	RewriteCond %{REQUEST_FILENAME} !-f'."\n";
+			$ht .= '	RewriteCond %{REQUEST_FILENAME} !-d'."\n";
+			$ht .= '	RewriteRule . '.$_POST['config']['path'].'index.php [L]'."\n";
+			$ht .= '</IfModule>'."\n\n";
+			$ht .= '# Restrict access to files'."\n";
+			$ht .= '<FilesMatch "\.(inc|sql|back|cache|tpl|log|ihtml|class|module|bin|ini|conf|h|spd)$">'."\n";
+			$ht .= '	deny from all'."\n";
+			$ht .= '</FilesMatch>';
+			file_put_contents('../.htaccess', $ht);
+
 			echo '<script>set_percent(350)</script>'."\n";
 			print_info('پایان پیکربندی', 'فایل پیکربندی با موفقیت ایجاد شده است، در مرحله ی بعدی اطلاعات لازم در دیتابیس سایت نوشته خواهد شد.<br>اطلاعات ثبت شده به شرح زیر است.');
 
@@ -536,5 +560,3 @@ else:
 	if ($ajax) echo '<div class="clear"></div>'."\n";
 	if (!$ajax) print_footer();
 endif;
-
-?>

@@ -15,7 +15,7 @@ function module_pages_info()
 {
 	return array(
 		'name' => 'pages',
-		'version' => '1.0',
+		'version' => '1.0.1',
 		'creationDate' => '2012-07-21 18:00:03',
 		'description' => 'ماژول صفحات اضافی برای آپادانا.',
 		'author' => 'iman moodi',
@@ -49,7 +49,7 @@ function module_pages_install()
 	");
 	$d->insert('modules', array(
 		'module_name' => 'pages',
-		'module_version' => '1.0',
+		'module_version' => '1.0.1',
 		'module_status' => 0,
 	));
 	echo message('ماژول صفحات اضافی با موفقیت نصب شد.', 'success');

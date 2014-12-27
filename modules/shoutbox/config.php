@@ -50,6 +50,9 @@ function block_shoutbox($op, $id = null, $position = null)
 	set_head(file_exists(template_dir.'styles/shoutbox.css')? '<link href="'.url.'templates/'.$options['theme'].'/styles/shoutbox.css" type="text/css" rel="stylesheet" />' : '<link href="'.url.'modules/shoutbox/styles/default.css" type="text/css" rel="stylesheet" />');
 	set_head('<script type="text/javascript" src="'.url.'modules/shoutbox/javascript/functions.js"></script>');
 	$itpl = new template('modules/shoutbox/html/block.tpl');
+
+	($hook = get_hook('block_shoutbox'))? eval($hook) : null;
+
 	return $itpl->get_var();
 }
 

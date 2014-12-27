@@ -15,7 +15,7 @@ function module_m_info()
 {
 	return array(
 		'name' => 'm',
-		'version' => '1.0',
+		'version' => '1.0.1',
 		'creationDate' => '2012-07-21 18:00:03',
 		'description' => 'ماژول نسخه موبایل برای آپادانا.',
 		'author' => 'iman moodi',

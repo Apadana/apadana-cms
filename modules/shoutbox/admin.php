@@ -15,7 +15,7 @@ function module_shoutbox_info()
 {
 	return array(
 		'name' => 'shoutbox',
-		'version' => '1.0',
+		'version' => '1.0.1',
 		'creationDate' => '2012-07-21 18:00:03',
 		'description' => 'ماژول جعبه پیام برای آپادانا.',
 		'author' => 'iman moodi',
@@ -40,7 +40,7 @@ function module_shoutbox_install()
 	");
 	$d->insert('modules', array(
 		'module_name' => 'shoutbox',
-		'module_version' => '1.0',
+		'module_version' => '1.0.1',
 		'module_status' => 0,
 	));
 	echo message('ماژول shoutbox با موفقیت نصب شد.', 'success');

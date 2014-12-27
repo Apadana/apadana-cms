@@ -4,9 +4,9 @@
 <div class="main">
 <div class="padding">
 <img src="{member-avatar}" align="left" />
-[not-approve]<font color="red">نظر شما پس از تایید برای عموم نمایش داده خواهد شد!</font><br>[/not-approve]
+[not-approve]<font color="red">نظر شما پس از تایید برای عموم نمایش داده خواهد شد!</font><br/>[/not-approve]
 {text}
-[answer]<br /><span style="float:right;background:#AAAAAA;border:#888888 1px dashed;padding:4px;margin-top:3px"><b>{answer-author} گفته:</b><br />{answer}</span>[/answer]
+[answer]<br />------------------------------------------<br /><b>{answer-author} گفته:</b><br />{answer}[/answer]
 <div class="clear"></div>
 </div>
 </div>
@@ -28,11 +28,11 @@
   </tr>
   <tr>
     <td>ایمیل</td>
-    <td><input name="comment[email]" type="text" value="{email}" size="30" style="direction: ltr"> (منتشر نخواهد شد)</td>
+    <td><input name="comment[email]" type="text" value="{email}" size="30" style="direction:ltr"> (منتشر نخواهد شد)</td>
   </tr>
   <tr>
     <td>آدرس وبسایت</td>
-    <td><input name="comment[url]" type="text" value="{url}" size="30" style="direction: ltr"></td>
+    <td><input name="comment[url]" type="text" value="{url}" size="30" style="direction:ltr"></td>
   </tr>[/group][editor]
   <tr>
 	<td colspan="2">{wysiwyg-textarea}</td>

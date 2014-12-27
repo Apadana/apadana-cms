@@ -13,6 +13,8 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 
 function redirect_link($link)
 {
+	($hook = get_hook('redirect_link'))? eval($hook) : null;
+
 	$link = str_replace(array('<', '>', '"', "'", './', '../', '.php'), array('', '', '', '', '@SLASH1@', '@SLASH2@', '@PHP@'), $link);
 	return url . '?a=redirect&amp;b=' . urlencode($link);
 }
@@ -30,7 +32,11 @@ function module_redirect_run()
 		warning('آدرس نامعتبر', 'متاسفانه سیستم قادر به انتقال شما به آدرس درخواستی نمی باشد!');
 	}
 	else
+	{
+		($hook = get_hook('module_redirect'))? eval($hook) : null;
+
 		redirect($_GET['b']);
+	}
 }
 
 ?>

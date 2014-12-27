@@ -221,8 +221,10 @@ function _new()
 	}
 	else
 	{
-		$pages['text'] = str_replace('[', '&#x5B;', $pages['text']);
-		$pages['text'] = str_replace('{', '&#x7B;', $pages['text']);
+		$pages['text'] = template_off($pages['text']);
+		$pages['text'] = template_off($pages['text']);
+		// $pages['text'] = str_replace('[', '&#x5B;', $pages['text']);
+		// $pages['text'] = str_replace('{', '&#x7B;', $pages['text']);
 	
 		$d->insert('pages', array(
 			'page_title' => $pages['title'],
@@ -342,8 +344,10 @@ function _edit()
 		}
 		else
 		{
-			$pages['text-edit'] = str_replace('[', '&#x5B;', $pages['text-edit']);
-			$pages['text-edit'] = str_replace('{', '&#x7B;', $pages['text-edit']);
+			$pages['text-edit'] = template_off($pages['text-edit']);
+			$pages['text-edit'] = template_off($pages['text-edit']);
+			// $pages['text-edit'] = str_replace('[', '&#x5B;', $pages['text-edit']);
+			// $pages['text-edit'] = str_replace('{', '&#x7B;', $pages['text-edit']);
 
 			$d->update('pages', array(
 				'page_title' => $pages['title'],

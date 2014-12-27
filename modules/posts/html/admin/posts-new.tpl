@@ -173,7 +173,7 @@ function post_handleKeyPress(e)
 [is-fields]
 <table cellpadding="6" cellspacing="0">[for fields]
   <tr>
-	<td style="width:90px">فیلد {name}[require]&nbsp;<font color="red">*</font>[/require]</td>
+	<td style="width:90px">فیلد {title}[require]&nbsp;<font color="red">*</font>[/require]</td>
 	<td>{input}</td>
   </tr>[/for fields]
   <tr>

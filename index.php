@@ -61,7 +61,7 @@ if (!defined('no_headers') || no_headers === false)
     header('Pragma: no-cache');
 }
 
-if (!defined('no_template') || no_template === false)
+if (!defined('no_template') || no_template !== true)
 {
 	if (admin_page === false && !is_ajax())
 	{
@@ -70,7 +70,7 @@ if (!defined('no_template') || no_template === false)
 		http_referer();
 	}
 
-	if (!defined('no_blocks') || no_blocks === false)
+	if (!defined('no_blocks') || no_blocks !== true)
 	{
 		require_once(engine_dir.'block.function.php');
 		blocks();
@@ -91,7 +91,7 @@ if (!defined('no_template') || no_template === false)
 	$tpl->assign(array(
 		'{head}' => head(),
 		'{num-queries}' => $d->num_queries,
-		'{creation-time}' => apadana_substr(microtime(true)-start_time, 0, 4),
+		'{creation-time}' => apadana_substr(microtime(true)-start_time, 0, error_reporting? 7 : 4),
 		'{memory-get-usage}' => memoryGetUsage(),
 	));
 
@@ -105,8 +105,10 @@ if (!defined('no_template') || no_template === false)
 		$tpl->load($page['theme'].'.tpl');
 	}
 
-    $tpl->tags['{content}'] = '<div id="apadana-ajax-content">'.(isset($tpl->tags['{content}'])? $tpl->tags['{content}'] : null).'</div>';
-    $tpl->display();
+	($hook = get_hook('index'))? eval($hook) : null;
+
+	$tpl->tags['{content}'] = '<div id="apadana-ajax-content">'.(isset($tpl->tags['{content}'])? $tpl->tags['{content}'] : null).'</div>';
+	$tpl->display();
 }
 
 gzip_out();

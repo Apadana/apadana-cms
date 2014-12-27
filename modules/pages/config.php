@@ -29,11 +29,12 @@ function module_pages_run()
 		set_title('صفحات');
 		set_meta('description', 'صفحات سایت', 'add');
 		set_canonical(url('pages'));
-
 		set_content('لیست صفحات اضافی', block_pages(array(
 			'total' => 500,
 			'order' => 'rand'
 		), 'list'));
+
+		($hook = get_hook('module_pages_index'))? eval($hook) : null;
 	}
 	else
 	{
@@ -47,6 +48,8 @@ function module_pages_run()
 			LIMIT 1
 		");
 		$row = $d->fetch();
+
+		($hook = get_hook('module_pages_start'))? eval($hook) : null;
 
 		if (!isset($row) || !is_array($row) || !count($row))
 		{
@@ -67,6 +70,8 @@ function module_pages_run()
 			elseif ($row['page_view'] == 5 && !group_super_admin) $row['page_text'] = message('فقط مدیران کل سایت می توانند این صفحه را ببینند!', 'error');
 			$row['page_text'] = replace_links($row['page_text']);
 			
+			($hook = get_hook('module_pages'))? eval($hook) : null;
+
 			if (!file_exists(template_dir.'page.tpl') || !is_readable(template_dir.'page.tpl'))
 			{
 				set_content($row['page_title'], $row['page_text']);
@@ -84,6 +89,9 @@ function module_pages_run()
 					'{theme}' => $row['page_theme']
 				));
 				$itpl->block('|{date format=[\'"](.+?)[\'"]}|es', 'jdate("\\1", "'.$row['page_time'].'")');
+
+				($hook = get_hook('module_pages_tpl'))? eval($hook) : null;
+
 				$tpl->assign('{content}', $itpl->get_var());
 				unset($itpl);
 			}
@@ -95,6 +103,8 @@ function module_pages_run()
 				$comments->build();
 			}
 		}
+
+		($hook = get_hook('module_pages_end'))? eval($hook) : null;
 	}
 }
 
@@ -175,6 +185,9 @@ function block_pages($op = null, $id = null, $position = null)
 		remove_cache('module-pages-block-'.$id);
 		return true;
 	}
+
+	($hook = get_hook('block_pages_start'))? eval($hook) : null;
+
 	if (!$rows = get_cache('module-pages-block-'.$id))
 	{
 		$op['total'] = !isset($op['total']) || $op['total']<=0? 10 : intval($op['total']);
@@ -206,6 +219,9 @@ function block_pages($op = null, $id = null, $position = null)
 	{
 		$html = 'هیچ صفحه ای وجود ندارد!';
 	}
+
+	($hook = get_hook('block_pages_end'))? eval($hook) : null;
+
 	return $html;
 }
 

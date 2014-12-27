@@ -15,7 +15,7 @@ function module_posts_info()
 {
 	return array(
 		'name' => 'posts',
-		'version' => '1.0',
+		'version' => '1.0.1',
 		'creationDate' => '2012-07-21 18:00:03',
 		'description' => 'ماژول پست های آپادانا.',
 		'author' => 'iman moodi',
@@ -40,7 +40,7 @@ function module_posts_admin_comments($action, $data = array())
 		break;
 		
 		case 'url';
-		$query = "SELECT post_name, post_id FROM `#__posts` WHERE post_approve='1' AND post_date <= '".time_now."' AND post_id='".intval($data['link'])."' LIMIT 1";
+		$query = "SELECT post_name, post_id FROM `#__posts` WHERE post_id='".intval($data['link'])."' LIMIT 1";
 		$post = $d->get_row($query);
 		return url('posts/'.($options['rewrite'] == 1? $post[0]['post_name'] : $post[0]['post_id']));
 		break;

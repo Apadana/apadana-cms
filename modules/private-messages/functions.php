@@ -44,6 +44,8 @@ function _inbox()
 	$file = get_tpl(root_dir.'modules/private-messages/html/||inbox.tpl', template_dir.'||private-messages/inbox.tpl');
 	$itpl = new template($file[1], $file[0]);
 
+	($hook = get_hook('private_messages_inbox_start'))? eval($hook) : null;
+
 	if (is_array($private_messages) && count($private_messages))
 	{
 		foreach($private_messages as $msg)
@@ -73,6 +75,8 @@ function _inbox()
 			'[/not-list]' => null,
 		));
 	}
+
+	($hook = get_hook('private_messages_inbox_end'))? eval($hook) : null;
 
 	if (!isset($file[2])) set_content('پیام های دریافتی', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 	$pagination->build(url('private-messages/{page}'));
@@ -112,6 +116,8 @@ function _outbox()
 	$file = get_tpl(root_dir.'modules/private-messages/html/||outbox.tpl', template_dir.'||private-messages/outbox.tpl');
 	$itpl = new template($file[1], $file[0]);
 
+	($hook = get_hook('private_messages_outbox_start'))? eval($hook) : null;
+
 	if (is_array($private_messages) && count($private_messages))
 	{
 		foreach($private_messages as $msg)
@@ -141,6 +147,8 @@ function _outbox()
 			'[/not-list]' => null,
 		));
 	}
+
+	($hook = get_hook('private_messages_outbox_end'))? eval($hook) : null;
 
 	if (!isset($file[2])) set_content('پیام های ارسالی', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 	$pagination->build(url('private-messages/outbox/{page}'));
@@ -181,6 +189,8 @@ function _read()
 	$file = get_tpl(root_dir.'modules/private-messages/html/||read.tpl', template_dir.'||private-messages/read.tpl');
 	$itpl = new template($file[1], $file[0]);
 
+	($hook = get_hook('private_messages_read_start'))? eval($hook) : null;
+
 	$itpl->assign(array(
 		'{subject}' => $private_messages['msg_subject'],
 		'{sender}' => $private_messages['msg_sender'],
@@ -203,6 +213,8 @@ function _read()
 		$itpl->block('#\\[reply\\](.*?)\\[/reply\\]#s', '');
 	}
 	
+	($hook = get_hook('private_messages_read_end'))? eval($hook) : null;
+
 	if (!isset($file[2])) set_content('خواندن پیام', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 	unset($itpl, $private_messages, $bbcode, $query);
 }
@@ -215,6 +227,8 @@ function _new()
 	global $d, $tpl, $options;
 	$msg = $success = false;
 	$new = get_param($_POST, 'new', null, 1);
+
+	($hook = get_hook('private_messages_new_start'))? eval($hook) : null;
 
 	if (is_array($new) && count($new) && isset($new['subject']) && isset($new['receiver']) && isset($new['text']))
 	{
@@ -244,8 +258,11 @@ function _new()
 			$msg .= 'متن پیام را ننوشته اید!';
 		}
 
+		($hook = get_hook('private_messages_new_validate'))? eval($hook) : null;
+
 		if (empty($msg))
 		{
+			#$new['text'] = template_off($new['text']);
 			$new['text'] = str_replace('{', '&#x7B;', $new['text']);
 
 			$arr = array(
@@ -255,6 +272,9 @@ function _new()
 				'msg_text' => $new['text'],
 				'msg_date' => time(),
 			);
+
+			($hook = get_hook('private_messages_new_query'))? eval($hook) : null;
+
 			$id = $d->insert('private_messages', $arr);
 			if ($d->affectedRows())
 			{
@@ -335,12 +355,16 @@ function _new()
 			$itpl->block('#\\[message\\](.*?)\\[/message\\]#s', '');
 		}
 		
+		($hook = get_hook('private_messages_new_tpl'))? eval($hook) : null;
+
 		$html = $itpl->get_var();
 	}
 	else
 	{
 		$html = $msg;
 	}
+
+	($hook = get_hook('private_messages_new_end'))? eval($hook) : null;
 
 	if (!isset($file[2])) set_content('ارسال پیام جدید', $html); else $tpl->assign('{content}', $html);	
 	unset($html, $itpl, $private_messages, $query);
@@ -362,6 +386,8 @@ function _remove()
 
 	if ($private_messages['msg_receiver'] == member_name || ($private_messages['msg_sender'] == member_name && $private_messages['msg_read'] == 0))
 	{
+		($hook = get_hook('private_messages_remove'))? eval($hook) : null;
+
 		$where = sprintf("`msg_id`='%d' AND (`msg_receiver`='%s' OR `msg_sender`='%s')", $id, member_name, member_name);
 		$d->delete('private_messages', $where, 1);
 		redirect(url('private-messages'));
@@ -392,6 +418,8 @@ function _menu()
 	{
 		$itpl->block('#\\[unread-messages\\](.*?)\\[/unread-messages\\]#s', '');
 	}
+
+	($hook = get_hook('private_messages_menu'))? eval($hook) : null;
 
 	if (!isset($file[2])) set_content('دسترسی سریع', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 	unset($itpl, $num);

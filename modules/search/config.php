@@ -24,6 +24,9 @@ function module_search_run()
 			'{site-mail}' => $options['mail'],
 			'{year}' => date('Y'),
 		));
+
+		($hook = get_hook('search_opensearch'))? eval($hook) : null;
+
 		$itpl->display();
 		exit;
 	}
@@ -64,6 +67,8 @@ function module_search_run()
 	$search['all-modules'] = (int) get_param($_GET, 'all-modules', 0);
 	$search['all-modules'] = !isset($_GET['b']) || $search['all-modules']>=1? 1 : 0;
 	
+	($hook = get_hook('search_start'))? eval($hook) : null;
+
 	if ($b == 'result')
 	{
 		$search['key'] = md5($search['story'].$search['type'].$search['author'].$search['author-full'].($search['all-modules']==1? null : implode(',', $search['modules'])));
@@ -97,6 +102,7 @@ function module_search_run()
 		}
 	}
 
+	set_title('search');
 	set_title('جستجو');
 	set_canonical(url('search'));
 
@@ -108,6 +114,8 @@ function module_search_run()
 		'pages' => 'صفحات',
 	);
 	
+	($hook = get_hook('search_tpl_start'))? eval($hook) : null;
+
 	foreach ($modules as $mod)
 	{
 		if (is_module($mod['module_name']) && function_exists('module_'.str_replace('-', '_', $mod['module_name']).'_search'))
@@ -269,6 +277,9 @@ function module_search_run()
 		'{author}' => $search['author'],
 		'{result-in-page}' => $search['result-in-page'],
 	));
+
+	($hook = get_hook('search_tpl_end'))? eval($hook) : null;
+
 	if (!isset($file[2])) set_content('جستجو', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 	
 	if (isset($result) && is_array($result) && count($result))
@@ -278,7 +289,11 @@ function module_search_run()
 			$row['search_content'] = $search['view-type']==0? $row['search_title'] : $row['search_content'];
 			$row['search_author'] = !empty($row['search_author'])? 'نویسنده: '.$row['search_author'] : null;
 			$row['search_date'] = !empty($row['search_date'])? '، تاریخ: '.jdate('j/m/Y g:i a', $row['search_date']) : null;
-			set_content('<a href="'.$row['search_url'].'" target="_blank">'.$row['search_title'].'</a>', $row['search_content'].'<br><font color="green" size="1">'.$row['search_author'].$row['search_date'].'</font>');
+			$html = $row['search_content'].'<br><font color="green" size="1">'.$row['search_author'].$row['search_date'].'</font>';
+
+			($hook = get_hook('module_search_run_result'))? eval($hook) : null;
+
+			set_content('<a href="'.$row['search_url'].'" target="_blank">'.$row['search_title'].'</a>', $html);
 		}
 		if (is_array($search['modules']))
 		{
@@ -296,6 +311,8 @@ function module_search_run()
 		set_content('جستجو', message('متاسفانه جستجو نتیجه ای نداشت!', 'error'));
 	}
 	
+	($hook = get_hook('search_end'))? eval($hook) : null;
+
 	unset($result, $pagination, $search, $itpl);
 }
 
@@ -306,8 +323,10 @@ function module_search_sitemap(&$sitemap)
 
 function block_search($op = null, $id = null, $position= null)
 {
-	if ($op=='remove-cache') return true;
 	global $options;
+
+	if ($op=='remove-cache') return true;
+
 	$op['size'] = !isset($op['size']) || intval($op['size'])<=0? 150 : intval($op['size']);
 	$html  = '<center>';
 	$html .= '<form action="'.url('search/result').'" method="get" id="apadana-block-search">';
@@ -316,6 +335,9 @@ function block_search($op = null, $id = null, $position= null)
 	$html .= '<input type="submit" value="جستجو" id="search-submit" />';
 	$html .= '</form>';
 	$html .= '</center>';
+
+	($hook = get_hook('block_search'))? eval($hook) : null;
+
 	return $html;
 }
 

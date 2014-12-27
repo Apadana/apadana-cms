@@ -300,6 +300,10 @@ function _new()
 					}
 				}
 			}
+			else
+			{
+				$block['content'] = template_off($block['content']);
+			}
 			
 			if (!empty($block['access']))
 			{
@@ -476,6 +480,10 @@ function _edit()
 					}
 				}
 				call_user_func('block_'.$block['function'], 'remove-cache', $id, $block['position']);
+			}
+			else
+			{
+				$block['content'] = template_off($block['content']);
 			}
 
 			if (!empty($block['access']))

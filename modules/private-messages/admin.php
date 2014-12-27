@@ -15,7 +15,7 @@ function module_private_messages_info()
 {
 	return array(
 		'name' => 'private-messages',
-		'version' => '1.0',
+		'version' => '1.0.1',
 		'creationDate' => '2013-04-12 03:25:00',
 		'description' => 'ماژول پیام خصوصی آپادانا',
 		'author' => 'iman moodi',
@@ -44,7 +44,7 @@ function module_private_messages_install()
 	");
 	$d->insert('modules', array(
 		'module_name' => 'private-messages',
-		'module_version' => 1.0,
+		'module_version' => '1.0.1',
 		'module_status' => 0,
 	));
 	echo message('ماژول پیام خصوصی با موفقیت نصب شد.', 'success');

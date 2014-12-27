@@ -11,6 +11,53 @@
 
 defined('security') or exit('Direct Access to this location is not allowed.');
 
+function template_off($string, $simple = false)
+{
+	if (empty($string))
+	{
+		return $string;
+	}
+	if ($simple)
+	{
+		$string = str_replace('[', '&#x5B;', $string);
+		$string = str_replace('{', '&#x7B;', $string);
+	}
+	else
+	{
+		$array = array();
+		if ($number = preg_match_all('/<(script|style)(.*)>(.*)<\/\\1>/sUi', $string, $matches))
+		{
+			for ( $i = 0; $i < $number; $i++ )
+			{
+				if (!empty($matches[0][$i]))
+				{
+					$key = rand(11111111, 99999999).generate_password(20, null).rand(11111111, 99999999);
+					$array[$key] = $matches[0][$i];
+					$string = str_replace($matches[0][$i], '<~#code:'.$key.':code#~>', $string);
+				}
+			}
+		}
+		if (strpos($string, '[') !== FALSE)
+		{
+			$string = preg_replace('#\\[([a-zA-Z0-9-_]+)\\](.*?)\\[/\\1\\]#s', '&#x5B;\\1]\\2&#x5B;/\\1]', $string);
+		}
+		if (strpos($string, '[') !== FALSE)
+		{
+			$string = preg_replace('#\\[/([a-zA-Z0-9-_]+)\\]#s', '&#x5B;/\\1]', $string);
+		}
+		if (strpos($string, '{') !== FALSE)
+		{
+			$string = preg_replace('#\\{([a-zA-Z0-9-_]+)\\}#s', '&#x7B;\\1}', $string);
+		}
+		foreach ($array as $key => $code)
+		{
+			$string = str_replace('<~#code:'.$key.':code#~>', $code, $string);
+		}
+		unset($array, $key, $code, $matches, $number);
+	}
+	return $string;	
+}
+
 function template_exists($theme)
 {
 	if (!is_alphabet($theme) || !is_dir(root_dir.'templates') || !is_readable(root_dir.'templates'))
@@ -97,7 +144,7 @@ function head()
 	$Header .= '<meta name="revisit-after" content="1 days" />'.n;
 	$Header .= '<meta name="rating" content="general" />'.n;
 
-    if (($_GET['a'] == $options['default-module'] && (!isset($_SERVER['QUERY_STRING']) || empty($_SERVER['QUERY_STRING']))) || (!isset($_SERVER['QUERY_STRING']) || empty($_SERVER['QUERY_STRING'])))
+    if (($_GET['a'] == $options['default-module'] && (!isset($_GET) || empty($_GET))) || (!isset($_GET) || empty($_GET)))
 	{
 		$Header .= '<link rel="canonical" href="'.url.'" />'. n;
 	}

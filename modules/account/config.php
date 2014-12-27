@@ -38,6 +38,8 @@ function block_account($op = null, $id = null, $position= null)
 	$file = get_tpl(root_dir.'modules/account/html/||block.tpl', template_dir.'||account/block.tpl');
 	$itpl = new template($file[1], $file[0]);
 	
+	($hook = get_hook('block_account_start'))? eval($hook) : null;
+
 	if (member)
 	{
 		$member = member::is('info');
@@ -141,6 +143,8 @@ function block_account($op = null, $id = null, $position= null)
 		$itpl->add_for('online', $array);
 	};
 
+	($hook = get_hook('block_account_end'))? eval($hook) : null;
+
 	if (isset($geoip))
 	{
 		geoip_close($geoip);
@@ -160,6 +164,8 @@ function block_onlines($op = null, $id = null, $position= null)
 
 	$file = get_tpl(root_dir.'modules/account/html/||block-onlines.tpl', template_dir.'||account/block-onlines.tpl');
 	$itpl = new template($file[1], $file[0]);
+
+	($hook = get_hook('block_onlines_start'))? eval($hook) : null;
 
 	if (file_exists(engine_dir.'GeoIP/geoip.php'))
 	{
@@ -219,6 +225,8 @@ function block_onlines($op = null, $id = null, $position= null)
 		$itpl->add_for('online', $array);
 	};
 
+	($hook = get_hook('block_onlines_end'))? eval($hook) : null;
+
 	if (isset($geoip))
 	{
 		geoip_close($geoip);
@@ -240,6 +248,8 @@ function block_login($op = null, $id = null, $position= null)
 	$file = get_tpl(root_dir.'modules/account/html/||block-login.tpl', template_dir.'||account/block-login.tpl');
 	$itpl = new template($file[1], $file[0]);
 	
+	($hook = get_hook('block_login_start'))? eval($hook) : null;
+
 	if (member)
 	{
 		$member = member::is('info');
@@ -276,6 +286,8 @@ function block_login($op = null, $id = null, $position= null)
 		));
 		$itpl->block('#\\[member\\](.*?)\\[/member\\]#s', '');
 	}
+
+	($hook = get_hook('block_login_end'))? eval($hook) : null;
 
 	unset($file, $messages);
 	return $itpl->get_var();	

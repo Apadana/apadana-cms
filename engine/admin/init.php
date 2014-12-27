@@ -37,6 +37,8 @@ if (group_admin == 1 && isset($_GET['module']))
 	$_GET['section'] = 'module';
 }
 
+($hook = get_hook('admin_init'))? eval($hook) : null;
+
 if (isset($_GET['section']) && !empty($_GET['section']))
 {
 	if (is_alphabet($_GET['section']) && file_exists(engine_dir.'admin/modules/'.$_GET['section'].'.php') && is_readable(engine_dir.'admin/modules/'.$_GET['section'].'.php'))

@@ -27,10 +27,14 @@ function clean_url($url)
     return $url;
 }
 
-if(!isset($_SERVER['HTTP_REFERER']) || clean_url($_SERVER['HTTP_REFERER']) != clean_url($_SERVER['HTTP_HOST']))
-	exit('Nice TRY!');
-
 require_once(engine_dir.'config.inc.php');
+error_reporting(error_reporting? E_ALL : 0);
+
+if (error_reporting !== true && (!isset($_SERVER['HTTP_REFERER']) || clean_url($_SERVER['HTTP_REFERER']) != clean_url($_SERVER['HTTP_HOST'])))
+{
+	exit('Nice TRY!');
+}
+
 mt_srand((double)microtime()*1000000);
 $code = mt_rand(10000, 999999);
 $code = substr($code, 0, 4);
@@ -62,7 +66,7 @@ imagecopymerge($bgImg, $nmImg3,30,$ys3,0,0,15,20,80);
 imagecopymerge($bgImg, $nmImg4,45,$ys4,0,0,15,20,80);
 
 header('Content-type: image/jpg');
-imagejpeg($bgImg, '', 100);
+imagejpeg($bgImg);
 imagedestroy($bgImg);
 imagedestroy($nmImg1);
 imagedestroy($nmImg2);

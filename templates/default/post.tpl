@@ -8,7 +8,7 @@
 <div class="clear"></div>
 <font color="#777777">
 نویسنده: <a href="{author-url}">{author}</a>،
-ارسال شده در {date format="l j F Y ساعت h:i A"}،
+ارسال شده در {date format="l j F Y ساعت g:i A"}،
 {hits} بار مشاهده شده،
 [comment]{comment-count} نظر، [/comment]
 [categories]موضوعات: {categories} ،[/categories]

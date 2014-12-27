@@ -54,6 +54,8 @@ function module_error_run($type = null, $exit = false)
 		$message = 'اطلاعات درخواستی شما در سایت یافت نشد!'; // A file doesn't exist at that address
 	}
 
+	($hook = get_hook('module_error'))? eval($hook) : null;
+
 	set_content('خطا', message($message, 'error'));
 
 	if($exit)

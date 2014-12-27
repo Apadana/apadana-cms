@@ -25,6 +25,8 @@ function http_referer()
 
 		if (isset($parse['host']) && !empty($referer) && strtolower($parse['host']) != domain && strtolower($parse['host']) != strtolower($_SERVER['HTTP_HOST']))
 		{
+			($hook = get_hook('http_referer'))? eval($hook) : null;
+
 			$d->insert('referer', array(
 				'ref_url' => $referer,
 				'ref_domain' => $parse['host'],

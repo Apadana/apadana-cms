@@ -30,6 +30,8 @@ function _default()
 		$html = message('هیچ نظرسنجی در سیستم یافت نشد!', 'error');
 	}
 
+	($hook = get_hook('voting_default'))? eval($hook) : null;
+
 	set_title('نظرسنجی ها');
 	set_meta('description', 'نظرسنجی ها', 'add');
 	set_canonical(url('voting'));
@@ -50,6 +52,8 @@ function _result()
 		$row = $d->fetch();
 		$msg = null;
 		
+		($hook = get_hook('voting_result_start'))? eval($hook) : null;
+
 		$ip = explode(',', $row['vote_ip']);
 		$members = explode(',', $row['vote_members']);
 		if (isset($_COOKIE['vote-'.$row['vote_id']]) || isset($_SESSION['vote-'.$row['vote_id']]) || in_array(get_ip(), $ip) || (member && in_array(member_name, $members)))
@@ -73,12 +77,15 @@ function _result()
 		{
 			exit($html);
 		}
+		else
 		{
 			set_title('نظرسنجی ها');
 			set_meta('description', 'نتایج نظرسنجی - '.$row['vote_title'], 'add');
 			set_canonical(url('voting/result/'.$row['vote_id']));
 			set_content('نتایج نظرسنجی', $html);
 		}
+
+		($hook = get_hook('voting_result_end'))? eval($hook) : null;
 	}
 	else
 	{
@@ -102,6 +109,8 @@ function _save()
 		$row = $d->fetch();
 		$ip = explode(',', $row['vote_ip']);
 		$members = explode(',', $row['vote_members']);
+
+		($hook = get_hook('voting_save_start'))? eval($hook) : null;
 
 		if (isset($_COOKIE['vote-'.$row['vote_id']]) || isset($_SESSION['vote-'.$row['vote_id']]) || in_array(get_ip(), $ip) || (member && in_array(member_name, $members)))
 		{
@@ -165,10 +174,14 @@ function _save()
 					$_SESSION['vote-'.$row['vote_id']] = true;
 					$form = false;
 					$showPercent = true;
+
+					($hook = get_hook('voting_save_success'))? eval($hook) : null;
 				}
 			}
 		}
 		
+		($hook = get_hook('voting_save_end'))? eval($hook) : null;
+
 		unset($ip, $members);
 		$html = voting_show($row, $form, $showPercent, $message, $key);
 	}

@@ -33,6 +33,8 @@ function module_sitemap_run()
 	{
 		$sitemap->addItem(url, time(), 'always', '1.0');
 
+		($hook = get_hook('sitemap'))? eval($hook) : null;
+
 		foreach($modules as $mod)
 		{
 			if(is_module($mod['module_name']) && function_exists('module_'.str_replace('-', '_', $mod['module_name']).'_sitemap'))

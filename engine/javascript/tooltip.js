@@ -1,11 +1,8 @@
-var qTipTag = 'span,a,label,img'; //Which tag do you want to qTip-ize? Keep it lowercase!
-var qTipX = 0; //This is qTip's X offset
-var qTipY = 15; //This is qTip's Y offset
 //There's No need to edit anything below this line
 tooltip = {
   name : 'apadana-tooltip',
-  offsetX : qTipX,
-  offsetY : qTipY,
+  offsetX : 0,
+  offsetY : 15,
   tip : null
 }
 tooltip.init = function() {
@@ -20,25 +17,6 @@ tooltip.init = function() {
 	if (!document.getElementById) return;
 	this.tip = document.getElementById (this.name);
 	if (this.tip) document.onmousemove = function (evt) {tooltip.move (evt)};
-	var a, sTitle, elements;
-	var elementList = qTipTag.split(',');
-	for(var j = 0; j < elementList.length; j++) {
-		elements = document.getElementsByTagName(elementList[j]);
-		if(elements) {
-			for (var i = 0; i < elements.length; i ++) {
-				a = elements[i];
-				sTitle = a.getAttribute('title');
-				if(sTitle) {
-					a.setAttribute('tiptitle', sTitle);
-					a.removeAttribute('title');
-					a.removeAttribute('alt');
-					a.onmouseover = function() {tooltip.show(this.getAttribute('tiptitle'))};
-					a.onmouseout = function() {tooltip.hide()};
-					a.onclick = function() {tooltip.hide()};
-				}
-			}
-		}
-	}
 }
 tooltip.move = function(evt) {
 	var x=0, y=0;
@@ -56,6 +34,9 @@ tooltip.move = function(evt) {
 	this.tip.style.top = (y + this.offsetY) + 'px';
 }
 tooltip.show = function(text) {
+	if (!this.tip) {
+		tooltip.init();
+	};
 	if (!this.tip) return;
 	this.tip.innerHTML = text;
 	this.tip.style.display = 'block';
@@ -65,6 +46,6 @@ tooltip.hide = function() {
 	this.tip.innerHTML = '';
 	this.tip.style.display = 'none';
 }
-// window.onload = function () {
+// window.onload = function() {
 	// tooltip.init();
 // }

@@ -20,6 +20,8 @@ function send_mail($toname, $toemail, $fromname, $fromemail, $subject, $message,
 
 	$mail = new PHPMailer();
 
+	($hook = get_hook('send_mail_start'))? eval($hook) : null;
+
 	if (empty($options['smtp-host']) || empty($options['smtp-username']) || empty($options['smtp-password']))
 	{
 		$mail->IsMAIL();
@@ -98,6 +100,8 @@ function send_mail($toname, $toemail, $fromname, $fromemail, $subject, $message,
 	$mail->Subject = $subject;
 	$mail->Body = $message;
 	
+	($hook = get_hook('send_mail_end'))? eval($hook) : null;
+
 	if (!$mail->Send())
 	{
 		#echo $mail->ErrorInfo;

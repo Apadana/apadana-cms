@@ -389,6 +389,8 @@ function _pdf()
 		$content .= 'نویسنده: '.$author.'، ';
 		$content .= 'تاریخ ارسال: '.jdate('l j F Y ساعت g:i A', $post['post_date']).' ';
 
+		($hook = get_hook('posts_pdf'))? eval($hook) : null;
+
 		// set document information
 		$pdf->SetHeaderData('', '', $options['title'], $options['slogan']);
 		$pdf->SetCreator(PDF_CREATOR);
@@ -440,6 +442,8 @@ function _print()
 			$post['post_more'] = replace_links($post['post_more']);
 		}
 
+		($hook = get_hook('posts_print'))? eval($hook) : null;
+
 		echo '<html dir="rtl">'."\n";
 		echo '<head>'."\n";
 		echo head();
@@ -474,6 +478,8 @@ function _print()
 function _theme($post, $single = false)
 {
 	global $tpl, $options;
+
+	($hook = get_hook('posts_theme_start'))? eval($hook) : null;
 
 	if ($single == false)
 	{
@@ -689,6 +695,9 @@ function _theme($post, $single = false)
 
 	$itpl->assign($array);
 	$itpl->block('|{date format=[\'"](.+?)[\'"]}|es', 'jdate("\\1", "'.$post['post_date'].'")');
+
+	($hook = get_hook('posts_theme_end'))? eval($hook) : null;
+
 	$tpl->assign('{content}', $itpl->get_var(), 'add');
 
 	unset($categories, $tags, $post, $array, $itpl, $posts_fields);

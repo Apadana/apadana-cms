@@ -22,11 +22,13 @@ function module_rules_run()
 		set_cache('options-rules', $options['rules'], false);
 	}
 
+	set_theme('rules');
 	set_title('قوانین');
 	set_meta('description', 'قوانین سایت', 'add');
 	set_canonical(url('rules'));
-
 	set_content('قوانین سایت', empty($options['rules'])? message('فعلا قانونی نیست!', 'info') : $options['rules']);
+
+	($hook = get_hook('module_rules'))? eval($hook) : null;
 }
 
 function module_licence_sitemap(&$sitemap)

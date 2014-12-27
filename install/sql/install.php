@@ -449,15 +449,15 @@ $d->query("INSERT INTO `#__modules` VALUES('contact-us', '1.0', '2');");
 $d->query("INSERT INTO `#__modules` VALUES('counter', '1.0', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('error', '1.0', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('feed', '1.0', '2');");
-$d->query("INSERT INTO `#__modules` VALUES('files', '1.0', '2');");
-$d->query("INSERT INTO `#__modules` VALUES('m', '1.0', '1');");
-$d->query("INSERT INTO `#__modules` VALUES('pages', '1.0', '1');");
-$d->query("INSERT INTO `#__modules` VALUES('posts', '1.0', '1');");
-$d->query("INSERT INTO `#__modules` VALUES('private-messages', '1.0', '1');");
+$d->query("INSERT INTO `#__modules` VALUES('files', '1.0.1', '2');");
+$d->query("INSERT INTO `#__modules` VALUES('m', '1.0.1', '1');");
+$d->query("INSERT INTO `#__modules` VALUES('pages', '1.0.1', '1');");
+$d->query("INSERT INTO `#__modules` VALUES('posts', '1.0.1', '1');");
+$d->query("INSERT INTO `#__modules` VALUES('private-messages', '1.0.1', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('redirect', '1.0', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('rules', '1.0', '2');");
 $d->query("INSERT INTO `#__modules` VALUES('search', '1.0', '1');");
-$d->query("INSERT INTO `#__modules` VALUES('shoutbox', '1.0', '1');");
+$d->query("INSERT INTO `#__modules` VALUES('shoutbox', '1.0.1', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('simple-links', '1.0', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('sitemap', '1.0', '2');");
 $d->query("INSERT INTO `#__modules` VALUES('voting', '1.0', '1');");
@@ -510,7 +510,7 @@ $d->query("INSERT INTO `#__options` VALUES('smtp-username', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-password', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('url-correction', '1', '1');");
 $d->query("INSERT INTO `#__options` VALUES('antiflood', '0', '1');");
-$d->query("INSERT INTO `#__options` VALUES('version', '1.0', '1');");
+$d->query("INSERT INTO `#__options` VALUES('version', '1.0.1', '1');");
 
 
 # --------------------------------------------------------

@@ -29,6 +29,8 @@ function module_simple_links_run()
 	set_meta('description', 'لینکستان', 'add');
 	set_canonical(url('simple-links'));
 	set_content('لینکستان', block_simple_links());
+
+	($hook = get_hook('simple_links'))? eval($hook) : null;
 }
 
 function module_simple_links_sitemap(&$sitemap)
@@ -56,6 +58,9 @@ function block_simple_links($op = null, $id = null, $position = null)
 			$content .= '<li><a href="'.$row['link_href'].'"'.$row['link_target'].$row['link_description'].$row['link_direct_link'].'>'.$row['link_title'].'</a></li>'.n;
 		}
 		$content .= '</ul>';
+
+		($hook = get_hook('block_simple_links'))? eval($hook) : null;
+
 		unset($links, $row);
 	}
 	else

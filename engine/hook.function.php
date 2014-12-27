@@ -11,6 +11,23 @@
 
 defined('security') or exit('Direct Access to this location is not allowed.');
 
-define('version', '1.0.1');
+function add_hook($id, $php)
+{
+	global $hooks;
+
+	if (!isset($hooks[$id]) || !is_array($hooks[$id]))
+	{
+		$hooks[$id] = array();
+	}
+
+	$hooks[$id][] = $php;
+}
+
+function get_hook($id)
+{
+	global $hooks;
+
+	return (!defined('disable_hooks') || disable_hooks !== true) && isset($hooks[$id])? implode("\n", $hooks[$id]) : false;
+}
 
 ?>

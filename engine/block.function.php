@@ -31,6 +31,8 @@ function blocks()
 		}
 	}
 
+	($hook = get_hook('blocks_start'))? eval($hook) : null;
+
 	$positions = template_info($options['theme']);
 	$positions = explode(',', $positions['positions']);
 
@@ -198,6 +200,8 @@ function blocks()
 			$tpl->block('#\\[not-block-'.$position.'\\](.*?)\\[/not-block-'.$position.'\\]#s', '');
 		}
 	}
+
+	($hook = get_hook('blocks_end'))? eval($hook) : null;
 
 	unset($position, $blocks, $block, $page, $p, $positions, $test, $parse, $current);
 }
