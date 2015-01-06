@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -99,6 +99,22 @@ foreach ($admin as $row)
 	));
 	$itpl->block('#\\[counter\\](.*?)\\[/counter\\]#s', '');
 
+if(isset($options['first_install']) && $options['first_install'] == 1)
+{
+	$itpl->assign(array(
+		'[intro]' => null,
+		'[/intro]' => null
+	));
+	unset($options['first_install']);
+	//remove_cache('options');
+
+	//$d->delete('options' , " `option_name` = 'first_install' " , 1);
+}
+else
+{
+	$itpl->block('#\\[intro\\](.*?)\\[/intro\\]#s', '');
+}
+
 
 $t = strtotime(date('Y-m-d'));
 $t2 = strtotime(date('Y-m-d').' -1 days');
@@ -118,7 +134,7 @@ $result .= "(SELECT option_value FROM `#__options` WHERE `option_name`='admin-no
 
 $result = $d->query($result);
 $countData = $d->fetch($result);
-$d->freeResult($result);
+$d->free_result($result);
 
 $array = array();
 $array['{membersCount}'] = (int) $countData['membersCount'];
@@ -130,7 +146,7 @@ $array['{postsCount}'] = (int) $countData['postsCount'];
 $array['{commentsCount}'] = (int) $countData['commentsCount'];
 $array['{commentsCount2}'] = (int) $countData['commentsCount2'];
 $array['{version}'] = $options['version'];
-$array['{error-reporting}'] = error_reporting? '<font color=red><b>فعال</b></font>' : '<font color=green><b>غیرفعال</b></font>';
+$array['{error-reporting}'] = debug_system ? '<font color=red><b>فعال</b></font>' : '<font color=green><b>غیرفعال</b></font>';
 $array['{offline}'] = $options['offline']==0? '<font color=green><b>فعال</b></font>' : '<font color=red><b>غیرفعال</b></font>';
 $array['{rewrite}'] = $options['rewrite']==1? '<font color=green><b>فعال</b></font>' : '<font color=red><b>غیرفعال</b></font>';
 $array['{default-module}'] = $options['default-module'];

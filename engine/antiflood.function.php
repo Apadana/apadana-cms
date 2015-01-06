@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -27,7 +27,7 @@ function antiflood()
 		'flood_time' => time_now
 	));
 
-	$numrow = $d->numRows("SELECT `flood_time` FROM `#__antiflood` WHERE `flood_ip`='".$d->escapeString($ip)."'", true);
+	$numrow = $d->num_rows("SELECT `flood_time` FROM `#__antiflood` WHERE `flood_ip`='".$d->escape_string($ip)."'", true);
 	if ($numrow > 7)
 	{
 		Header('HTTP/1.0 403 Forbidden');

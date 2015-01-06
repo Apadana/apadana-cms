@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author:Apadana Development Team
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -16,25 +16,58 @@
 define('security', true);
 define('root_dir', dirname(dirname(__FILE__)).'/');
 define('engine_dir', root_dir.'/engine/');
-require_once('common.php');
-require_once('template/template.php');
+define('install_dir', root_dir.'/install/');
+
+define('member', 0);
+define('member_id', 0);
+define('member_name', 'GUEST');
+define('member_group', 5);
+$member = 0;
+
+define('group_admin', 0);
+define('group_super_admin', 0);
+define('group_rights', null);
+
+require_once(engine_dir.'functions.php');
+require_once(engine_dir.'filter.function.php');
+require_once(engine_dir.'template.class.php');
+
+$tpl = new template( 'init.tpl' , install_dir.'template/',false );
+
 
 if (!file_exists('apadana.lock'))
 {
-	print_header();
-	print_info('نصب یا ارتقاع!', 'در صورتی که نگارش قدیمی را نصب کرده اید روی گزینه به روزرسانی کلیک کنید در غیر این صورت بر روی نصب کلیک کنید تا نصب آپادانا آغاز شود.');
-	echo '<center>'."\n";
-	echo '<button id="install" onClick="apadana.location(\'install.php\')">نصب آپادانا</button>'."\n";
-	echo '<button id="upgrade" onClick="apadana.location(\'upgrade.php\')">بروز رسانی</button>'."\n";
-	echo '</center>'."\n";
-	print_footer();
+
+	if(isset($_GET['section']) && in_array($_GET['section'], array( 'install' , 'upgrade' ))){
+		require_once ($_GET['section'].".php");
+	}
+	else
+	{
+		$itpl = new template( 'index.tpl' , install_dir.'template/',false );
+
+		$itpl->assign(array(
+			'[open]' => null ,
+			'[/open]' => null
+			));
+		$itpl->block('#\\[lock\\](.*?)\\[/lock\\]#s', '');
+	}
 }
 else
 {
-	print_header();
-	print_info('خطا', '<font color=red>آپادانا قبلا نصب شده است!<br />برای نصب مجدد فایل <b>apadana.lock</b> را از پوشه <b>install</b> حذف کنید.</font>');
-	echo '<center><a href="http://www.apadanacms.ir" target="_blank"><b>مشاهده سایت رسمی آپادانا ایرانی!</b></a></center>'."\n";
-	print_footer();
+	$itpl = new template( 'index.tpl' , install_dir.'template/',false );
+
+	$itpl->assign(array(
+		'[lock]' => null ,
+		'[/lock]' => null
+		));
+	$itpl->block('#\\[open\\](.*?)\\[/open\\]#s', '');
 }
 
+$tpl->assign('{title}', isset($title) && $title != null ? $title : null);
+
+$tpl->assign('{content}', $itpl->get_var());
+
+unset($itpl);
+
+$tpl->display();
 ?>

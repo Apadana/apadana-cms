@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author:Apadana Development Team
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -64,10 +64,10 @@ switch ($_GET['action'])
 	$old_password = strip_tags($old_password);
 	$old_password = trim($old_password);
 	$old_password = str_replace('\\', null, $old_password);
-	$old_password = md5('pars-'.sha1($d->escapeString($old_password)).'-nuke');
+	$old_password = md5('pars-'.sha1($d->escape_string($old_password)).'-nuke');
 
 	$password = str_replace('\\', null, trim($_POST['password']));
-	$password = md5(sha1($d->escapeString($password)));
+	$password = md5(sha1($d->escape_string($password)));
 
 	if ($data['member_password'] == $old_password || $data['member_password'] == $password)
 	{

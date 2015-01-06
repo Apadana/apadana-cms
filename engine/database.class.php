@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
+ * @author: Iman Moodi (Iman92)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCMS.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -13,52 +13,81 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 
 class database
 {
-    public $connect = null;
-    public $query_id = null;
-    public $num_queries = 0;
-    public $query_time = 0;
-    public $error_reporting = false;
-    public $prefix = null;
-    public $result = null;
-    public $charset = null;
-    public $save_queries = false;
-    public $queries = array();
+	private $mysqli = false;
+	public $connect = null;
+	public $num_queries = 0;
+	public $query_time = 0;
+	public $debug = false;
+	public $prefix = null;
+	public $result = null;
+	public $charset = null;
+	public $save_queries = false;
+	public $queries = array();
 
 	public function connect($db) 
-	{
+	{		
+		$this->mysqli = extension_loaded('mysqli')? true : false;
+		$this->debug = debug_system;
 		$this->save_queries = defined('database_save_queries') && database_save_queries? true : false;
-		
-		if (error_reporting) 
-		{
-			$this->connect = mysql_connect($db['host'], $db['user'], $db['password'], true);
-			$this->error_reporting = true;
-		} 
-		else 
-		{
-			$this->connect = @mysql_connect($db['host'], $db['user'], $db['password'], true);
-		}
+		$this->prefix = $db['prefix'];
+		$this->charset = $db['charset'];
+
+		if($this->debug)
+			if ($this->mysqli)
+			{
+				$this->connect = mysqli_connect($db['host'], $db['user'], $db['password']);
+			}
+			else
+			{
+				$this->connect = mysql_connect($db['host'], $db['user'], $db['password'], true);
+			}
+
+		else
+			
+			if ($this->mysqli)
+			{
+				$this->connect = @mysqli_connect($db['host'], $db['user'], $db['password']);
+			}
+			else
+			{
+				$this->connect = @mysql_connect($db['host'], $db['user'], $db['password'], true);
+			}
 
 		if (!$this->connect) 
 		{
-			exit('Unable to establish connection to MySQL!');
-			return;
+			return false;
 		}
 
-	    $this->prefix = $db['prefix'];
-	    $this->charset = $db['charset'];
-		$this->select($db['name'], $this->connect);
-		$db = null;
+		$this->select_db($db['name']);
+
+		return true;
 	}
-	
-	public function select($name) 
+
+	public function select_db($name) 
 	{
-		if (!@mysql_select_db($name, $this->connect)) 
+		if ($this->mysqli)
 		{
-			exit('Unable to select MySQL database!');
+			if (!mysqli_select_db($this->connect, $name)) 
+			{
+				exit('Unable to select MySQL database!');
+			}
+
+			mysqli_query($this->connect, 'SET CHARACTER SET '.$this->charset.';');
+			mysqli_query($this->connect, 'SET SESSION collation_connection="'.$this->charset.'_general_ci"');		
+			mysqli_set_charset($this->connect, 'utf8');
 		}
-		@mysql_query('SET CHARACTER SET '.$this->charset.';', $this->connect);
-		@mysql_query('SET SESSION collation_connection="'.$this->charset.'_general_ci"', $this->connect);		
-		mysql_set_charset('utf8', $this->connect);
+		else
+		{
+			if (!mysql_select_db($name, $this->connect)) 
+			{
+				exit('Unable to select MySQL database!');
+			}
+
+			mysql_query('SET CHARACTER SET '.$this->charset.';', $this->connect);
+			mysql_query('SET SESSION collation_connection="'.$this->charset.'_general_ci"', $this->connect);		
+			mysql_set_charset('utf8', $this->connect);
+		}
+
 		register_shutdown_function(array(&$this, 'close'));
 	}	
 
@@ -102,68 +131,77 @@ class database
 		}
 		return $done;
 	}	
-	
+
 	public function query($string = null, $hide_errors = true, $prefix = '#__')
 	{
 		unset($this->result);
 
 		if ($string != '')
-        {
-		    $this->get_execution_time();
-			$this->result = @mysql_query($this->replace_prefix($string, $prefix), $this->connect);
+		{
+			$this->get_execution_time();
 			
-		    if ($this->error_number() && ($this->error_reporting || !$hide_errors))
-		    {
-			    $this->error($string);
-		    }
-			
-		    $query_time = $this->get_execution_time();
-			
+			if ($this->mysqli)
+			{
+				$this->result = @mysqli_query($this->connect, $this->replace_prefix($string, $prefix));
+			}
+			else
+			{
+				$this->result = @mysql_query($this->replace_prefix($string, $prefix), $this->connect);
+			}
+
+			if ($this->error_number() && ($this->debug || !$hide_errors))
+			{
+				$this->error($string);
+			}
+
+			$query_time = $this->get_execution_time();
+
 			if ($this->save_queries)
 			{
-			    $this->queries[] = array(
-			        'query' => preg_replace('/([0-9a-f]){32}/', '********************************', $string), /* Hides all hashes */
-			        'result' => $this->result,
-			        'execution_time' => $query_time,
-			        'error_number' => $this->error_number(),
-			        'error_string' => $this->error_string()
-			    );
+				$this->queries[] = array(
+					'query' => preg_replace('/([0-9a-f]){32}/', '********************************', $string), /* Hides all hashes */
+					'result' => $this->result,
+					'execution_time' => $query_time,
+					'error_number' => $this->error_number(),
+					'error_string' => $this->error_string()
+				);
 			}
-			
-		    $this->query_time += $query_time;
-            $this->num_queries++;
+
+			$this->query_time += $query_time;
+			$this->num_queries++;
 		}
 
 		if ($this->result)
 		{
 			return $this->result;
 		}
-		
+
 		return false;
 	}
 
 	public function fetch($query_id = false, $fetch = 'assoc', $set_query = false)
 	{
-		if ( !($fetch == 'array' || $fetch == 'assoc' || $fetch == 'object' || $fetch == 'row') )
+		if (!($fetch == 'array' || $fetch == 'assoc' || $fetch == 'object' || $fetch == 'row'))
 		{
-			echo ' <b>Fetch type must be one of: array, assoc, object, row</b>';
+			echo '<b>Fetch type must be one of: array, assoc, object, row</b>';
 			return false;
 		}
-		$fetch = 'mysql_fetch_'.$fetch;
-			
+
+		$fetch = 'mysql'.($this->mysqli? 'i' : null).'_fetch_'.$fetch;
+
 		if (!$query_id)
 		{
 			$query_id = $this->result;
 		}
-		
+
 		if ($set_query)
 		{
 			$query_id = $this->query($query_id);
 		}
-		
+
 		if ($query_id)
 		{
-			return @$fetch($query_id);
+			return $fetch($query_id);
 		}
 		else
 		{
@@ -173,31 +211,39 @@ class database
 
 	public function get_row($query, $fetch = 'assoc', $index = false)
 	{
-        $this->query($query);
+		$this->query($query);
 
-		if ($this->numRows() <= 0)
+		if ($this->num_rows() <= 0)
 		{
-		    return false;
-		}		
-		
+			return false;
+		}
+
 		$rows = array();
-        while ($row = $this->fetch($this->result, $fetch))
-        {
-		    if (empty($index) || (!empty($index) && (($fetch == 'object' && !isset($row->$index)) || ($fetch != 'object' && !isset($row[$index])))))
-		    {
-		        $rows[] = $row;
-		    }
+		while ($row = $this->fetch($this->result, $fetch))
+		{
+			if (!empty($index) && (isset($row->$index) || isset($row[$index])))
+			{
+				switch ($fetch)
+				{
+					case 'object':
+					$rows[$row->$index] = $row;
+					break;
+
+					default:
+					$rows[$row[$index]] = $row;
+					break;
+				}
+			}
 			else
 			{
-		        
-		        $rows[$fetch == 'object'? $row->$index : $row[$index]] = $row;
+				$rows[] = $row;
 			}
-        }		
-		
-        $this->freeResult();
+		}
+
+		$this->free_result();
 		return $rows;
-	}	
-	
+	}
+
 	public function insert($table, $array, $escape = true)
 	{
 		if (!is_array($array))
@@ -207,9 +253,9 @@ class database
 
 		if ($escape)
 		{
-			$array = $this->escapeString($array);
+			$array = $this->escape_string($array);
 		}
-		
+
 		$fields = "`".implode("`,`", array_keys($array))."`";
 		$values = implode("','", $array);
 		$this->query("
@@ -217,8 +263,8 @@ class database
 			INTO {$this->prefix}{$table} (".$fields.")
 			VALUES ('".$values."')
 		");
-		
-		return $this->insertID();
+
+		return $this->insert_id();
 	}
 
 	public function update($table, $array, $where = null, $limit = null, $escape = true, $no_quote = false)
@@ -230,16 +276,16 @@ class database
 
 		if ($escape)
 		{
-			$array = $this->escapeString($array);
+			$array = $this->escape_string($array);
 		}
-	
+
 		$comma = null;
 		$query = null;
 		$quote = "'";
 
 		if ($no_quote == true)
 		{
-			$quote = "";
+			$quote = null;
 		}
 
 		foreach ($array as $field => $value)
@@ -266,15 +312,16 @@ class database
 
 	public function delete($table, $where = null, $limit = null)
 	{
-		$query = "";
+		$query = null;
+
 		if (!empty($where))
 		{
-			$query .= " WHERE {$where}";
+			$query .= ' WHERE '.$where;
 		}
 
 		if (!empty($limit))
 		{
-			$query .= " LIMIT {$limit}";
+			$query .= 'LIMIT '.$limit;
 		}
 
 		return $this->query("
@@ -284,22 +331,28 @@ class database
 		");
 	}
 
-	public function numRows($query_id = false, $set_query = false)
+	public function num_rows($query_id = false, $set_query = false)
 	{
 		if (!$query_id)
 		{
 			$query_id = $this->result;
 		}
-		
+
 		if ($set_query)
 		{
 			$query_id = $this->query($query_id);
 		}
-		
+
 		if ($query_id)
 		{
-			$result = @mysql_num_rows($query_id);
-			return $result;
+			if ($this->mysqli)
+			{
+				return mysqli_num_rows($query_id);
+			}
+			else
+			{
+				return mysql_num_rows($query_id);
+			}
 		}
 		else
 		{
@@ -307,11 +360,26 @@ class database
 		}
 	}
 
-	public function affectedRows()
+	# this will be removed in the following version
+	public function numRows($query_id = false, $set_query = false)
+	{
+		trigger_error('Function '.__CLASS__.'->'.__FUNCTION__.'() is deprecated', E_USER_DEPRECATED);
+
+		return $this->num_rows($query_id, $set_query);
+	}
+
+	public function affected_rows()
 	{
 		if ($this->connect)
 		{
-			return @mysql_affected_rows($this->connect);
+			if ($this->mysqli)
+			{
+				return mysqli_affected_rows($this->connect);
+			}
+			else
+			{
+				return mysql_affected_rows($this->connect);
+			}
 		}
 		else
 		{
@@ -319,17 +387,31 @@ class database
 		}
 	}
 
-	public function freeResult($query_id = false)
-    {
-		if ( !$query_id )
+	# this will be removed in the following version
+	public function affectedRows()
+	{
+		trigger_error('Function '.__CLASS__.'->'.__FUNCTION__.'() is deprecated', E_USER_DEPRECATED);
+
+		return $this->affected_rows();
+	}
+
+	public function free_result($query_id = false)
+	{
+		if (!$query_id)
 		{
 			$query_id = $this->result;
 		}
 
-		if ( $query_id )
+		if ($query_id)
 		{
-			@mysql_free_result($query_id);
-			return true;
+			if ($this->mysqli)
+			{
+				return mysqli_free_result($query_id);
+			}
+			else
+			{
+				return mysql_free_result($query_id);
+			}
 		}
 		else
 		{
@@ -337,103 +419,151 @@ class database
 		}
 	}
 
-	public function insertID()
-    {
+	# this will be removed in the following version
+	public function freeResult($query_id = false)
+	{
+		trigger_error('Function '.__CLASS__.'->'.__FUNCTION__.'() is deprecated', E_USER_DEPRECATED);
+
+		return $this->free_result($query_id);
+	}
+
+	public function insert_id()
+	{
 		if ($this->connect)
-        {
-			return @mysql_insert_id($this->connect);
+		{
+			if ($this->mysqli)
+			{
+				return mysqli_insert_id($this->connect);
+			}
+			else
+			{
+				return mysql_insert_id($this->connect);
+			}
 		}
-        else
-        {
+		else
+		{
 			return false;
 		}
 	}	
 
-	public function escapeString($string)
-    {
-        if (is_array($string))
+	# this will be removed in the following version
+	public function insertID()
+	{
+		trigger_error('Function '.__CLASS__.'->'.__FUNCTION__.'() is deprecated', E_USER_DEPRECATED);
+
+		return $this->insert_id();
+	}
+
+	public function escape_string($string)
+	{
+		if (is_array($string))
 		{
-		    foreach ($string as $key => $str)
-				$string[$key] = $this->escapeString($str);
+			foreach ($string as $key => $str)
+			{
+				$string[$key] = $this->escape_string($str);
+			}
 		}
-        elseif (is_object($string))
+		elseif (is_object($string))
 		{
-		    foreach ($string as $key => $str)
-				$string->{$key} = $this->escapeString($str);
+			foreach ($string as $key => $str)
+			{
+				$string->{$key} = $this->escape_string($str);
+			}
 		}
 		else
 		{
-		    // if (get_magic_quotes_gpc())
-		    // {
-		    	// $string = stripslashes($string);
-		    // }
-		    //check if this function exists
-		    if (function_exists('mysql_real_escape_string') && $this->connect)
-		    {       
-		    	$string = mysql_real_escape_string($string, $this->connect);
-		    }
-		    //for PHP version < 4.3.0 use addslashes
-		    else
-		    {
-		    	$string = addslashes($string);
-		    }
+			/*if (get_magic_quotes_gpc())
+			{
+				$string = stripslashes($string);
+			}*/
+
+			//check if this function exists
+			if ($this->mysqli && function_exists('mysqli_real_escape_string') && $this->connect)
+			{
+				$string = mysqli_real_escape_string($this->connect, $string);
+			}
+			elseif (function_exists('mysql_real_escape_string') && $this->connect)
+			{
+				$string = mysql_real_escape_string($string, $this->connect);
+			}
+			//for PHP version < 4.3.0 use addslashes
+			else
+			{
+				$string = addslashes($string);
+			}
 		}
+
 		return $string;		
 	}	
-	
+
+	# this will be removed in the following version
+	public function escapeString($string)
+	{
+		trigger_error('Function '.__CLASS__.'->'.__FUNCTION__.'() is deprecated', E_USER_DEPRECATED);
+
+		return $this->escape_string($string);
+	}
+
 	public function get_execution_time()
-    {
+	{
 		static $time_start;
+
 		$time = microtime(true);
+
 		// Just starting timer, init and return
 		if (!$time_start)
 		{
 			$time_start = $time;
-			return;
+			return 0;
 		}
 		// Timer has run, return execution time
 		else
 		{
 			$total = $time-$time_start;
 			$time_start = 0;
-			if ($total < 0) $total = 0;
-			return $total;
+			return $total < 0? 0 : $total;
 		}
 	}	
 
 	public function error_number()
-    {
+	{
 		if ($this->connect)
 		{
-			return @mysql_errno($this->connect);
-		}
-		else
-		{
-			return @mysql_errno();
+			if ($this->mysqli)
+			{
+				return mysqli_errno($this->connect);			
+			}
+			else
+			{
+				return mysql_errno($this->connect);
+			}
 		}
 	}
 
 	public function error_string()
-    {
+	{
 		if ($this->connect)
 		{
-			return @mysql_error($this->connect);
-		}
-		else
-		{
-			return @mysql_error();
+			if ($this->mysqli)
+			{
+				return mysqli_error($this->connect);			
+			}
+			else
+			{
+				return mysql_error($this->connect);
+			}
 		}
 	}
 
 	public function error($string = '')
 	{
-		if ($this->error_reporting)
+		if ($this->debug)
 		{
-		    $string = trim($string);
-		    $string = explode("\n", $string);
-		    $string = array_map("trim", $string);
-		    $string = implode("\n", $string);
-			echo("\n<!-- ERROR SQL! -->\n<div style='background:#FFCCCC;border:#FF6A6A 1px solid;padding:5px;margin:5px;direction:ltr;text-align:left'>\n<strong>[SQL] [".$this->error_number()."] ".$this->error_string()."</strong><br />\n<b>STRING:</b><pre style=\"direction:ltr;text-align:left;overflow-x:auto;\">{$string}</pre>\n</div>\n<!-- Apadana CMS! -->\n\n");
+			$string = trim($string);
+			$string = explode("\n", $string);
+			$string = array_map('trim', $string);
+			$string = implode("\n", $string);
+			echo("\n<!-- ERROR SQL! -->\n<div style='background:#FFCCCC;border:#FF6A6A 1px solid;padding:5px;margin:5px;direction:ltr;text-align:left'>\n<strong>[SQL] [".$this->error_number()."] ".$this->error_string()."</strong><br />\n<b>STRING:</b><pre style=\"direction:ltr;text-align:left;overflow-x:auto;\">{$string}</pre>\n</div>\n<!-- www.ApadanaCMS.ir -->\n\n");
 		}
 		else
 		{
@@ -443,19 +573,24 @@ class database
 
 	public function version() 
 	{
-		//Fixed in 1.0.5 : we shouldn't use result variable
-		return preg_replace('/[^0-9.].*/', '', mysql_get_server_info($this->connect));
+		return preg_replace('/[^0-9.].*/', '', $this->mysqli? mysqli_get_server_info($this->connect) : mysql_get_server_info($this->connect));
 	}
 
 	public function close() 
 	{
 		if ($this->connect)
 		{
-			if ($this->result)
+			if ($this->mysqli)
 			{
-				@mysql_free_result($this->result);
+				$result = mysqli_close($this->connect);			
 			}
-			return @mysql_close($this->connect);
+			else
+			{
+				$result = mysql_close($this->connect);			
+			}
+
+			$this->connect = false;			
+			return $result;			
 		}
 		else
 		{
@@ -463,5 +598,3 @@ class database
 		}		
 	}	
 }
-
-?>

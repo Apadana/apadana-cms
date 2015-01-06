@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -106,9 +106,9 @@ function _new()
 	echo '# ========================================================'.$crlf;
 	echo $crlf;
 
-	$tables = @mysql_list_tables(database_name);
+	$tables = $d->query("SHOW TABLES FROM `" .database_name . "`");
 
-	if ($d->numRows($tables) <= 0)
+	if ($d->num_rows($tables) <= 0)
 	{
 		echo '# No tables found in database.'.$crlf;
 	}
@@ -135,7 +135,7 @@ function _new()
 			}
 
 			$sql_table = $d->query("SELECT * FROM `$table`");
-			if ($d->numRows($sql_table) > 0)
+			if ($d->num_rows($sql_table) > 0)
 			{
 				echo $crlf;
 				echo '#'.$crlf;
@@ -144,11 +144,11 @@ function _new()
 				echo $crlf;
 				while ($row_table = $d->fetch($sql_table, 'row'))
 				{
-					echo '$d->query("INSERT INTO `'.$table.'` VALUES(\''.str_replace('$', '".\'$\'."', mysql_real_escape_string($row_table[0])).'\'';
+					echo '$d->query("INSERT INTO `'.$table.'` VALUES(\''.str_replace('$', '".\'$\'."', $d->escape_string($row_table[0])).'\'';
 					for ($i=1; $i<sizeof($row_table); $i++)
 					{
 						echo ", '";
-						echo str_replace('$', '".\'$\'."', mysql_real_escape_string($row_table[$i]));
+						echo str_replace('$', '".\'$\'."', $d->escape_string($row_table[$i]));
 						echo "'";
 					}
 					echo ');");';

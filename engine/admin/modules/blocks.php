@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -163,7 +163,7 @@ function _status()
 		'block_active' => $active,
 	), "`block_id`='{$id}'", 1);
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		remove_cache('blocks');
 		exit($active==1? 'active' : 'inactive');
@@ -348,7 +348,7 @@ function _new()
 				'block_ordering' => $ordering,
 			));	
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				remove_cache('blocks');
 				$json['type'] = 'success';
@@ -371,7 +371,7 @@ function _get_data()
 	$id = get_param($_GET, 'id', 0);
 	$d->query("SELECT * FROM `#__blocks` WHERE `block_id`='{$id}' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('{"error":"not found"}');
 	}
@@ -416,7 +416,7 @@ function _edit()
 
 	$d->query("SELECT `block_id` FROM `#__blocks` WHERE `block_id`='{$id}' LIMIT 1");
 	
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('{"type":"error", "message":"این بلوک یافت نشد!"}');
 	}
@@ -524,7 +524,7 @@ function _edit()
 				'block_view' => $block['view'],
 			), "`block_id`='{$id}'", 1);	
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				remove_cache('blocks');
 				$json['type'] = 'success';
@@ -548,7 +548,7 @@ function _delete()
 
 	$d->query("SELECT `block_title`, `block_position` FROM `#__blocks` WHERE `block_id`='{$id}' LIMIT 1");
 	
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		echo message('این بلوک یافت نشد!', 'error');
 		exit;
@@ -557,7 +557,7 @@ function _delete()
 	$row = $d->fetch();
 	$d->delete('blocks', "`block_id`='{$id}'", 1);
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		remove_cache('blocks');
 		echo message('بلوک <b>'.$row['block_title'].'</b> با موفقیت حذف شد.', 'success');

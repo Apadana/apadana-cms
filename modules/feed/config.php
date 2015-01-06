@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -37,7 +37,7 @@ function module_feed_run()
 			$feeds->setLink(url);
 			$feeds->setDescription($options['slogan']);
 			$feeds->setID(url('feed/'.$_GET['b'].'/'.$_GET['c']));
-			$feeds->setGeneratorName('Apadana Cms Copyright (c) '.date('Y').' by Iman Moodi (www.apadanacms.ir)');
+			$feeds->setGeneratorName('Apadana Cms Copyright (c) '.date('Y').' (www.apadanacms.ir)');
 
 			$func = 'module_'.str_replace('-', '_', $_GET['b']).'_feed';
 			$func($feeds);

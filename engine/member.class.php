@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -174,12 +174,12 @@ class member
 		}
 
 		$q = $d->query("SELECT * FROM `#__members` WHERE $where LIMIT 1");
-		if ($d->numRows($q) >= 1)
+		if ($d->num_rows($q) >= 1)
 		{
 			$u = $d->fetch($q);
 			self::$info['id'][$u['member_id']] = $u;
 			self::$info['name'][$u['member_name']] = &self::$info['id'][$u['member_id']];
-			$d->freeResult($q);
+			$d->free_result($q);
 			return $u;
 		}
 		else
@@ -192,7 +192,7 @@ class member
     {
 		global $d;
 
-		if (is_alphabet($username) && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_name`='".$username."'", true) >= 1)
+		if (is_alphabet($username) && $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_name`='".$username."'", true) >= 1)
 		{
 			return true;
 		}
@@ -209,7 +209,7 @@ class member
 		global $d;
 
 		$password = str_replace('\\', null, $password);
-		return md5(sha1($d->escapeString($password)));
+		return md5(sha1($d->escape_string($password)));
     }
 }
 

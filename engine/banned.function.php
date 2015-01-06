@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -45,8 +45,8 @@ function check_banned()
 		$IP_2 = $ip_class[0].'.'.$ip_class[1].'.*.'.$ip_class[3];
 		$IP_3 = $ip_class[0].'.'.$ip_class[1].'.*.*';
 
-		$d->query("SELECT * FROM `#__banned` WHERE `ban_ip`='".$d->escapeString($IP)."' OR `ban_ip`='".$d->escapeString($IP_1)."' OR `ban_ip`='".$d->escapeString($IP_2)."' OR `ban_ip`='".$d->escapeString($IP_3)."'");
-		if ($d->numRows() >= 1)
+		$d->query("SELECT * FROM `#__banned` WHERE `ban_ip`='".$d->escape_string($IP)."' OR `ban_ip`='".$d->escape_string($IP_1)."' OR `ban_ip`='".$d->escape_string($IP_2)."' OR `ban_ip`='".$d->escape_string($IP_3)."'");
+		if ($d->num_rows() >= 1)
 		{
 			$result = $d->fetch();
 			if (is_array($result) && count($result) && !empty($result['ban_ip']))

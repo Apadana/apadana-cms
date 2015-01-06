@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -54,7 +54,7 @@ function get_posts($do)
 	
 	unset($where, $default);
 	
-	if ($d->numRows($query) <= 0)
+	if ($d->num_rows($query) <= 0)
 	{
 		return false;
 	}
@@ -76,7 +76,7 @@ function get_posts($do)
 		}
 	}
 
-	$d->freeResult($query);
+	$d->free_result($query);
 	unset($row, $query);
 
 	$postsID = implode(',', $postsID);
@@ -86,14 +86,14 @@ function get_posts($do)
 	if (!empty($postsTagsID) && $do['tags'])
 	{
 		$tagsQuery = $d->query("SELECT `term_id`, `term_name`, `term_slug` FROM `#__terms` WHERE `term_type`='p-tag' AND `term_id` IN ($postsTagsID)");
-		if ($d->numRows($tagsQuery) > 0)
+		if ($d->num_rows($tagsQuery) > 0)
 		{
 			while ($row = $d->fetch($tagsQuery))
 			{
 				$postsTags[$row['term_id']] = $row;
 			}
 		}
-		$d->freeResult($tagsQuery);
+		$d->free_result($tagsQuery);
 	}
 	unset($row, $tagsQuery, $postsTagsID);
 
@@ -104,14 +104,14 @@ function get_posts($do)
 	if (is_array($fields) && count($fields) && $do['fields'])
 	{
 		$fieldsQuery = $d->query("SELECT `field_link`, `field_name`, `field_value` FROM `#__fields` WHERE `field_type`='p' AND `field_link` IN ($postsID)");
-		if ($d->numRows($fieldsQuery) > 0)
+		if ($d->num_rows($fieldsQuery) > 0)
 		{
 			while ($row = $d->fetch($fieldsQuery))
 			{
 				$postsFields[$row['field_link']][$row['field_name']] = $row['field_value'];
 			}
 		}
-		$d->freeResult($fieldsQuery);
+		$d->free_result($fieldsQuery);
 	}
 	
 	unset($fields, $do);
@@ -206,7 +206,7 @@ function posts_options()
 
 		$d->query("SELECT `option_value` FROM `#__options` WHERE `option_name`='posts' LIMIT 1");
 		$result = $d->fetch();
-		$d->freeResult();
+		$d->free_result();
 		$options = maybe_unserialize($result['option_value']);
 		set_cache('options-posts', $options);
 	}
@@ -231,7 +231,7 @@ function block_categories($op = null, $id = null, $position= null)
 	global $options;	
 
 	if ($op == 'remove-cache') return true;
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	if (isset($categories) && is_array($categories) && count($categories))
 	{
@@ -303,7 +303,7 @@ function block_tags_cloud($op = null, $id = null, $position= null)
 			);
 			$counts[] = $row['count'];
 		}
-		$d->freeResult();
+		$d->free_result();
 
 		if (count($counts))
 		{
@@ -533,10 +533,10 @@ function module_posts_search($search)
 {
 	global $d, $options;
 	
-	$where  = $search['type']==0 || $search['type']==2? " OR p.post_title LIKE '%".$d->escapeString($search['story'])."%'" : null;
-	$where .= $search['type']==1 || $search['type']==2? " OR p.post_text LIKE '%".$d->escapeString($search['story'])."%' OR p.post_more LIKE '%".$d->escapeString($search['story'])."%'" : null;
-	$where .= !empty($search['author']) && $search['author-full']==0? " OR m.member_name LIKE '%".$d->escapeString($search['author'])."%'" : null;
-	$where .= !empty($search['author']) && $search['author-full']==1? " OR m.member_name='".$d->escapeString($search['author'])."'" : null;
+	$where  = $search['type']==0 || $search['type']==2? " OR p.post_title LIKE '%".$d->escape_string($search['story'])."%'" : null;
+	$where .= $search['type']==1 || $search['type']==2? " OR p.post_text LIKE '%".$d->escape_string($search['story'])."%' OR p.post_more LIKE '%".$d->escape_string($search['story'])."%'" : null;
+	$where .= !empty($search['author']) && $search['author-full']==0? " OR m.member_name LIKE '%".$d->escape_string($search['author'])."%'" : null;
+	$where .= !empty($search['author']) && $search['author-full']==1? " OR m.member_name='".$d->escape_string($search['author'])."'" : null;
 	$where  = trim($where, ' OR ');
 	
 	$query  = "SELECT p.*,m.member_name\n";
@@ -563,11 +563,11 @@ function module_posts_search($search)
 	}
 }
 
-function module_posts_sitemap(&$sitemap)
+function module_posts_sitemap($sitemap)
 {
 	global $d, $options;
 
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	if (isset($categories) && is_array($categories) && count($categories))
 	{
@@ -591,7 +591,7 @@ function module_posts_sitemap(&$sitemap)
 	unset($posts, $p, $query);
 }
 
-function module_posts_feed(&$feeds)
+function module_posts_feed($feeds)
 {
 	global $d, $options;
 

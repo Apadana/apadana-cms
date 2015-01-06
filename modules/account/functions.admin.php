@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -36,14 +36,14 @@ function _default()
 	$search = get_param($_GET, 'search');
 	$search = alphabet(urldecode($search));
 
-	$total_m = $d->numRows("SELECT `member_id` FROM `#__members` ".(empty($search)? null : "WHERE member_name LIKE '%".$search."%'"), true);
+	$total_m = $d->num_rows("SELECT `member_id` FROM `#__members` ".(empty($search)? null : "WHERE member_name LIKE '%".$search."%'"), true);
 
 	$pagination = new pagination($total_m, $total, $_page);
 
 	$itpl = new template('modules/account/html/admin/index.tpl');
 
 	$d->query("SELECT * FROM #__members ".(empty($search)? null : "WHERE member_name LIKE '%".$search."%'")." ORDER BY $sort $order LIMIT $pagination->Start, $pagination->End");
-	if ($d->numRows() >= 1)
+	if ($d->num_rows() >= 1)
 	{
 		while($m = $d->fetch()) 
 		{
@@ -246,7 +246,7 @@ function _edit()
 		}
 		else
 		{
-			if ($options_account['email'] == 1 && $member['member_email'] != $postMember['email'] && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escapeString($postMember['email'])."'", true) >= 1)
+			if ($options_account['email'] == 1 && $member['member_email'] != $postMember['email'] && $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escape_string($postMember['email'])."'", true) >= 1)
 			{
 				$message .= 'این ایمیل قبلا ثبت شده، یک ایمیل دیگر انتخاب کنید!<br />';
 			}
@@ -322,7 +322,7 @@ function _edit()
 			
 			$d->update('members', $arr, "`member_id`='".intval($postMember['id'])."'", 1);
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				echo message('پروفایل کاربر با موفقیت ویرایش شد.', 'success');
 
@@ -368,7 +368,7 @@ function _new()
 		}
 		else
 		{
-			if ($options_account['email'] == 1 && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escapeString($member['email'])."'", true) >= 1)
+			if ($options_account['email'] == 1 && $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escape_string($member['email'])."'", true) >= 1)
 			{
 				$msg[] = 'این ایمیل قبلا ثبت شده است، یک ایمیل دیگر انتخاب کنید!';
 			}
@@ -426,7 +426,7 @@ function _new()
 				'member_key' => '',
 			));
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				$msg = message("کاربر {$member['name']} با موفقیت اضافه شد!", 'success');
 				if($member['send_mail']){
@@ -476,7 +476,7 @@ function _status()
 		'member_status' => $status==1? 0 : 1,
 	), "`member_id`='{$id}'", 1);	
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		exit($status==1? 'no' : 'ok');
 	}
@@ -517,7 +517,7 @@ function _options()
 			'option_value' => serialize($op)
 		), "`option_name`='account'", 1);	
 		
-		if ($d->affectedRows())
+		if ($d->affected_rows())
 		{
 			remove_cache('options-account');
 			echo message('تنظیمات با موفقیت ذخیره شد!', 'success');

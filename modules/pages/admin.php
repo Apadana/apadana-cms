@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -116,12 +116,12 @@ function module_pages_admin_comments($action, $data = array())
 		break;
 		
 		case 'approve';
-		$total = $d->numRows("SELECT `comment_id` FROM `#__comments` WHERE `comment_type`='pages' AND `comment_approve`='1' AND `comment_link`='".intval($data['link'])."'", true);
+		$total = $d->num_rows("SELECT `comment_id` FROM `#__comments` WHERE `comment_type`='pages' AND `comment_approve`='1' AND `comment_link`='".intval($data['link'])."'", true);
 		$d->query("UPDATE `#__pages` SET `page_comment_count`='".intval($total)."' WHERE `page_id`='".intval($data['link'])."' LIMIT 1");
 		break;
 		
 		case 'delete';
-		$total = $d->numRows("SELECT `comment_id` FROM `#__comments` WHERE `comment_type`='pages' AND `comment_approve`='1' AND `comment_link`='".intval($data['link'])."'", true);
+		$total = $d->num_rows("SELECT `comment_id` FROM `#__comments` WHERE `comment_type`='pages' AND `comment_approve`='1' AND `comment_link`='".intval($data['link'])."'", true);
 		$d->query("UPDATE `#__pages` SET `page_comment_count`='".intval($total)."' WHERE `page_id`='".intval($data['link'])."' LIMIT 1");
 		break;
 	}

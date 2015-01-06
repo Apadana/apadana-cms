@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -32,8 +32,8 @@ function module_files_run()
 	{
 		($hook = get_hook('module_files_start'))? eval($hook) : null;
 
-		$query = $d->query("SELECT * FROM `#__files` WHERE `file_".($options['rewrite'] == 1? 'slug' : 'id')."` = '".$d->escapeString($slug)."' LIMIT 1");
-		if ($d->numRows($query) <= 0)
+		$query = $d->query("SELECT * FROM `#__files` WHERE `file_".($options['rewrite'] == 1? 'slug' : 'id')."` = '".$d->escape_string($slug)."' LIMIT 1");
+		if ($d->num_rows($query) <= 0)
 		{
 			if ($options['rewrite'] == 1 && isnum($slug))
 			{
@@ -44,7 +44,7 @@ function module_files_run()
 				module_error_run('404');
 			}
 		}
-		if ($d->numRows($query) <= 0)
+		if ($d->num_rows($query) <= 0)
 		{
 			module_error_run('404');
 		}

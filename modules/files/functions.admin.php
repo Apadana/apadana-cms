@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -31,7 +31,7 @@ function _index()
 
 	$search = get_param($_GET, 'search');
 
-	$total_posts = $d->numRows("SELECT `file_id` FROM `#__files` ".(empty($search)? null : "WHERE `file_slug` LIKE '%".$d->escapeString($search)."%' OR `file_url` LIKE '%".$d->escapeString($search)."%'"), true);
+	$total_posts = $d->num_rows("SELECT `file_id` FROM `#__files` ".(empty($search)? null : "WHERE `file_slug` LIKE '%".$d->escape_string($search)."%' OR `file_url` LIKE '%".$d->escape_string($search)."%'"), true);
 
 	$pagination = new pagination($total_posts, $total, $_page);
 
@@ -43,12 +43,12 @@ function _index()
 			SELECT f.*, m.member_name, m.member_alias
 			FROM #__files AS f	
 			LEFT JOIN #__members AS m ON m.member_id=f.file_author
-			".(empty($search)? null : "WHERE f.file_slug LIKE '%".$d->escapeString($search)."%' OR f.file_url LIKE '%".$d->escapeString($search)."%'")."
+			".(empty($search)? null : "WHERE f.file_slug LIKE '%".$d->escape_string($search)."%' OR f.file_url LIKE '%".$d->escape_string($search)."%'")."
 			GROUP BY f.file_id
 			ORDER BY f.file_id {$order}
 			LIMIT $pagination->Start, $pagination->End
 		");
-		if ($d->numRows() >= 1)
+		if ($d->num_rows() >= 1)
 		{
 			while($data = $d->fetch()) 
 			{
@@ -182,7 +182,7 @@ function _new()
 		{
 			$json['message'][] = 'نام مستعار بیش از انداره طولانی است!';
 		}
-		elseif ($d->numRows("SELECT `file_id` FROM `#__files` WHERE `file_slug`='".$d->escapeString($files['slug'])."'", true) >= 1)
+		elseif ($d->num_rows("SELECT `file_id` FROM `#__files` WHERE `file_slug`='".$d->escape_string($files['slug'])."'", true) >= 1)
 		{
 			$json['message'][] = 'نام مستعار تکراری است یک نام مستعار دیگر انتخاب کنید!';
 		}
@@ -202,7 +202,7 @@ function _new()
 			'file_date' => time(),
 		));
 
-		if ($d->affectedRows())
+		if ($d->affected_rows())
 		{
 			remove_cache('module-files', true);
 			$json['url'] = url.'?a=files&b='.$id;
@@ -232,7 +232,7 @@ function _get_info()
 	$_GET['id'] = get_param($_GET, 'id', 0);
 	$d->query("SELECT * FROM `#__files` WHERE `file_id`='".$_GET['id']."' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('{"error":"not found"}');
 	}
@@ -263,7 +263,7 @@ function _get_members()
 	$_GET['id'] = get_param($_GET, 'id', 0);
 	$d->query("SELECT `file_author`, `file_members` FROM `#__files` WHERE `file_id`='".$_GET['id']."' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('{"error":"not found"}');
 	}
@@ -311,7 +311,7 @@ function _get_data()
 	$_GET['id'] = get_param($_GET, 'id', 0);
 	$d->query("SELECT * FROM `#__files` WHERE file_id='".$_GET['id']."' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('{"error":"not found"}');
 	}
@@ -335,7 +335,7 @@ function _edit()
 	$_GET['id'] = get_param($_GET, 'id', 0);
 	$d->query("SELECT * FROM `#__files` WHERE `file_id`='".$_GET['id']."' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('{"type":"error", "message":"این فایل یافت نشد!"}');
 	}
@@ -386,7 +386,7 @@ function _edit()
 		{
 			$json['message'][] = 'نام مستعار بیش از انداره طولانی است!';
 		}
-		elseif ($files['slug'] != $row['file_slug'] && $d->numRows("SELECT `file_id` FROM `#__files` WHERE `file_slug`='".$d->escapeString($files['slug'])."'", true) >= 1)
+		elseif ($files['slug'] != $row['file_slug'] && $d->num_rows("SELECT `file_id` FROM `#__files` WHERE `file_slug`='".$d->escape_string($files['slug'])."'", true) >= 1)
 		{
 			$json['message'][] = 'نام مستعار تکراری است یک نام مستعار دیگر انتخاب کنید!';
 		}
@@ -404,7 +404,7 @@ function _edit()
 			'file_access' => $files['access'],
 		), "file_id='".$_GET['id']."'", 1);
 
-		if ($d->affectedRows())
+		if ($d->affected_rows())
 		{
 			remove_cache('module-files', true);
 			$json['url'] = url.'?a=files&b='.$_GET['id'];
@@ -434,7 +434,7 @@ function _delete()
 	$_GET['id'] = get_param($_GET, 'id', 0);
 	$d->query("SELECT file_url, file_author FROM #__files WHERE file_id='".$_GET['id']."' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		echo message('این فایل یافت نشد!', 'error');
 		exit;

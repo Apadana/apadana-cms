@@ -1,4 +1,16 @@
-
+[intro]
+<script>
+	apadana.onloadArray.push("apadana.infoBox('#intro',1,0,'intro');");	
+</script>
+<script type="text/javascript" src="{site-url}engine/admin/template/javascript/intro.min.js"></script>
+<link href="{site-url}engine/admin/template/styles/introjs.min.css" type="text/css" rel="stylesheet" />
+<div id = "intro" style="display:none;">
+از اینکه از آپادانا استفاده میکنید خیلی خوشحالیم.<br/>
+به نظر میرسد این اولین بازدید شما از آپادانا است برای همین برای شما یک آموزش کوچک ترتیب داده ایم.<br/>
+اگر میخواهید آموزش را ببینید لطفا روی دکمه زیر کلیک کنید واگرنه می توانید این صفحه را ببندید.<br/>
+<button onclick="apadana.infoBox(null,0);startintro();">دیدن آموزش</button>&nbsp;&nbsp;&nbsp;<button onclick="apadana.infoBox(null,0);">بستن این صفحه</button>
+</div>
+[/intro]
 <!-- TAB START-->
 <div class="content">
 <div class="content-tabs">

@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2014 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -19,7 +19,7 @@ function _index(){
 		'option_value' => $note
 	),"option_name= 'admin-notes'");
 
-	if($d->affectedRows()){
+	if($d->affected_rows()){
 		echo "<font color='green'>&nbsp;&nbsp;&nbsp;با موفق به روز شد</font>";
 	}
 	else{

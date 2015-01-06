@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -114,7 +114,7 @@ function template_info($theme)
 	$array['authorUrl'] = !isset($array['authorUrl']) || !validate_url($array['authorUrl'])? null : $array['authorUrl'];
 	$array['positions'] = !isset($array['positions']) || empty($array['positions'])? null : nohtml($array['positions']);
 	$array['pages'] = !isset($array['pages']) || empty($array['pages'])? null : nohtml($array['pages']);
-	$array['compaction'] = !isset($array['compaction']) || empty($array['compaction'])? false : ($array['compaction']=='true'? true : false);
+	$array['html-compression'] = !isset($data['html-compression']) || empty($data['html-compression'])? false : ($data['html-compression'] == 'true'? true : false);
 	$array['license'] = !isset($array['license']) || empty($array['license'])? 'GNU/GPL' : $array['license'];
 
 	$array['positions'] = explode(',', $array['positions']);
@@ -230,7 +230,7 @@ function global_tags()
 	return array(
 		'{member-name}' => defined('member') && member? $member['member_name'] : 'مهمان',
 		'{member-ip}' => get_ip(),
-		'{today}' => jdate('l j F Y ساعت g:i A', time_now, 1),
+		'{today}' => jdate('l j F Y ساعت g:i A', time_now, 'fa'),
 		'{site-url}' => url,
 		'{site-title}' => $options['title'],
 		'{site-slogan}' => $options['slogan'],

@@ -5,492 +5,660 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCMS.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
 defined('security') or exit('Direct Access to this location is not allowed.');
 
-function Jdate($type, $maket = 'now', $transnumber = 0)
+/**
+	Software Hijri_Shamsi , Solar(Jalali) Date and Time
+	Copyright(C)2011, Reza Gholampanahi , http://jdf.scr.ir
+	version 2.55 :: 1391/08/24 = 1433/12/18 = 2012/11/15
+*/
+
+function jdate($format, $timestamp = 'now', $number_type = 'fa')
 {
-	#set 1 if you want translate number to persian or if you don't like set 0
-	#$transnumber=1;
+	$T_sec = 0; /* رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
 
-	#chosse your timezone
-	$TZhours=0;
-	$TZminute=0;
-	$need='';
-	$result1='';
-	$result='';
-	if ($maket=='now'){
-		$year=date('Y');
-		$month=date('m');
-		$day=date('d');
-		list( $jyear, $jmonth, $jday ) = gregorian_to_jalali($year, $month, $day);
-		$maket=mktime(date('H')+$TZhours,date('i')+$TZminute,date('s'),date('m'),date('d'),date('Y'));
-	} else {
-		#$maket=0;
-		$maket+=$TZhours*3600+$TZminute*60;
-		$date=date('Y-m-d',$maket);
-		list( $year, $month, $day ) = preg_split ( '/-/', $date );
-
-		list( $jyear, $jmonth, $jday ) = gregorian_to_jalali($year, $month, $day);
+	# Will Be removed in future. Please use 'fa' insted of 1 and 'en' insted of 0
+	if (is_numeric($number_type)){
+		if($number_type === 1)
+			$number_type = 'fa';
+		else
+			$number_type = 'en';
 	}
 
-	$need= $maket;
-	$year=date('Y',$need);
-	$month=date('m',$need);
-	$day=date('d',$need);
-	$i=0;
-	$subtype='';
-	$subtypetemp='';
-	list( $jyear, $jmonth, $jday ) = gregorian_to_jalali($year, $month, $day);
-	while($i<strlen($type))
+	$ts = $T_sec + (($timestamp == '' || $timestamp == 'now') ? time() : $timestamp);
+	$date = explode('_', date('H_i_j_n_O_P_s_w_Y', $ts));
+	list($j_y, $j_m, $j_d) = gregorian_to_jalali($date[8], $date[3], $date[2]);
+	$doy = ($j_m < 7) ? (($j_m - 1) * 31) + $j_d - 1 : (($j_m - 7) * 30) + $j_d + 185;
+	$kab = ($j_y % 33 % 4 - 1 == (int) ($j_y % 33 * .05)) ? 1 : 0;
+
+	$sl = strlen($format);
+	$out = '';
+	for ($i = 0; $i < $sl; $i++)
 	{
-		$subtype=substr($type,$i,1);
-		if ($subtypetemp=='\\')
+		$sub = substr($format, $i, 1);
+		if ($sub == '\\')
 		{
-			$result.=$subtype;
-			$i++;
+			$out .= substr($format,++$i, 1);
 			continue;
 		}
-
-		switch ($subtype)
+		switch ($sub)
 		{
-			case 'A':
-					$result1=date('a',$need);
-					if ($result1=='pm') $result.= 'بعد از ظهر';
-					else $result.='قبل ‏از ظهر';
-					break;
+			// case 'E' :
+			// case 'R' :
+			// case 'x' :
+			// case 'X' :
+				// $out .= 'http://jdf.scr.ir';
+				// break;
 
-			case 'a':
-					$result1=date('a',$need);
-					if ($result1=='pm') $result.= 'ب.ظ';
-					else $result.='ق.ظ';
-					break;
-			case 'd':
-					if ($jday<10)$result1='0'.$jday;
-					else         $result1=$jday;
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'D':
-					$result1=date('D',$need);
-					if ($result1=='Thu') $result1='پ';
-					else if ($result1=='Sat') $result1='ش';
-					else if ($result1=='Sun') $result1='ى';
-					else if ($result1=='Mon') $result1='د';
-					else if ($result1=='Tue') $result1='س';
-					else if ($result1=='Wed') $result1='چ';
-					else if ($result1=='Thu') $result1='پ';
-					else if ($result1=='Fri') $result1='ج';
-					$result.=$result1;
-					break;
-			case'F':
-					$result.=monthname($jmonth);
-					break;
-			case 'g':
-					$result1=date('g',$need);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'G':
-					$result1=date('G',$need);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-					case 'h':
-					$result1=date('h',$need);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'H':
-					$result1=date('H',$need);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'i':
-					$result1=date('i',$need);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'j':
-					$result1=$jday;
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'l':
-					$result1=date('l',$need);
-					if ($result1=='Saturday') $result1='شنبه';
-					else if ($result1=='Sunday') $result1='یکشنبه';
-					else if ($result1=='Monday') $result1='دوشنبه';
-					else if ($result1=='Tuesday') $result1='سه شنبه';
-					else if ($result1=='Wednesday') $result1='چهارشنبه';
-					else if ($result1=='Thursday') $result1='پنجشنبه';
-					else if ($result1=='Friday') $result1='جمعه';
-					$result.=$result1;
-					break;
-			case 'm':
-					if ($jmonth<10) $result1='0'.$jmonth;
-					else        $result1=$jmonth;
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'M':
-					$result.=short_monthname($jmonth);
-					break;
-			case 'n':
-					$result1=$jmonth;
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 's':
-					$result1=date('s',$need);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'S':
-					$result.='&#1575;&#1605;';
-					break;
-			case 't':
-					$result.=lastday($month,$day,$year);
-					break;
-			case 'w':
-					$result1=date('w',$need);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'W':
-					$result1=date('W',$need);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'y':
-					$result1=substr($jyear,2,4);
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'Y':
-					$result1=$jyear;
-					if ($transnumber==1) $result.=number2persian($result1);
-					else $result.=$result1;
-					break;
-			case 'U' :
-					$result.=mktime();
-					break;
-			case 'z' :
-					$result.=days_of_year($jmonth,$jday,$jyear);
-					break;
+			case 'B' :
+			case 'e' :
+			case 'g' :
+			case 'G' :
+			case 'h' :
+			case 'I' :
+			case 'T' :
+			case 'u' :
+			case 'Z' :
+				$out .= date($sub, $ts);
+				break;
+
+			case 'a' :
+				$out .= ($date[0] < 12) ? 'ق.ظ' : 'ب.ظ';
+				break;
+
+			case 'A' :
+				$out .= ($date[0] < 12) ? 'قبل از ظهر' : 'بعد از ظهر';
+				break;
+
+			case 'b' :
+				$out .= (int) ($j_m / 3.1) + 1;
+				break;
+
+			case 'c' :
+				$out .= $j_y . '/' . $j_m . '/' . $j_d . ' ،' . $date[0] . ':' . $date[1] . ':' . $date[6] . ' ' . $date[5];
+				break;
+
+			case 'C' :
+				$out .= (int) (($j_y + 99) / 100);
+				break;
+
+			case 'd' :
+				$out .= ($j_d < 10) ? '0' . $j_d : $j_d;
+				break;
+
+			case 'D' :
+				$out .= jdate_words(array('kh' => $date[7]), ' ');
+				break;
+
+			case 'f' :
+				$out .= jdate_words(array('ff' => $j_m), ' ');
+				break;
+
+			case 'F' :
+				$out .= jdate_words(array('mm' => $j_m), ' ');
+				break;
+
+			case 'H' :
+				$out .= $date[0];
+				break;
+
+			case 'i' :
+				$out .= $date[1];
+				break;
+
+			case 'j' :
+				$out .= $j_d;
+				break;
+
+			case 'J' :
+				$out .= jdate_words(array('rr' => $j_d), ' ');
+				break;
+
+			case 'k';
+			$out .= 100 - (int) ($doy / ($kab + 365) * 1000) / 10;
+			break;
+
+			case 'K' :
+				$out .= (int) ($doy / ($kab + 365) * 1000) / 10;
+				break;
+
+			case 'l' :
+				$out .= jdate_words(array('rh' => $date[7]), ' ');
+				break;
+
 			case 'L' :
-					list( $tmp_year, $tmp_month, $tmp_day ) = jalali_to_gregorian(1384, 12, 1);
-					echo $tmp_day;
-					/*if (lastday($tmp_month,$tmp_day,$tmp_year)=='31')
-							$result.='1';
-					else
-							$result.='0';
-							*/
-					break;
-			default:
-				$result.=$subtype;
+				$out .= $kab;
+				break;
+
+			case 'm' :
+				$out .= ($j_m > 9) ? $j_m : '0' . $j_m;
+				break;
+
+			case 'M' :
+				$out .= jdate_words(array('km' => $j_m), ' ');
+				break;
+
+			case 'n' :
+				$out .= $j_m;
+				break;
+
+			case 'N' :
+				$out .= $date[7] + 1;
+				break;
+
+			case 'o' :
+				$jdw = ($date[7] == 6) ? 0 : $date[7] + 1;
+				$dny = 364 + $kab - $doy;
+				$out .= ($jdw > ($doy + 3) and $doy < 3) ? $j_y - 1 : (((3 - $dny) > $jdw and $dny < 3) ? $j_y + 1 : $j_y);
+				break;
+
+			case 'O' :
+				$out .= $date[4];
+				break;
+
+			case 'p' :
+				$out .= jdate_words(array('mb' => $j_m), ' ');
+				break;
+
+			case 'P' :
+				$out .= $date[5];
+				break;
+
+			case 'q' :
+				$out .= jdate_words(array('sh' => $j_y), ' ');
+				break;
+
+			case 'Q' :
+				$out .= $kab + 364 - $doy;
+				break;
+
+			case 'r' :
+				$key = jdate_words(array('rh' => $date[7], 'mm' => $j_m));
+				$out .= $date[0] . ':' . $date[1] . ':' . $date[6] . ' ' . $date[4] . ' ' . $key['rh'] . '، ' . $j_d . ' ' . $key['mm'] . ' ' . $j_y;
+				break;
+
+			case 's' :
+				$out .= $date[6];
+				break;
+
+			case 'S' :
+				$out .= 'ام';
+				break;
+
+			case 't' :
+				$out .= ($j_m != 12) ? (31 - (int) ($j_m / 6.5)) : ($kab + 29);
+				break;
+
+			case 'U' :
+				$out .= $ts;
+				break;
+
+			case 'v' :
+				$out .= jdate_words(array('ss' => substr($j_y, 2, 2)), ' ');
+				break;
+
+			case 'V' :
+				$out .= jdate_words(array('ss' => $j_y), ' ');
+				break;
+
+			case 'w' :
+				$out .= ($date[7] == 6) ? 0 : $date[7] + 1;
+				break;
+
+			case 'W' :
+				$avs = (($date[7] == 6) ? 0 : $date[7] + 1) - ($doy % 7);
+				if ($avs < 0)
+					$avs += 7;
+				$num = (int) (($doy + $avs) / 7);
+				if ($avs < 4)
+				{
+					$num++;
+				}
+				elseif ($num < 1)
+				{
+					$num = ($avs == 4 or $avs == (($j_y % 33 % 4 - 2 == (int) ($j_y % 33 * .05)) ? 5 : 4)) ? 53 : 52;
+				}
+				$aks = $avs + $kab;
+				if ($aks == 7)
+					$aks = 0;
+				$out .= (($kab + 363 - $doy) < $aks and $aks < 3) ? '01' : (($num < 10) ? '0' . $num : $num);
+				break;
+
+			case 'y' :
+				$out .= substr($j_y, 2, 2);
+				break;
+
+			case 'Y' :
+				$out .= $j_y;
+				break;
+
+			case 'z' :
+				$out .= $doy;
+				break;
+
+			default :
+				$out .= $sub;
 		}
-		$subtypetemp=substr($type,$i,1);
-		$i++;
 	}
-	return $result;
+
+	return translate_number($out, $number_type);
 }
 
-function Jmaketime($hour='',$minute='',$second='',$jmonth='',$jday='',$jyear='')
+function jstrftime($format, $timestamp = '', $number_type = 'fa')
 {
-	if (!$hour && !$minute && !$second && !$jmonth && !$jmonth && !$jday && !$jyear)
-		return mktime();
-	list( $year, $month, $day ) = jalali_to_gregorian($jyear, $jmonth, $jday);
-	$i=mktime($hour,$minute,$second,$month,$day,$year);
-	return $i;
-}
+	$T_sec = 0; /* رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
 
-#Find num of Day Begining Of Month ( 0 for Sat & 6 for Sun)
-function mstart($month,$day,$year)
-{
-	list( $jyear, $jmonth, $jday ) = gregorian_to_jalali($year, $month, $day);
-	list( $year, $month, $day ) = jalali_to_gregorian($jyear, $jmonth, '1');
-	$timestamp=mktime(0,0,0,$month,$day,$year);
-	return date('w',$timestamp);
-}
+	$ts = $T_sec + (($timestamp == '' or $timestamp == 'now') ? time() : $timestamp);
+	$date = explode('_', date('h_H_i_j_n_s_w_Y', $ts));
+	list($j_y, $j_m, $j_d) = gregorian_to_jalali($date[7], $date[4], $date[3]);
+	$doy = ($j_m < 7) ? (($j_m - 1) * 31) + $j_d - 1 : (($j_m - 7) * 30) + $j_d + 185;
+	$kab = ($j_y % 33 % 4 - 1 == (int) ($j_y % 33 * .05)) ? 1 : 0;
 
-#Find Number Of Days In This Month
-function lastday($month,$day,$year)
-{
-	$jday2='';
-	$jdate2 ='';
-	$lastdayen=date('d',mktime(0,0,0,$month+1,0,$year));
-	list( $jyear, $jmonth, $jday ) = gregorian_to_jalali($year, $month, $day);
-	$lastdatep=$jday;
-	$jday=$jday2;
-	while($jday2!='1')
+	$sl = strlen($format);
+	$out = '';
+	for ($i = 0; $i < $sl; $i++)
 	{
-		if ($day<$lastdayen)
+		$sub = substr($format, $i, 1);
+		if ($sub == '%')
 		{
-			$day++;
-			list( $jyear, $jmonth, $jday2 ) = gregorian_to_jalali($year, $month, $day);
-			if ($jdate2=='1') break;
-			if ($jdate2!='1') $lastdatep++;
+			$sub = substr($format,++$i, 1);
 		}
 		else
 		{
-			$day=0;
-			$month++;
-			if ($month==13)
-			{
-				$month='1';
-				$year++;
-			}
+			$out .= $sub;
+			continue;
 		}
+		switch ($sub)
+		{
+			/* Day */
+			case 'a' :
+				$out .= jdate_words(array('kh' => $date[6]), ' ');
+				break;
 
+			case 'A' :
+				$out .= jdate_words(array('rh' => $date[6]), ' ');
+				break;
+
+			case 'd' :
+				$out .= ($j_d < 10) ? '0' . $j_d : $j_d;
+				break;
+
+			case 'e' :
+				$out .= ($j_d < 10) ? ' ' . $j_d : $j_d;
+				break;
+
+			case 'j' :
+				$out .= str_pad($doy + 1, 3, 0, STR_PAD_LEFT);
+				break;
+
+			case 'u' :
+				$out .= $date[6] + 1;
+				break;
+
+			case 'w' :
+				$out .= ($date[6] == 6) ? 0 : $date[6] + 1;
+				break;
+
+			/* Week */
+			case 'U' :
+				$avs = (($date[6] < 5) ? $date[6] + 2 : $date[6] - 5) - ($doy % 7);
+				if ($avs < 0)
+					$avs += 7;
+				$num = (int) (($doy + $avs) / 7) + 1;
+				if ($avs > 3 or $avs == 1)
+					$num--;
+				$out .= ($num < 10) ? '0' . $num : $num;
+				break;
+
+			case 'V' :
+				$avs = (($date[6] == 6) ? 0 : $date[6] + 1) - ($doy % 7);
+				if ($avs < 0)
+					$avs += 7;
+				$num = (int) (($doy + $avs) / 7);
+				if ($avs < 4)
+				{
+					$num++;
+				}
+				elseif ($num < 1)
+				{
+					$num = ($avs == 4 or $avs == (($j_y % 33 % 4 - 2 == (int) ($j_y % 33 * .05)) ? 5 : 4)) ? 53 : 52;
+				}
+				$aks = $avs + $kab;
+				if ($aks == 7)
+					$aks = 0;
+				$out .= (($kab + 363 - $doy) < $aks and $aks < 3) ? '01' : (($num < 10) ? '0' . $num : $num);
+				break;
+
+			case 'W' :
+				$avs = (($date[6] == 6) ? 0 : $date[6] + 1) - ($doy % 7);
+				if ($avs < 0)
+					$avs += 7;
+				$num = (int) (($doy + $avs) / 7) + 1;
+				if ($avs > 3)
+					$num--;
+				$out .= ($num < 10) ? '0' . $num : $num;
+				break;
+
+			/* Month */
+			case 'b' :
+			case 'h' :
+				$out .= jdate_words(array('km' => $j_m), ' ');
+				break;
+
+			case 'B' :
+				$out .= jdate_words(array('mm' => $j_m), ' ');
+				break;
+
+			case 'm' :
+				$out .= ($j_m > 9) ? $j_m : '0' . $j_m;
+				break;
+
+			/* Year */
+			case 'C' :
+				$out .= substr($j_y, 0, 2);
+				break;
+
+			case 'g' :
+				$jdw = ($date[6] == 6) ? 0 : $date[6] + 1;
+				$dny = 364 + $kab - $doy;
+				$out .= substr(($jdw > ($doy + 3) and $doy < 3) ? $j_y - 1 : (((3 - $dny) > $jdw and $dny < 3) ? $j_y + 1 : $j_y), 2, 2);
+				break;
+
+			case 'G' :
+				$jdw = ($date[6] == 6) ? 0 : $date[6] + 1;
+				$dny = 364 + $kab - $doy;
+				$out .= ($jdw > ($doy + 3) and $doy < 3) ? $j_y - 1 : (((3 - $dny) > $jdw and $dny < 3) ? $j_y + 1 : $j_y);
+				break;
+
+			case 'y' :
+				$out .= substr($j_y, 2, 2);
+				break;
+
+			case 'Y' :
+				$out .= $j_y;
+				break;
+
+			/* Time */
+			case 'H' :
+				$out .= $date[1];
+				break;
+
+			case 'I' :
+				$out .= $date[0];
+				break;
+
+			case 'l' :
+				$out .= ($date[0] > 9) ? $date[0] : ' ' . (int) $date[0];
+				break;
+
+			case 'M' :
+				$out .= $date[2];
+				break;
+
+			case 'p' :
+				$out .= ($date[1] < 12) ? 'قبل از ظهر' : 'بعد از ظهر';
+				break;
+
+			case 'P' :
+				$out .= ($date[1] < 12) ? 'ق.ظ' : 'ب.ظ';
+				break;
+
+			case 'r' :
+				$out .= $date[0] . ':' . $date[2] . ':' . $date[5] . ' ' . (($date[1] < 12) ? 'قبل از ظهر' : 'بعد از ظهر');
+				break;
+
+			case 'R' :
+				$out .= $date[1] . ':' . $date[2];
+				break;
+
+			case 'S' :
+				$out .= $date[5];
+				break;
+
+			case 'T' :
+				$out .= $date[1] . ':' . $date[2] . ':' . $date[5];
+				break;
+
+			case 'X' :
+				$out .= $date[0] . ':' . $date[2] . ':' . $date[5];
+				break;
+
+			case 'z' :
+				$out .= date('O', $ts);
+				break;
+
+			case 'Z' :
+				$out .= date('T', $ts);
+				break;
+
+			/* Time and Date Stamps */
+			case 'c' :
+				$key = jdate_words(array('rh' => $date[6], 'mm' => $j_m));
+				$out .= $date[1] . ':' . $date[2] . ':' . $date[5] . ' ' . date('P', $ts) . ' ' . $key['rh'] . '، ' . $j_d . ' ' . $key['mm'] . ' ' . $j_y;
+				break;
+
+			case 'D' :
+				$out .= substr($j_y, 2, 2) . '/' . (($j_m > 9) ? $j_m : '0' . $j_m) . '/' . (($j_d < 10) ? '0' . $j_d : $j_d);
+				break;
+
+			case 'F' :
+				$out .= $j_y . '-' . (($j_m > 9) ? $j_m : '0' . $j_m) . '-' . (($j_d < 10) ? '0' . $j_d : $j_d);
+				break;
+
+			case 's' :
+				$out .= $ts;
+				break;
+
+			case 'x' :
+				$out .= substr($j_y, 2, 2) . '/' . (($j_m > 9) ? $j_m : '0' . $j_m) . '/' . (($j_d < 10) ? '0' . $j_d : $j_d);
+				break;
+
+			/* Miscellaneous */
+			case 'n' :
+				$out .= "\n";
+				break;
+
+			case 't' :
+				$out .= "\t";
+				break;
+
+			case '%' :
+				$out .= '%';
+				break;
+
+			default :
+				$out .= $sub;
+		}
 	}
-	return $lastdatep-1;
+
+	return translate_number($out, $number_type);
 }
 
-#Find days in this year untile now
-function days_of_year($jmonth,$jday,$jyear)
+function jmktime($h = '', $m = '', $s = '', $jm = '', $jd = '', $jy = '', $is_dst = - 1)
 {
-	$year='';
-	$month='';
-	$year='';
-	$result='';
-	if ($jmonth=='01')
-		return $jday;
-	for ($i=1;$i<$jmonth || $i==12;$i++)
+	if ($h == '' and $m == '' and $s == '' and $jm == '' and $jd == '' and $jy == '')
 	{
-		list( $year, $month, $day ) = jalali_to_gregorian($jyear, $i, '1');
-		$result+=lastday($month,$day,$year);
+		return mktime();
 	}
-	return $result+$jday;
-}
-
-#translate number of month to name of month
-function monthname($month)
-{
-	if ($month=='01') return 'فروردین';
-
-    if ($month=='02') return 'اردیبهشت';
-
-    if ($month=='03') return 'خرداد';
-
-    if ($month=='04') return 'تیر';
-
-    if ($month=='05') return 'مرداد';
-
-    if ($month=='06') return 'شهریور';
-
-    if ($month=='07') return 'مهر';
-
-    if ($month=='08') return 'آبان';
-
-    if ($month=='09') return 'آذر';
-
-    if ($month=='10') return 'دی';
-
-    if ($month=='11') return 'بهمن';
-
-    if ($month=='12') return 'اسفند';
-}
-
-function short_monthname($month)
-{
-    if ($month=='01') return 'فروردین';
-
-    if ($month=='02') return 'اردیبهشت';
-
-    if ($month=='03') return 'خرداد';
-
-    if ($month=='04') return 'تیر';
-
-    if ($month=='05') return 'مرداد';
-
-    if ($month=='06') return 'شهریور';
-
-    if ($month=='07') return 'مهر';
-
-    if ($month=='08') return 'آبان';
-
-    if ($month=='09') return 'آذر';
-
-    if ($month=='10') return 'دی';
-
-    if ($month=='11') return 'بهمن';
-
-    if ($month=='12') return 'اسفند';
-}
-
-# here convert to number in persian
-function number2persian($srting)
-{
-    $num0='۰';
-    $num1='۱';
-    $num2='۲';
-    $num3='۳';
-    $num4='۴';
-    $num5='۵';
-    $num6='۶';
-    $num7='۷';
-    $num8='۸';
-    $num9='۹';
-    $stringtemp='';
-    $len=strlen($srting);
-    for($sub=0;$sub<$len;$sub++)
-    {
-		if(substr($srting,$sub,1)=='0')$stringtemp.=$num0;
-		elseif(substr($srting,$sub,1)=='1')$stringtemp.=$num1;
-		elseif(substr($srting,$sub,1)=='2')$stringtemp.=$num2;
-		elseif(substr($srting,$sub,1)=='3')$stringtemp.=$num3;
-		elseif(substr($srting,$sub,1)=='4')$stringtemp.=$num4;
-		elseif(substr($srting,$sub,1)=='5')$stringtemp.=$num5;
-		elseif(substr($srting,$sub,1)=='6')$stringtemp.=$num6;
-		elseif(substr($srting,$sub,1)=='7')$stringtemp.=$num7;
-		elseif(substr($srting,$sub,1)=='8')$stringtemp.=$num8;
-		elseif(substr($srting,$sub,1)=='9')$stringtemp.=$num9;
-		else $stringtemp.=substr($srting,$sub,1);
-    }
-    return  $stringtemp;
-}
-
-function is_kabise($year)
-{
-	if ($year%4==0 && $year%100!=0)
-		return true;
-	return false;
-}
-
-function Jcheckdate($month,$day,$year)
-{
-	$Jdays_in_month = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29);
-	if ($month<=12 && $month>0)
+	else
 	{
-		if ($Jdays_in_month[$month-1]>=$day && $day>0)
-			return 1;
-		if (is_kabise($year))
-			echo 'Asdsd';
-		if (is_kabise($year) && $Jdays_in_month[$month-1]==31)
-			return 1;
+		list($year, $month, $day) = jalali_to_gregorian($jy, $jm, $jd);
+		return mktime($h, $m, $s, $month, $day, $year, $is_dst);
 	}
-	return 0;
 }
 
-function Jgetdate($timestamp='')
+function jgetdate($timestamp = '', $tn = 'en')
 {
-	if ($timestamp=='')
-		$timestamp=mktime();
+	$timestamp = ($timestamp == '') ? time() : $timestamp;
+	$jdate = explode('_', jdate('F_G_i_j_l_n_s_w_Y_z', $timestamp, $tn));
 
 	return array(
-		0=>$timestamp,
-		'seconds'=>jdate('s',$timestamp, 0),
-		'minutes'=>jdate('i',$timestamp, 0),
-		'hours'=>jdate('G',$timestamp, 0),
-		'mday'=>jdate('j',$timestamp, 0),
-		'wday'=>jdate('w',$timestamp, 0),
-		'mon'=>jdate('n',$timestamp, 0),
-		'year'=>jdate('Y',$timestamp, 0),
-		'yday'=>days_of_year(jdate('m',$timestamp, 0),jdate('d',$timestamp, 0),jdate('Y',$timestamp, 0)),
-		'weekday'=>jdate('l',$timestamp, 0),
-		'month'=>jdate('F',$timestamp, 0),
+		'seconds' => (int) $jdate[6],
+		'minutes' => (int) $jdate[2],
+		'hours' => $jdate[1],
+		'mday' => $jdate[3],
+		'wday' => $jdate[7],
+		'mon' => $jdate[5],
+		'year' => $jdate[8],
+		'yday' => $jdate[9],
+		'weekday' => $jdate[4],
+		'month' => $jdate[0],
+		0 => $timestamp
 	);
 }
 
-function date_div($a,$b)
+function jcheckdate($jm, $jd, $jy)
 {
-    return (int) ($a / $b);
+	$l_d = ($jm == 12) ? (($jy % 33 % 4 - 1 == (int) ($jy % 33 * .05)) ? 30 : 29) : 31 - (int) ($jm / 6.5);
+	return ($jm > 0 and $jd > 0 and $jy > 0 and $jm < 13 and $jd <= $l_d) ? true : false;
 }
 
-function gregorian_to_jalali($g_y, $g_m, $g_d)
+function jdate_words($array, $mod = '')
 {
-	$g_days_in_month = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-	$Jdays_in_month = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29);
-
-	$gy = $g_y-1600;
-	$gm = $g_m-1;
-	$gd = $g_d-1;
-
-	$g_day_no = 365*$gy+date_div($gy+3,4)-date_div($gy+99,100)+date_div($gy+399,400);
-
-	for ($i=0; $i < $gm; ++$i)
-	$g_day_no += $g_days_in_month[$i];
-	if ($gm>1 && (($gy%4==0 && $gy%100!=0) || ($gy%400==0)))
-	  /* leap and after Feb */
-		$g_day_no++;
-	$g_day_no += $gd;
-
-	$Jday_no = $g_day_no-79;
-
-	$Jnp = date_div($Jday_no, 12053); /* 12053 = 365*33 + 32/4 */
-	$Jday_no = $Jday_no % 12053;
-
-	$jy = 979+33*$Jnp+4*date_div($Jday_no,1461); /* 1461 = 365*4 + 4/4 */
-
-	$Jday_no %= 1461;
-
-	if ($Jday_no >= 366) {
-		$jy += date_div($Jday_no-1, 365);
-		$Jday_no = ($Jday_no-1)%365;
-	}
-
-	for ($i = 0; $i < 11 && $Jday_no >= $Jdays_in_month[$i]; ++$i)
-		$Jday_no -= $Jdays_in_month[$i];
-	$jm = $i+1;
-	$jd = $Jday_no+1;
-
-	return array($jy, $jm, $jd);
-}
-
-function Jalali_to_gregorian($Jy, $Jm, $Jd)
-{
-	$g_days_in_month = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-	$Jdays_in_month = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29);
-
-	$jy = $Jy-979;
-	$jm = $Jm-1;
-	$jd = $Jd-1;
-
-	$Jday_no = 365*$jy + date_div($jy, 33)*8 + date_div($jy%33+3, 4);
-	for ($i=0; $i < $jm; ++$i)
-		$Jday_no += $Jdays_in_month[$i];
-
-	$Jday_no += $jd;
-
-	$g_day_no = $Jday_no+79;
-
-   $gy = 1600 + 400*date_div($g_day_no, 146097); /* 146097 = 365*400 + 400/4 - 400/100 + 400/400 */
-   $g_day_no = $g_day_no % 146097;
-
-	$leap = true;
-	if ($g_day_no >= 36525) /* 36525 = 365*100 + 100/4 */
+	foreach ($array as $type => $num)
 	{
-		$g_day_no--;
-		$gy += 100*date_div($g_day_no,  36524); /* 36524 = 365*100 + 100/4 - 100/100 */
-		$g_day_no = $g_day_no % 36524;
+		$num = (int) $num;
+		switch ($type)
+		{
+			case 'ss' :
+				$sl = strlen($num);
+				$xy3 = substr($num, 2 - $sl, 1);
+				$h3 = $h34 = $h4 = '';
+				if ($xy3 == 1)
+				{
+					$p34 = '';
+					$k34 = array('ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده');
+					$h34 = $k34[substr($num, 2 - $sl, 2) - 10];
+				}
+				else
+				{
+					$xy4 = substr($num, 3 - $sl, 1);
+					$p34 = ($xy3 == 0 or $xy4 == 0) ? '' : ' و ';
+					$k3 = array('', '', 'بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود');
+					$h3 = $k3[$xy3];
+					$k4 = array('', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نُه');
+					$h4 = $k4[$xy4];
+				}
+				$array [$type] = (($num > 99) ? str_ireplace(array('12', '13', '14', '19', '20'), array('هزار و دویست', 'هزار و سیصد', 'هزار و چهارصد', 'هزار و نهصد', 'دوهزار'), substr($num, 0, 2)) . ((substr($num, 2, 2) == '00') ? '' : ' و ') : '') . $h3 . $p34 . $h34 . $h4;
+				break;
 
-		if ($g_day_no >= 365)
-			$g_day_no++;
-		else
-			$leap = false;
+			case 'mm' :
+				$key = array('فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند');
+				$array [$type] = $key[$num - 1];
+				break;
+
+			case 'rr' :
+				$key = array('یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نُه', 'ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده', 'بیست', 'بیست و یک', 'بیست و دو', 'بیست و سه', 'بیست و چهار', 'بیست و پنج', 'بیست و شش', 'بیست و هفت', 'بیست و هشت', 'بیست و نُه', 'سی', 'سی و یک');
+				$array [$type] = $key[$num - 1];
+				break;
+
+			case 'rh' :
+				$key = array('یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه');
+				$array [$type] = $key[$num];
+				break;
+
+			case 'sh' :
+				$key = array('مار', 'اسب', 'گوسفند', 'میمون', 'مرغ', 'سگ', 'خوک', 'موش', 'گاو', 'پلنگ', 'خرگوش', 'نهنگ');
+				$array [$type] = $key[$num % 12];
+				break;
+
+			case 'mb' :
+				$key = array('حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت');
+				$array [$type] = $key[$num - 1];
+				break;
+
+			case 'ff' :
+				$key = array('بهار', 'تابستان', 'پاییز', 'زمستان');
+				$array [$type] = $key[(int) ($num / 3.1)];
+				break;
+
+			case 'km' :
+				$key = array('فر', 'ار', 'خر', 'تی‍', 'مر', 'شه‍', 'مه‍', 'آب‍', 'آذ', 'دی', 'به‍', 'اس‍');
+				$array [$type] = $key[$num - 1];
+				break;
+
+			case 'kh' :
+				$key = array('ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش');
+				$array [$type] = $key[$num];
+				break;
+
+			default :
+				$array [$type] = $num;
+		}
 	}
-
-	$gy += 4*date_div($g_day_no, 1461); /* 1461 = 365*4 + 4/4 */
-	$g_day_no %= 1461;
-
-	if ($g_day_no >= 366) {
-		$leap = false;
-
-		$g_day_no--;
-		$gy += date_div($g_day_no, 365);
-		$g_day_no = $g_day_no % 365;
-	}
-
-	for ($i = 0; $g_day_no >= $g_days_in_month[$i] + ($i == 1 && $leap); $i++)
-		$g_day_no -= $g_days_in_month[$i] + ($i == 1 && $leap);
-	$gm = $i+1;
-	$gd = $g_day_no+1;
-
-	return array($gy, $gm, $gd);
+	return ($mod == '')? $array : implode($mod, $array);
 }
 
-?>
+function gregorian_to_jalali($g_y, $g_m, $g_d, $mod = '')
+{
+	$d_4 = $g_y % 4;
+	$g_a = array(0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334);
+	$doy_g = $g_a[(int) $g_m] + $g_d;
+	if ($d_4 == 0 and $g_m > 2)
+		$doy_g++;
+	$d_33 = (int) ((($g_y - 16) % 132) * .0305);
+	$a = ($d_33 == 3 or $d_33 < ($d_4 - 1) or $d_4 == 0) ? 286 : 287;
+	$b = (($d_33 == 1 or $d_33 == 2) and ($d_33 == $d_4 or $d_4 == 1)) ? 78 : (($d_33 == 3 and $d_4 == 0) ? 80 : 79);
+	if ((int) (($g_y - 10) / 63) == 30)
+	{
+		$a--;
+		$b++;
+	}
+	if ($doy_g > $b)
+	{
+		$jy = $g_y - 621;
+		$doy_j = $doy_g - $b;
+	}
+	else
+	{
+		$jy = $g_y - 622;
+		$doy_j = $doy_g + $a;
+	}
+	if ($doy_j < 187)
+	{
+		$jm = (int) (($doy_j - 1) / 31);
+		$jd = $doy_j - (31 * $jm++);
+	}
+	else
+	{
+		$jm = (int) (($doy_j - 187) / 30);
+		$jd = $doy_j - 186 - ($jm * 30);
+		$jm += 7;
+	}
+	return ($mod == '')? array($jy, $jm, $jd) : $jy . $mod . $jm . $mod . $jd;
+}
+
+function jalali_to_gregorian($j_y, $j_m, $j_d, $mod = '')
+{
+	$d_4 = ($j_y + 1) % 4;
+	$doy_j = ($j_m < 7) ? (($j_m - 1) * 31) + $j_d : (($j_m - 7) * 30) + $j_d + 186;
+	$d_33 = (int) ((($j_y - 55) % 132) * .0305);
+	$a = ($d_33 != 3 and $d_4 <= $d_33) ? 287 : 286;
+	$b = (($d_33 == 1 or $d_33 == 2) and ($d_33 == $d_4 or $d_4 == 1)) ? 78 : (($d_33 == 3 and $d_4 == 0) ? 80 : 79);
+	if ((int) (($j_y - 19) / 63) == 20)
+	{
+		$a--;
+		$b++;
+	}
+	if ($doy_j <= $a)
+	{
+		$gy = $j_y + 621;
+		$gd = $doy_j + $b;
+	}
+	else
+	{
+		$gy = $j_y + 622;
+		$gd = $doy_j - $a;
+	}
+	foreach (array(0, 31, ($gy % 4 == 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31) as $gm => $v)
+	{
+		if ($gd <= $v)
+			break;
+		$gd -= $v;
+	}
+	return ($mod == '')? array($gy, $gm, $gd) : $gy . $mod . $gm . $mod . $gd;
+}

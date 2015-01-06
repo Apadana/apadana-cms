@@ -5,7 +5,7 @@
  * @email: info@parsnuke.com
  * @link: http://www.parsnuke.com
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright (C) 2012-2013 ParsNuke.com. All rights reserved.
+ * @copyright: Copyright (C) 2012-2015 ParsNuke.com. All rights reserved.
  * @ParsNuke CMS is a Free Software
  */
 

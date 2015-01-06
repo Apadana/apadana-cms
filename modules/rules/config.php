@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -31,7 +31,7 @@ function module_rules_run()
 	($hook = get_hook('module_rules'))? eval($hook) : null;
 }
 
-function module_licence_sitemap(&$sitemap)
+function module_licence_sitemap($sitemap)
 {
 	$sitemap->addItem(url('rules'), 0, 'monthly', '0.6');
 }

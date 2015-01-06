@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Apadana Development Team
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright (C) 2012-2013 apadanacms.ir. All rights reserved.
+ * @copyright: Copyright (C) 2012-2015 apadanacms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -38,7 +38,6 @@ $d->query("INSERT INTO `#__admin` VALUES('modules', 'engine/images/admin/modules
 $d->query("INSERT INTO `#__admin` VALUES('groups', 'engine/images/admin/groups.png', 'گروه های کاربری', '?admin={admin}&amp;section=groups', '1');");
 $d->query("INSERT INTO `#__admin` VALUES('referer', 'engine/images/admin/referer.png', 'لینک دهندگان', '?admin={admin}&amp;section=referer', '1');");
 $d->query("INSERT INTO `#__admin` VALUES('banned', 'engine/images/admin/banned.png', 'مسدود سازی', '?admin={admin}&amp;section=banned', '1');");
-$d->query("INSERT INTO `#__admin` VALUES('counter', 'engine/images/admin/counter.png', 'آمارگیر', '?admin={admin}&amp;module=counter', '1');");
 $d->query("INSERT INTO `#__admin` VALUES('voting', 'engine/images/admin/voting.png', 'نظرسنجی', '?admin={admin}&amp;module=voting', '2');");
 $d->query("INSERT INTO `#__admin` VALUES('options', 'engine/images/admin/options.png', 'تنظیمات عمومی', '?admin={admin}&amp;section=options', '3');");
 $d->query("INSERT INTO `#__admin` VALUES('account-op', 'engine/images/admin/account-op.png', 'سامانه کاربری', '?admin={admin}&amp;module=account&amp;do=options', '3');");
@@ -71,6 +70,7 @@ $d->query("CREATE TABLE `#__antiflood` (
   KEY `flood_ip` (`flood_ip`),
   KEY `flood_time` (`flood_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
 
 # --------------------------------------------------------
 #
@@ -107,26 +107,26 @@ $d->query("CREATE TABLE `#__blocks` (
   `block_active` int(1) NOT NULL,
   `block_language` varchar(100) NOT NULL DEFAULT 'persian',
   PRIMARY KEY (`block_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;");
 
 
 #
 # Dumping data for table '#__blocks'
 #
 
-$d->query("INSERT INTO `#__blocks` VALUES('1', '8', 'right', 'موضوعات', '', '1', 'categories', '', '1', '1', 'persian');");
-$d->query("INSERT INTO `#__blocks` VALUES('2', '13', 'top', 'جستجو در سایت', '[- options -]\nsize = 300', '1', 'search', '', '1', '0', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('3', '4', 'left', 'سامانه کاربری', '', '1', 'login', '', '1', '1', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('4', '12', 'right', 'اطلاعات آماری', '', '1', 'counter', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('1', '1', 'right', 'موضوعات', '', '1', 'categories', '', '1', '1', 'persian');");
+$d->query("INSERT INTO `#__blocks` VALUES('2', '14', 'top', 'جستجو در سایت', '[- options -]\nsize = 300', '1', 'search', '', '1', '0', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('3', '3', 'left', 'سامانه کاربری', '', '1', 'login', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('4', '5', 'right', 'اطلاعات آماری', '', '1', 'counter', '', '1', '1', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('5', '5', 'left', 'صفحات اضافی', '[- options -]\ntotal = 15\norder = desc', '1', 'pages', '', '1', '1', 'persian');");
-$d->query("INSERT INTO `#__blocks` VALUES('6', '11', 'right', 'لینکستان', '', '1', 'simple_links', '', '1', '1', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('7', '9', 'right', 'جدیدترین مطالب', '[- options -]\ntotal = 15', '1', 'last_posts', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('6', '4', 'right', 'لینکستان', '', '1', 'simple_links', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('7', '2', 'right', 'جدیدترین مطالب', '[- options -]\ntotal = 15', '1', 'last_posts', '', '1', '1', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('8', '2', 'bottom', 'بیشترین بازدید شده ها', '[- options -]\ntotal = 10\nhits = true\norder = desc', '1', 'last_posts', '', '0', '0', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('9', '10', 'right', 'نظرسنجی', '', '1', 'voting', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('9', '3', 'right', 'نظرسنجی', '', '1', 'voting', '', '1', '1', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('10', '1', 'bottom', 'آخرین نظرات', '[- options -]\ntotal = 15\norder = desc', '1', 'posts_comments', '', '1', '0', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('11', '6', 'left', 'جعبه پیام', '', '1', 'shoutbox', '', '1', '1', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('12', '7', 'left', 'برچسب ها', '[- options -]\ntotal = 50', '1', 'tags_cloud', '', '1', '1', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('13', '3', 'left', 'کاربران آنلاین', '', '1', 'onlines', '', '1', '0', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('13', '4', 'right', 'کاربران آنلاین', '', '1', 'onlines', '', '1', '1', '');");
 
 
 # --------------------------------------------------------
@@ -153,172 +153,8 @@ $d->query("CREATE TABLE `#__comments` (
   PRIMARY KEY (`comment_id`),
   KEY `comment_type` (`comment_type`),
   KEY `comment_link` (`comment_link`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
-
-
-# --------------------------------------------------------
-#
-# Table structure for table '#__counter'
-#
-
-$d->query("DROP TABLE IF EXISTS `#__counter`;");
-$d->query("CREATE TABLE `#__counter` (
-  `counter_name` varchar(200) NOT NULL,
-  `counter_value` varchar(400) NOT NULL,
-  `counter_version` varchar(20) NOT NULL,
-  KEY `counter_version` (`counter_version`),
-  KEY `counter_name` (`counter_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
-
-#
-# Dumping data for table '#__counter'
-#
-
-$d->query("INSERT INTO `#__counter` VALUES('Total', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Internet Explorer', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Firefox', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Chrome', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Mozilla', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Opera', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Netscape', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Konqueror', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Safari', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Galeon', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Epiphany', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-K-Meleon', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-IBrowse', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Camino', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-iCab', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-OmniWeb', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-w3m', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Lynx', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Links', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-ELinks', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Curl', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Voyager', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Amaya', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-Bot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Browser-unknown', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-Windows', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-Linux', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-Android', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-iPhone', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-iPod', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-Mac OS', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-SunOS', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-FreeBSD', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-NetBSD', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-OpenBSD', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-IRIX', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-BeOS', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-OS/2', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-AIX', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-Amiga', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-Darwin', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-HP-UX', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-QNX', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('OS-unknown', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Googlebot-Image', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Mediapartners-Google', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Googlebot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Altavista', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Inktomi', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Yahoo!', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Infoseek', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Nutch', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Fireball', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-AlltheWeb', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Alexa (web.archive.org)', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Alexa', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-WiseNutBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-W3C Validator', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-W3C CSS Validator', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-SurveyBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-QuepasaCreep', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-PHP', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Java', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Overture', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-MSNBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Claymont', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Baiduspider', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Almaden', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Il Trovatore', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Teoma', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Gigabot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Girafabot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-WebCopier', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-HTTrack', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-WGet', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-lwp-request', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-JetBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-NaverBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Larbin', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-ObjectsSearch', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Robozilla', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Walhello appie', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Grub', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Gaisbot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-mozDex', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-GeonaBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Openbot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Boitho', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Pompos', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Exabot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Xenu Link Sleuth', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-W3C-checklink', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Versus', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-FindLinks', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-wwwster', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Steeler', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Ocelli', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-BecomeBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Seekbot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Psbot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-IRLbot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-PhpDig', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-gazz', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-MJ12bot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-getRAX Crawler', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Amfibibot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-GigabotSiteSearch', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-pipeLiner', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-ZipppBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-TurnitinBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-KazoomBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-NetResearchServer', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-gamekitbot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Vagabondo', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-TheSuBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-NPBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Cerberian', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-ConveraCrawler', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-search.ch', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-ichiro', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-CydralSpider', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Szukacz', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Patwebbot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-SpeedySpider', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Mackster', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-thumbshots-de-Bot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Digger', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Zao', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Tutorial Crawler', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-InelaBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-ASPseek', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Francis', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-TutorGigBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-CipinetBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-ES.NET_Crawler', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-eventax', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-stat', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Xaldon WebSpider', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Faxobot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Sherlock', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-Holmes', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-lmspider', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-SeznamBot', '0', '');");
-$d->query("INSERT INTO `#__counter` VALUES('Robot-other', '0', '');");
 
 # --------------------------------------------------------
 #
@@ -354,7 +190,14 @@ $d->query("CREATE TABLE `#__files` (
   `file_members` text NOT NULL,
   PRIMARY KEY (`file_id`),
   KEY `file_slug` (`file_slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
+
+
+#
+# Dumping data for table '#__files'
+#
+
+$d->query("INSERT INTO `#__files` VALUES('1', 'demo-jpg', 'uploads/posts/demo.jpg', '1418733937', '1', '1', '0', '');");
 
 
 # --------------------------------------------------------
@@ -416,14 +259,16 @@ $d->query("CREATE TABLE `#__members` (
   `member_language` varchar(100) NOT NULL,
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `member_name` (`member_name`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;");
 
 
 #
 # Dumping data for table '#__members'
 #
 
-$d->query("INSERT INTO `#__members` VALUES('1', 'admin', '', '', '', '', '0', '0', '0', '', '', '1', '', 'مدیر', '', '1', '1', 'Iran (Islamic Republic of)', '', 'male', '');");
+$d->query("INSERT INTO `#__members` VALUES('1', 'admin', '6f6d5f7b86e131a014cf0d1fe3172d20', '8b2349b7c5add80e157ffe3f871da188', 'msdn2013@gmail.com', '', '1416425510', '1420471100', '25', '127.0.0.1', '127.0.0.1', '1', '', 'admin', '', '1', '1', 'Iran (Islamic Republic of)', '', 'male', '');");
+$d->query("INSERT INTO `#__members` VALUES('2', 'msdn', '06b84164b4b35f75c0dc1c4ac6a3e0e9', 'c653d43e26b58c7086972ff6fd2acc77', 'smsd@gmail.com', '', '1419444299', '1419444299', '1', '127.0.0.1', '127.0.0.1', '1', '', 'msdn', '', '4', '1', 'Iran (Islamic Republic of)', '', 'male', '');");
+$d->query("INSERT INTO `#__members` VALUES('3', 'msdn2', '', 'c653d43e26b58c7086972ff6fd2acc77', 'smsd@gmail.com1', '', '1419444411', '1419444411', '1', '127.0.0.1', '127.0.0.1', '1', '', 'msdn2', '', '1', '1', 'Iran (Islamic Republic of)', '', 'male', '');");
 
 
 # --------------------------------------------------------
@@ -446,7 +291,6 @@ $d->query("CREATE TABLE `#__modules` (
 
 $d->query("INSERT INTO `#__modules` VALUES('account', '1.0', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('contact-us', '1.0', '2');");
-$d->query("INSERT INTO `#__modules` VALUES('counter', '1.0', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('error', '1.0', '1');");
 $d->query("INSERT INTO `#__modules` VALUES('feed', '1.0', '2');");
 $d->query("INSERT INTO `#__modules` VALUES('files', '1.0.1', '2');");
@@ -473,7 +317,9 @@ $d->query("CREATE TABLE `#__options` (
   `option_name` varchar(100) NOT NULL,
   `option_value` longtext NOT NULL,
   `autoload` int(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`option_name`)
+  PRIMARY KEY (`option_name`),
+  FULLTEXT KEY `option_name` (`option_name`),
+  FULLTEXT KEY `option_name_2` (`option_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 
@@ -486,7 +332,7 @@ $d->query("INSERT INTO `#__options` VALUES('slogan', 'یک سایت دیگر ب�
 $d->query("INSERT INTO `#__options` VALUES('admin', 'iran', '1');");
 $d->query("INSERT INTO `#__options` VALUES('language', 'persian', '1');");
 $d->query("INSERT INTO `#__options` VALUES('offline', '0', '1');");
-$d->query("INSERT INTO `#__options` VALUES('offline-message', '<p>\r\n	سایت به منظور به روزرسانی تا اطلاع ثانوی غیرفعال می باشد، لطفا بعدا مراجعه فرمایید.</p>\r\n<p>\r\n	مدیر سایت</p>', '0');");
+$d->query("INSERT INTO `#__options` VALUES('offline-message', '<p>سایت به منظور به روزرسانی تا اطلاع ثانوی غیرفعال می باشد، لطفا بعدا مراجعه فرمایید.</p>\r\n\r\n<p>مدیر سایت</p>', '0');");
 $d->query("INSERT INTO `#__options` VALUES('meta-desc', 'یک سایت دیگر با سیستم مدیریت محتوای ایرانی آپادانا', '1');");
 $d->query("INSERT INTO `#__options` VALUES('meta-keys', 'رایگان,آپادانا,ایرانی,مدیریت محتوا,PHP,جدید,ساده,قدرتمند,سئو,حرفه ای', '1');");
 $d->query("INSERT INTO `#__options` VALUES('default-module', 'posts', '1');");
@@ -494,16 +340,16 @@ $d->query("INSERT INTO `#__options` VALUES('theme', 'default', '1');");
 $d->query("INSERT INTO `#__options` VALUES('account', 'a:9:{s:8:\"register\";i:1;s:7:\"members\";i:1;s:13:\"members-total\";i:20;s:6:\"avatar\";i:1;s:10:\"avatarsize\";i:40;s:11:\"minUsername\";i:3;s:11:\"minPassword\";i:6;s:5:\"email\";i:1;s:13:\"maxavatardims\";s:7:\"150x150\";}', '0');");
 $d->query("INSERT INTO `#__options` VALUES('rules', '', '0');");
 $d->query("INSERT INTO `#__options` VALUES('replace-link', '0', '1');");
-$d->query("INSERT INTO `#__options` VALUES('last-banned', '".time()."', '1');");
+$d->query("INSERT INTO `#__options` VALUES('last-banned', '1416425485', '1');");
 $d->query("INSERT INTO `#__options` VALUES('posts', 'a:5:{s:11:\"total-posts\";i:10;s:14:\"total-category\";i:10;s:9:\"total-tag\";i:10;s:12:\"total-author\";i:10;s:6:\"fields\";a:0:{}}', '0');");
 $d->query("INSERT INTO `#__options` VALUES('comments', 'a:5:{s:5:\"limit\";i:400;s:10:\"post-guest\";i:1;s:6:\"editor\";i:1;s:5:\"email\";i:1;s:7:\"approve\";i:1;}', '0');");
-$d->query("INSERT INTO `#__options` VALUES('mail', 'no-reply@".domain."', '1');");
+$d->query("INSERT INTO `#__options` VALUES('mail', 'no-reply@gmail.com', '1');");
 $d->query("INSERT INTO `#__options` VALUES('feed-limit', '10', '1');");
 $d->query("INSERT INTO `#__options` VALUES('rewrite', '0', '1');");
 $d->query("INSERT INTO `#__options` VALUES('http-referer', '1', '1');");
 $d->query("INSERT INTO `#__options` VALUES('separator-rewrite', '/', '1');");
 $d->query("INSERT INTO `#__options` VALUES('file-rewrite', '.html', '1');");
-$d->query("INSERT INTO `#__options` VALUES('editor-color', '#D9D9D9', '1');");
+$d->query("INSERT INTO `#__options` VALUES('editor-color', '#D9D327', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-host', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-port', '25', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-username', '', '1');");
@@ -511,6 +357,8 @@ $d->query("INSERT INTO `#__options` VALUES('smtp-password', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('url-correction', '1', '1');");
 $d->query("INSERT INTO `#__options` VALUES('antiflood', '0', '1');");
 $d->query("INSERT INTO `#__options` VALUES('version', '1.0.1', '1');");
+$d->query("INSERT INTO `#__options` VALUES('admin-notes', 'محل یادداشت', '0');");
+$d->query("INSERT INTO `#__options` VALUES('first_install', '1', '1');");
 
 
 # --------------------------------------------------------
@@ -540,7 +388,7 @@ $d->query("CREATE TABLE `#__pages` (
 # Dumping data for table '#__pages'
 #
 
-$d->query("INSERT INTO `#__pages` VALUES('1', 'درباره ما', 'about-us', '".time()."', '1', '<p>\r\n	این یک صفحه آزمایشی است!</p>\r\n<p>\r\n	از بخش مدیریت می توانید آن را حذف و یا ویرایش کنید.</p>\r\n<p>\r\n	برای انتخاب سیستم مدیریت محتوای ایرانی <a href=\"http://www.apadanacms.ir/\" target=\"_blank\" title=\"Apadana\"><strong>آپادانا</strong></a> از شما سپاس گذاریم.</p>', '', '1', '0', '0', '1');");
+$d->query("INSERT INTO `#__pages` VALUES('1', 'درباره ما', 'about-us', '1416425485', '1', '<p>\r\n	این یک صفحه آزمایشی است!</p>\r\n<p>\r\n	از بخش مدیریت می توانید آن را حذف و یا ویرایش کنید.</p>\r\n<p>\r\n	برای انتخاب سیستم مدیریت محتوای ایرانی <a href=\"http://www.apadanacms.ir/\" target=\"_blank\" title=\"Apadana\"><strong>آپادانا</strong></a> از شما سپاس گذاریم.</p>', '', '1', '0', '0', '1');");
 
 
 # --------------------------------------------------------
@@ -579,7 +427,7 @@ $d->query("CREATE TABLE `#__posts` (
 # Dumping data for table '#__posts'
 #
 
-$d->query("INSERT INTO `#__posts` VALUES('1', '1', '".time()."', 'سیستم مدیریت محتوای آپادانا', 'apadana-content-management-system', '<p style=\"text-align: center;\">\r\n	<img alt=\"سیستم مدیریت محتوای ایرانی آپادانا\" src=\"uploads/posts/demo.jpg\" /></p>\r\n<p style=\"text-align: center;\">\r\n	&nbsp;</p>\r\n<p>\r\n	برخی از امکانات سیستم مدیریت محتوای ایرانی آپادانا:</p>\r\n<p>\r\n	مدیریت پست ها به صورت حرفه ای<br />\r\n	امکان ساخت فیلدهای اضافه برای پست ها<br />\r\n	امکان دانلود پست ها با فرمت PDF<br />\r\n	امکان ساخت نسخه پرینت برای پست ها<br />\r\n	امکان نمایش مطالب به گروه خاصی از کاربران<br />\r\n	امکان ایجاد پست ثابت<br />\r\n	امکان ارسال پست برای آینده<br />\r\n	سامانه کاربری قدرتمند برای جذب کاربر<br />\r\n	امکان ساخت بی نهایت گروه کاربری<br />\r\n	امکان ارسال پیام خصوصی بین کاربران<br />\r\n	امکان ارسال خبرنامه برای اعضای سایت<br />\r\n	امکان استفاده از smtp برای ارسال ایمیل<br />\r\n	مدیریت بلوک ها به صورت ایجکس و با امکانات فراوان<br />\r\n	دارای جعبه پیام کوتاه به صورت ایجکس<br />\r\n	دارای نسخه موبایل برای نمایش ساده مطالب با امکان طراحی قالب برای آن<br />\r\n	ماژول پذیر و سادگی طراحی ماژول برای آن<br />\r\n	مدیریت تم ها به صورت حرفه ای و با امکان ویرایش آنها از بخش مدیریت<br />\r\n	طراحی قالب به صورت کاملا Html و با تگ گذاری های ساده<br />\r\n	امکان طراحی قالب برای جزء به جزء بخش های سیستم<br />\r\n	آمارگیر حرفه ای با قابلیت نمایش چارتهای آماری در بخش مدیریت<br />\r\n	امکان مسدود سازی آی پی کاربران به صورت حرفه ای<br />\r\n	امکان پشتیبان گیری از دیتابیس با امکان بازگردانی و دانلود پشتیبان به صورت فایل فشرده<br />\r\n	دارای سیستم کشینگ حرفه ای برای افزایش سرعت و بازدهی سیستم<br />\r\n	امکان مدیریت فایل های کش از بخش مدیریت<br />\r\n	ذخیره سازی اطلاعات کامل سایت های لینک دهنده به صورت نامحدود<br />\r\n	دارای بخش مدیریت رسانه ها به صورت حرفه ای و کاملا ایجکس<br />\r\n	استفاده از ادیتور محبوب ckeditor<br />\r\n	پشتیبانی از rss و atom<br />\r\n	امکان ساخت خودکار نقشه برای موتورهای جستجو مانند گوگل و ...<br />\r\n	امکان نمایش پرچم کشور کاربران با استفاده ار بانک آی پی GeoIP<br />\r\n	هماهنگ سازی شده با انجمن ساز محبوب MyBB<br />\r\n	پشتیبانی از BBcode کدها در بخش نظرات و پیام خصوصی<br />\r\n	دارای بخش تماس با ما به صورت ایجکس<br />\r\n	دارای نظرسنجی حرفه ای و به صورت ایجکس<br />\r\n	دارای بخش صفحات مجزا با امکان طراحی قالب اختصاصی برای هر صفحه<br />\r\n	امکان ارسال نظر توسط کاربران برای پست ها و صفحات اضافی<br />\r\n	دارای بخش جستجو به صورت کاملا حرفه ای و پیشرفته<br />\r\n	دارای بخش قوانین برای سایت<br />\r\n	امکان غیرفعال سازی سایت به صورت موقت<br />\r\n	دارای لینک های سئو با قابلیت شخصی سازی<br />\r\n	بخش مدیریت به صورت ایجکس</p>', '', '0', '1', '2', '4,5,6,7,8', '1', '0', '', 'persian', '1', '1');");
+$d->query("INSERT INTO `#__posts` VALUES('1', '1', '1416425485', 'سیستم مدیریت محتوای آپادانا', 'apadana-content-management-system', '<p style=\"text-align: center;\">\r\n	&nbsp;</p>\r\n<p style=\"text-align: center;\">\r\n	&nbsp;</p>\r\n<p>\r\n	برخی از امکانات سیستم مدیریت محتوای ایرانی آپادانا:</p>\r\n<p>\r\n	مدیریت پست ها به صورت حرفه ای<br />\r\n	امکان ساخت فیلدهای اضافه برای پست ها<br />\r\n	امکان دانلود پست ها با فرمت PDF<br />\r\n	امکان ساخت نسخه پرینت برای پست ها<br />\r\n	امکان نمایش مطالب به گروه خاصی از کاربران<br />\r\n	امکان ایجاد پست ثابت<br />\r\n	امکان ارسال پست برای آینده<br />\r\n	سامانه کاربری قدرتمند برای جذب کاربر<br />\r\n	امکان ساخت بی نهایت گروه کاربری<br />\r\n	امکان ارسال پیام خصوصی بین کاربران<br />\r\n	امکان ارسال خبرنامه برای اعضای سایت<br />\r\n	امکان استفاده از smtp برای ارسال ایمیل<br />\r\n	مدیریت بلوک ها به صورت ایجکس و با امکانات فراوان<br />\r\n	دارای جعبه پیام کوتاه به صورت ایجکس<br />\r\n	دارای نسخه موبایل برای نمایش ساده مطالب با امکان طراحی قالب برای آن<br />\r\n	ماژول پذیر و سادگی طراحی ماژول برای آن<br />\r\n	مدیریت تم ها به صورت حرفه ای و با امکان ویرایش آنها از بخش مدیریت<br />\r\n	طراحی قالب به صورت کاملا Html و با تگ گذاری های ساده<br />\r\n	امکان طراحی قالب برای جزء به جزء بخش های سیستم<br />\r\n	آمارگیر حرفه ای با قابلیت نمایش چارتهای آماری در بخش مدیریت<br />\r\n	امکان مسدود سازی آی پی کاربران به صورت حرفه ای<br />\r\n	امکان پشتیبان گیری از دیتابیس با امکان بازگردانی و دانلود پشتیبان به صورت فایل فشرده<br />\r\n	دارای سیستم کشینگ حرفه ای برای افزایش سرعت و بازدهی سیستم<br />\r\n	امکان مدیریت فایل های کش از بخش مدیریت<br />\r\n	ذخیره سازی اطلاعات کامل سایت های لینک دهنده به صورت نامحدود<br />\r\n	دارای بخش مدیریت رسانه ها به صورت حرفه ای و کاملا ایجکس<br />\r\n	استفاده از ادیتور محبوب ckeditor<br />\r\n	پشتیبانی از rss و atom<br />\r\n	امکان ساخت خودکار نقشه برای موتورهای جستجو مانند گوگل و ...<br />\r\n	امکان نمایش پرچم کشور کاربران با استفاده ار بانک آی پی GeoIP<br />\r\n	هماهنگ سازی شده با انجمن ساز محبوب MyBB<br />\r\n	پشتیبانی از BBcode کدها در بخش نظرات و پیام خصوصی<br />\r\n	دارای بخش تماس با ما به صورت ایجکس<br />\r\n	دارای نظرسنجی حرفه ای و به صورت ایجکس<br />\r\n	دارای بخش صفحات مجزا با امکان طراحی قالب اختصاصی برای هر صفحه<br />\r\n	امکان ارسال نظر توسط کاربران برای پست ها و صفحات اضافی<br />\r\n	دارای بخش جستجو به صورت کاملا حرفه ای و پیشرفته<br />\r\n	دارای بخش قوانین برای سایت<br />\r\n	امکان غیرفعال سازی سایت به صورت موقت<br />\r\n	دارای لینک های سئو با قابلیت شخصی سازی<br />\r\n	بخش مدیریت به صورت ایجکس</p>', '', '24', '1', '2', '4,5,6,7,8', '1', '0', 'http://localhost/apadana/uploads/posts/demo.jpg', 'persian', '1', '1');");
 
 
 # --------------------------------------------------------
@@ -597,7 +445,7 @@ $d->query("CREATE TABLE `#__private_messages` (
   `msg_date` int(10) NOT NULL,
   `msg_read` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`msg_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 
 # --------------------------------------------------------
@@ -614,7 +462,7 @@ $d->query("CREATE TABLE `#__referer` (
   `ref_ip` varchar(50) NOT NULL,
   PRIMARY KEY (`ref_id`),
   KEY `ref_url` (`ref_url`(333))
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 
 # --------------------------------------------------------
@@ -638,7 +486,7 @@ $d->query("CREATE TABLE `#__search` (
   KEY `search_key` (`search_key`),
   KEY `search_module` (`search_module`),
   KEY `search_title` (`search_title`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 
 # --------------------------------------------------------
@@ -655,6 +503,13 @@ $d->query("CREATE TABLE `#__session` (
   `session_guest` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`session_member`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+
+#
+# Dumping data for table '#__session'
+#
+
+$d->query("INSERT INTO `#__session` VALUES('admin', '1420471101', '127.0.0.1', 'engine/admin/template/images/top-content1.png', '0');");
 
 
 # --------------------------------------------------------
@@ -676,7 +531,8 @@ $d->query("CREATE TABLE `#__shoutbox` (
 # Dumping data for table '#__shoutbox'
 #
 
-$d->query("INSERT INTO `#__shoutbox` VALUES('1', '".time()."', 'admin', 'گروه آپادانا افتتاح سایت شما را تبریک می گوید!');");
+$d->query("INSERT INTO `#__shoutbox` VALUES('1', '1416425485', 'admin', 'گروه آپادانا افتتاح سایت شما را تبریک می گوید!');");
+
 
 # --------------------------------------------------------
 #
@@ -767,6 +623,6 @@ $d->query("CREATE TABLE `#__voting` (
 # Dumping data for table '#__voting'
 #
 
-$d->query("INSERT INTO `#__voting` VALUES('1', 'آپادانا از نظر شما؟', 'بسیارعالی|عالی|خوب|امیدوار کننده|بد نیست|خوب نیست|نظری ندارم!', '', '', '".time()."', '0,0,0,0,0,0,0,0', 'ثبت رای', '1', '');");
+$d->query("INSERT INTO `#__voting` VALUES('1', 'آپادانا از نظر شما؟', 'بسیارعالی|عالی|خوب|امیدوار کننده|بد نیست|خوب نیست|نظری ندارم!', '127.0.0.1', '', '1416425485', '1,0,0,0,0,0,0,0', 'ثبت رای', '1', '');");
 
 ?>

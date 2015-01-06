@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -44,7 +44,7 @@ function _register()
 		}
 		else
 		{
-			if ($options_account['email'] == 1 && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escapeString($register['email'])."'", true) >= 1)
+			if ($options_account['email'] == 1 && $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escape_string($register['email'])."'", true) >= 1)
 			{
 				$message .= 'این ایمیل قبلا ثبت شده است، یک ایمیل دیگر انتخاب کنید!<br />';
 			}
@@ -110,7 +110,7 @@ function _register()
 				'member_key' => $loginKey,
 			));
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				remove_captcha('register');
 				require_once(engine_dir.'mail.function.php');
@@ -200,7 +200,7 @@ function _login()
 				if ($result['member_password'] != member::password($login['password'])) // old password
 				{
 					$login['password'] = str_replace('\\', null, $login['password']);
-					$login['password'] = md5('pars-'.sha1($d->escapeString($login['password'])).'-nuke');
+					$login['password'] = md5('pars-'.sha1($d->escape_string($login['password'])).'-nuke');
 				}
 				else
 				{
@@ -308,7 +308,7 @@ function _members()
 		($hook = get_hook('account_members_start'))? eval($hook) : null;
 
 		require_once(engine_dir.'pagination.class.php');
-		$total = $d->numRows("SELECT * FROM `#__members`", true);
+		$total = $d->num_rows("SELECT * FROM `#__members`", true);
 		$pagination = new pagination($total, intval($options_account['members-total']), $get_pages);
 
 		if ($get_pages > $pagination->Pages)
@@ -604,7 +604,7 @@ function _profile_edit()
 		}
 		else
 		{
-			if ($options_account['email'] == 1 && $member['member_email'] != $profileEdit['email'] && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escapeString($profileEdit['email'])."'", true) >= 1)
+			if ($options_account['email'] == 1 && $member['member_email'] != $profileEdit['email'] && $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escape_string($profileEdit['email'])."'", true) >= 1)
 			{
 				$message .= 'این ایمیل قبلا ثبت شده، یک ایمیل دیگر انتخاب کنید!';
 			}
@@ -639,7 +639,7 @@ function _profile_edit()
 				'member_newsletter' => $profileEdit['newsletter'] == 1? 1 : 0
 			), "`member_id`='".member_id."'", 1);
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				$message = message('پروفایل شما با موفقیت ویرایش شد.', 'success');
 				redirect(url('account/profile-edit'));
@@ -720,7 +720,7 @@ function _change_password()
 		if ($member['member_password'] != member::password($changePassword['pass'])) // old password
 		{
 			$changePassword['pass'] = str_replace('\\', null, $changePassword['pass']);
-			$changePassword['pass'] = md5('pars-'.sha1($d->escapeString($changePassword['pass'])).'-nuke');
+			$changePassword['pass'] = md5('pars-'.sha1($d->escape_string($changePassword['pass'])).'-nuke');
 		}
 		else
 		{
@@ -763,7 +763,7 @@ function _change_password()
 				'member_lastip' => get_ip(),
 			), "`member_id`='".member_id."'", 1);
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				$message = message('پسورد شما با موفقیت تغییر کرد.', 'success');
 			}
@@ -1108,8 +1108,8 @@ function _forget()
 			}
 			else
 			{
-				$q = $d->query("SELECT * FROM `#__members` WHERE member_status='1' AND `member_name`='".$d->escapeString($forget['name'])."' AND `member_email`='".$d->escapeString($forget['email'])."' LIMIT 1");
-				if ($d->numRows($q) >= 1)
+				$q = $d->query("SELECT * FROM `#__members` WHERE member_status='1' AND `member_name`='".$d->escape_string($forget['name'])."' AND `member_email`='".$d->escape_string($forget['email'])."' LIMIT 1");
+				if ($d->num_rows($q) >= 1)
 				{
 					$u = $d->fetch($q);
 					$k = md5(generate_password(20, null).'FORGET'.$u['member_password']);
@@ -1119,7 +1119,7 @@ function _forget()
 						'member_key' => 'FORGET-'.$k.'-FORGET',
 					), "`member_id`='".$u['member_id']."'", 1);
 
-					if ($d->affectedRows())
+					if ($d->affected_rows())
 					{
 						require_once(engine_dir.'mail.function.php');
 
@@ -1142,7 +1142,7 @@ function _forget()
 					else
 						$message = message('در انجام عملیات خطایی رخ داده مجدد تلاش کنید!', 'error');
 
-					$d->freeResult($q);
+					$d->free_result($q);
 				}
 				else
 				{
@@ -1154,8 +1154,8 @@ function _forget()
 		{
 			if (is_alphabet($_GET['c']) && is_alphabet($_GET['d']) && apadana_strlen($_GET['d']) == 18)
 			{
-				$q = $d->query("SELECT * FROM `#__members` WHERE member_status='1' AND `member_name`='".$d->escapeString($_GET['c'])."' AND `member_key`='FORGET-".$d->escapeString($_GET['d'])."-FORGET' LIMIT 1");
-				if ($d->numRows($q) >= 1)
+				$q = $d->query("SELECT * FROM `#__members` WHERE member_status='1' AND `member_name`='".$d->escape_string($_GET['c'])."' AND `member_key`='FORGET-".$d->escape_string($_GET['d'])."-FORGET' LIMIT 1");
+				if ($d->num_rows($q) >= 1)
 				{
 					$u = $d->fetch($q);
 					
@@ -1202,7 +1202,7 @@ function _forget()
 							'member_lastip' => get_ip(),
 						), "`member_id`='".$u['member_id']."'", 1);
 
-						if ($d->affectedRows())
+						if ($d->affected_rows())
 						{
 							$message = message('پسورد شما با موفقیت تغییر کرد.', 'success');
 							$success = true;
@@ -1211,7 +1211,7 @@ function _forget()
 							$message = message('در ذخیره اطلاعات خطایی رخ داده، مجدد تلاش کنید!', 'error');
 					}
 
-					$d->freeResult($q);
+					$d->free_result($q);
 				}
 				else
 				{
@@ -1265,8 +1265,8 @@ function _forget()
 	}
 	else
 	{
-		$q = "SELECT * FROM `#__members` WHERE member_status='1' AND `member_name`='".$d->escapeString($_GET['c'])."' AND `member_key`='FORGET-".$d->escapeString($_GET['d'])."-FORGET' LIMIT 1";
-		if (is_alphabet($_GET['c']) && is_alphabet($_GET['d']) && apadana_strlen($_GET['d']) == 18 && ($d->numRows($q, true) >= 1 || $success===true))
+		$q = "SELECT * FROM `#__members` WHERE member_status='1' AND `member_name`='".$d->escape_string($_GET['c'])."' AND `member_key`='FORGET-".$d->escape_string($_GET['d'])."-FORGET' LIMIT 1";
+		if (is_alphabet($_GET['c']) && is_alphabet($_GET['d']) && apadana_strlen($_GET['d']) == 18 && ($d->num_rows($q, true) >= 1 || $success===true))
 		{
 			$file = get_tpl(root_dir.'modules/account/html/||forget.tpl', template_dir.'||account/forget.tpl');
 			$itpl = new template($file[1], $file[0]);

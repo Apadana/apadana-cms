@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -186,7 +186,7 @@ function module_contact_us_run()
 	unset($itpl, $members, $m, $a);
 }
 
-function module_contact_us_sitemap(&$sitemap)
+function module_contact_us_sitemap($sitemap)
 {
 	$sitemap->addItem(url('contact-us'), 0, 'never', '0.6');
 }

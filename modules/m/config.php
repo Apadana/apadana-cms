@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -31,7 +31,7 @@ function module_m_run()
 			$tpl->load('index.tpl');
 		}
 		$page_num = get_param($_GET, 'c', 1);
-		$total = $d->numRows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."'", true);
+		$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."'", true);
 		$pagination = new pagination($total, 40, $page_num);
 		$posts = get_posts(array(
 			'limit' => array($pagination->Start, $pagination->End)

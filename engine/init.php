@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -62,7 +62,7 @@ require_once(engine_dir.'member.class.php');
 require_once(engine_dir.'template.class.php');
 require_once(engine_dir.'html.class.php');
 
-error_reporting(error_reporting? E_ALL : 0);
+error_reporting( debug_system ? E_ALL : 0);
 
 # Determine Magic Quotes Status (< PHP 5.4)
 if (version_compare(PHP_VERSION, '5.4', '<'))
@@ -77,11 +77,11 @@ if (version_compare(PHP_VERSION, '5.4', '<'))
 	@set_magic_quotes_runtime(0);
 	@ini_set('magic_quotes_gpc', 0);
 	@ini_set('magic_quotes_runtime', 0);
+	un_register_globals();
 }
 defined('magic_quotes') or define('magic_quotes', false);
 
 check_xss();
-un_register_globals();
 
 $d = new database;
 $d->connect(array(

@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -30,7 +30,7 @@ function _index()
 	$_page = get_param($_GET, 'page', 1);
 	$_page = $_page<=0? 1 : $_page;
 
-	$total_posts = $d->numRows("SELECT `page_id` FROM `#__pages`", true);
+	$total_posts = $d->num_rows("SELECT `page_id` FROM `#__pages`", true);
 
 	$pagination = new pagination($total_posts, $total, $_page);
 
@@ -77,7 +77,7 @@ function _index()
 			ORDER BY pages.page_id {$order}
 			LIMIT $pagination->Start, $pagination->End
 		");
-		if ($d->numRows() >= 1)
+		if ($d->num_rows() >= 1)
 		{
 			while($data = $d->fetch()) 
 			{
@@ -204,7 +204,7 @@ function _new()
 		{
 			$json['message'][] = 'نام مستعار بیش از انداره طولانی است!';
 		}
-		elseif ($d->numRows("SELECT `page_id` FROM `#__pages` WHERE `page_slug`='".$d->escapeString($pages['slug'])."'", true) >= 1)
+		elseif ($d->num_rows("SELECT `page_id` FROM `#__pages` WHERE `page_slug`='".$d->escape_string($pages['slug'])."'", true) >= 1)
 		{
 			$json['message'][] = 'نام مستعار تکراری است یک نام مستعار دیگر انتخاب کنید!';
 		}
@@ -238,7 +238,7 @@ function _new()
 			'page_time' => time(),
 		));
 
-		if ($d->affectedRows())
+		if ($d->affected_rows())
 		{
 			remove_cache('module-pages-block', true);
 			$json['type'] = 'success';
@@ -261,7 +261,7 @@ function _get_data()
 	$_GET['id'] = get_param($_GET, 'id', 0);
 	$d->query("SELECT * FROM #__pages WHERE page_id='".$_GET['id']."' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('{"error":"not found"}');
 	}
@@ -284,7 +284,7 @@ function _edit()
 	$_GET['id'] = get_param($_GET, 'id', 0);
 	$d->query("SELECT * FROM #__pages WHERE page_id='".$_GET['id']."' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('{"type":"error", "message":"این صفحه یافت نشد!"}');
 	}
@@ -327,7 +327,7 @@ function _edit()
 			{
 				$json['message'][] = 'نام مستعار بیش از انداره طولانی است!';
 			}
-			elseif ($row['page_slug'] != $pages['slug'] && $d->numRows("SELECT `page_id` FROM `#__pages` WHERE `page_slug`='".$d->escapeString($pages['slug'])."'", true) >= 1)
+			elseif ($row['page_slug'] != $pages['slug'] && $d->num_rows("SELECT `page_id` FROM `#__pages` WHERE `page_slug`='".$d->escape_string($pages['slug'])."'", true) >= 1)
 			{
 				$json['message'][] = 'نام مستعار تکراری است یک نام مستعار دیگر انتخاب کنید!';
 			}
@@ -359,7 +359,7 @@ function _edit()
 				'page_approve' => $pages['approve'],
 			), "page_id='".$_GET['id']."'", 1);
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				$json['type'] = 'success';
 				$json['message'] = 'صفحه با موفقیت ویرایش شد.';
@@ -395,7 +395,7 @@ function _approve()
 		'page_approve' => $approve,
 	), "`page_id`='{$_GET['id']}'", 1);
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		remove_cache('module-pages-block', true);
 		exit($approve == 1? 'active' : 'inactive');

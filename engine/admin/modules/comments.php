@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -65,7 +65,7 @@ function _default()
 	$_page = get_param($_GET, 'page', 1);
 	$_page = $_page<=0? 1 : $_page;
 
-	$total_posts = $d->numRows("SELECT `comment_id` FROM `#__comments`".($type != ''? " WHERE `comment_type`='".$d->escapeString($type)."'" : null)."", true);
+	$total_posts = $d->num_rows("SELECT `comment_id` FROM `#__comments`".($type != ''? " WHERE `comment_type`='".$d->escape_string($type)."'" : null)."", true);
 
 	$pagination = new pagination($total_posts, $total, $_page);
 
@@ -75,13 +75,13 @@ function _default()
 		SELECT c.*,m.member_avatar,m.member_group,m.member_name
 		FROM #__comments AS c
 		LEFT JOIN #__members AS m ON (m.member_id = c.comment_member_id)
-		".($type != ''? "WHERE c.comment_type='".$d->escapeString($type)."'" : null)."
+		".($type != ''? "WHERE c.comment_type='".$d->escape_string($type)."'" : null)."
 		GROUP BY c.comment_id
 		ORDER BY c.comment_id $order
 		LIMIT $pagination->Start, $pagination->End
 	");
 	
-	if ($d->numRows($query) >= 1)
+	if ($d->num_rows($query) >= 1)
 	{
 		while ($data = $d->fetch($query)) 
 		{
@@ -219,7 +219,7 @@ function _edit()
 
 	$d->query("SELECT * FROM #__comments WHERE `comment_id`='$id' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('این نظر وجود ندارد!');
 	}
@@ -231,7 +231,7 @@ function _edit()
 	{
 		$d->query("SELECT `option_value` FROM `#__options` WHERE `option_name`='comments' LIMIT 1");
 		$comments_options = $d->fetch();
-		$d->freeResult();
+		$d->free_result();
 		$comments_options = maybe_unserialize($comments_options['option_value']);
 
 		$msg = array();
@@ -286,7 +286,7 @@ function _edit()
 				'comment_approve' => $comment['approve'],
 			), "`comment_id`='{$id}'", 1);	
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				if ($comment['approve'] != $data['comment_approve'] && is_module($data['comment_type']) && file_exists(root_dir.'modules/'.$data['comment_type'].'/admin.php'))
 				{
@@ -322,7 +322,7 @@ function _approve()
 
 	$d->query("SELECT `comment_approve`, `comment_type`, `comment_link` FROM #__comments WHERE `comment_id`='$id' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('این نظر وجود ندارد!');
 	}
@@ -333,7 +333,7 @@ function _approve()
 		'comment_approve' => $data['comment_approve'] == 1? 0 : 1,
 	), "`comment_id`='{$id}'", 1);	
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		if (is_module($data['comment_type']) && file_exists(root_dir.'modules/'.$data['comment_type'].'/admin.php'))
 		{
@@ -365,7 +365,7 @@ function _delete()
 
 	$d->query("SELECT `comment_approve`, `comment_type`, `comment_link` FROM #__comments WHERE `comment_id`='$id' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('این نظر وجود ندارد!');
 	}
@@ -374,7 +374,7 @@ function _delete()
 
 	$d->delete('comments', "`comment_id`='{$id}'", 1);	
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		if (is_module($data['comment_type']) && file_exists(root_dir.'modules/'.$data['comment_type'].'/admin.php'))
 		{

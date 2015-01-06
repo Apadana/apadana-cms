@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -42,7 +42,7 @@ function module_pages_run()
 			SELECT pages.*, members.member_name, members.member_alias
 			FROM #__pages AS pages	
 			LEFT JOIN #__members AS members ON members.member_id=pages.page_author
-			WHERE pages.page_approve = '1' AND pages.page_".($options['rewrite'] == 1? 'slug' : 'id')." = '".$d->escapeString($slug)."'
+			WHERE pages.page_approve = '1' AND pages.page_".($options['rewrite'] == 1? 'slug' : 'id')." = '".$d->escape_string($slug)."'
 			GROUP BY pages.page_id
 			ORDER BY pages.page_time DESC, pages.page_id DESC
 			LIMIT 1
@@ -112,10 +112,10 @@ function module_pages_search($search)
 {
 	global $d, $options;
 	
-	$where  = $search['type']==0 || $search['type']==2? " OR p.page_title LIKE '%".$d->escapeString($search['story'])."%'" : null;
-	$where .= $search['type']==1 || $search['type']==2? " OR p.page_text LIKE '%".$d->escapeString($search['story'])."%'" : null;
-	$where .= !empty($search['author']) && $search['author-full']==0? " OR m.member_name LIKE '%".$d->escapeString($search['author'])."%'" : null;
-	$where .= !empty($search['author']) && $search['author-full']==1? " OR m.member_name='".$d->escapeString($search['author'])."'" : null;
+	$where  = $search['type']==0 || $search['type']==2? " OR p.page_title LIKE '%".$d->escape_string($search['story'])."%'" : null;
+	$where .= $search['type']==1 || $search['type']==2? " OR p.page_text LIKE '%".$d->escape_string($search['story'])."%'" : null;
+	$where .= !empty($search['author']) && $search['author-full']==0? " OR m.member_name LIKE '%".$d->escape_string($search['author'])."%'" : null;
+	$where .= !empty($search['author']) && $search['author-full']==1? " OR m.member_name='".$d->escape_string($search['author'])."'" : null;
 	$where  = trim($where, ' OR ');
 	
 	$query  = "SELECT p.*,m.member_name\n";
@@ -147,7 +147,7 @@ function module_pages_search($search)
 	}
 }
 
-function module_pages_sitemap(&$sitemap)
+function module_pages_sitemap($sitemap)
 {
 	global $d, $options;
 	$query = "SELECT * FROM `#__pages` WHERE `page_approve` = '1' ORDER BY `page_time` DESC, `page_id` DESC";	
@@ -162,7 +162,7 @@ function module_pages_sitemap(&$sitemap)
 	unset($pages, $query, $p);
 }
 
-function module_pages_feed(&$feeds)
+function module_pages_feed($feeds)
 {
 	global $d, $options;
 	$query = "SELECT * FROM `#__pages` WHERE `page_approve` = '1' ORDER BY `page_time` DESC, `page_id` DESC LIMIT ".intval($options['feed-limit']);	

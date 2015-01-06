@@ -84,6 +84,6 @@ table.apadana-table th {
 	text-shadow: 1px 1px 0px Black;
 	padding: 9px
 }
-#apadana-info-box-screen{position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background: #000000; opacity: 0.5; filter: alpha(opacity=50); z-index: 9999990; display: none}
-#apadana-info-box{position:fixed;top:20%;left:22%;width:50%;background:#FFFFFF;border: #000 2px solid;padding: 0px 20px 20px 20px; overflow: hidden; z-index: 9999999; display: none}
+#apadana-info-box-screen{position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; background: #000000; opacity: 0.7; filter: alpha(opacity=50); z-index: 9999990; display: none}
+#apadana-info-box{position:fixed;top:20%;left:22%;width:50%;background:#FFFFFF;border: #000 2px solid; overflow: hidden;padding: 20px;border-radius: 5px;box-shadow: 0px 0px 15px 1px #000; z-index: 9999999; display: none}
 #apadana-info-box li{overflow: hidden; margin: 13px 0px}

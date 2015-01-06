@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -37,7 +37,7 @@ function module_shoutbox_run()
 	}
 }
 
-function module_shoutbox_sitemap(&$sitemap)
+function module_shoutbox_sitemap($sitemap)
 {
 	$sitemap->addItem(url('shoutbox'), 0, 'daily', '0.2');
 }

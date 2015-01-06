@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -44,14 +44,14 @@ function _save()
 		$login['username'] = apadana_strtolower(trim($login['username']));
 		$login['password'] = $login['password'];
 
-		$result = $d->query("SELECT * FROM #__members WHERE member_status='1' AND member_group!='4' AND member_name='".$d->escapeString($login['username'])."' LIMIT 1");
+		$result = $d->query("SELECT * FROM #__members WHERE member_status='1' AND member_group!='4' AND member_name='".$d->escape_string($login['username'])."' LIMIT 1");
 		$result = $d->fetch($result);
 		if (is_alphabet($login['username']) && is_array($result) && count($result) && !empty($result['member_password']))
 		{
 			if ($result['member_password'] != member::password($login['password'])) // old password
 			{
 				$login['password'] = str_replace('\\', null, $login['password']);
-				$login['password'] = md5('pars-'.sha1($d->escapeString($login['password'])).'-nuke');
+				$login['password'] = md5('pars-'.sha1($d->escape_string($login['password'])).'-nuke');
 			}
 			else
 			{

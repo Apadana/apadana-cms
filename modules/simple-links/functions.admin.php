@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -37,7 +37,7 @@ function _list()
 	$itpl = new template('modules/simple-links/html/admin/index.tpl');
 
 	$d->query("SELECT * FROM #__simple_links ORDER BY link_id DESC");
-	if ($d->numRows() >= 1)
+	if ($d->num_rows() >= 1)
 	{
 		while($row = $d->fetch())
 		{
@@ -135,7 +135,7 @@ function _new()
 				'link_active' => $link['active'],
 			));	
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				remove_cache('simple-links');
 				echo '<script>apadana.hideID("form-new-sLink")</script>';
@@ -208,7 +208,7 @@ function _edit()
 				'link_active' => $link['active'],
 			), "link_id='".$id."'", 1);	
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				remove_cache('simple-links');
 				echo message('پیوند با موفقیت ویرایش شد!', 'success');
@@ -236,7 +236,7 @@ function _active()
 		'link_active' => $active,
 	), "`link_id`='{$id}'", 1);
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		remove_cache('simple-links');
 		exit($active==1? 'active' : 'inactive');
@@ -256,7 +256,7 @@ function _delete()
 	
 	$d->delete('simple_links', "`link_id`='{$id}'", 1);
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		remove_cache('simple-links');
 		echo message('پیوند با موفقیت حذف شد.', 'success');

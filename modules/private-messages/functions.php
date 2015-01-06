@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -19,7 +19,7 @@ function _inbox()
 	global $d, $options, $tpl, $page;
 	require_once(engine_dir.'pagination.class.php');
 	$query = sprintf("SELECT * FROM `#__private_messages` WHERE `msg_receiver`='%s'", member_name);
-	$total = $d->numRows($query, true);
+	$total = $d->num_rows($query, true);
 	$get_pages = get_param($_GET, 'b', 1);
 	
 	$pagination = new pagination($total, 20, $get_pages);
@@ -91,7 +91,7 @@ function _outbox()
 	global $d, $options, $tpl, $page;
 	require_once(engine_dir.'pagination.class.php');
 	$query = sprintf("SELECT * FROM `#__private_messages` WHERE `msg_sender`='%s'", member_name);
-	$total = $d->numRows($query, true);
+	$total = $d->num_rows($query, true);
 	$get_pages = get_param($_GET, 'c', 1);
 	
 	$pagination = new pagination($total, 20, $get_pages);
@@ -276,7 +276,7 @@ function _new()
 			($hook = get_hook('private_messages_new_query'))? eval($hook) : null;
 
 			$id = $d->insert('private_messages', $arr);
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				$u = member::info(false, $new['receiver']);
 				if ($u['member_newsletter'] == 1)

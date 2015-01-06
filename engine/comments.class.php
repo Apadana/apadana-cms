@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
 **/
 
@@ -35,7 +35,7 @@ class comments
 			global $d;
 			$d->query("SELECT `option_value` FROM `#__options` WHERE `option_name`='comments' LIMIT 1");
 			$result = $d->fetch();
-			$d->freeResult();
+			$d->free_result();
 			$this->options = maybe_unserialize($result['option_value']);
 			set_cache('options-comments', $this->options);
 		}
@@ -49,7 +49,7 @@ class comments
 			SELECT c.*, m.member_avatar, m.member_group, m.member_name
 			FROM #__comments AS c
 			LEFT JOIN #__members AS m ON (m.member_id = c.comment_member_id)
-			WHERE c.comment_type='".$d->escapeString($this->type)."' AND c.comment_link='".intval($this->link)."'".($this->options['approve']==1? " AND (c.comment_approve='1'".(member == 1? " OR c.comment_member_id='".member_id."'" : " OR c.comment_author_ip='".$d->escapeString(get_ip())."'").")" : null)."
+			WHERE c.comment_type='".$d->escape_string($this->type)."' AND c.comment_link='".intval($this->link)."'".($this->options['approve']==1? " AND (c.comment_approve='1'".(member == 1? " OR c.comment_member_id='".member_id."'" : " OR c.comment_author_ip='".$d->escape_string(get_ip())."'").")" : null)."
 			GROUP BY c.comment_id
 			ORDER BY c.comment_id ASC
 		";
@@ -359,7 +359,7 @@ class comments
 			);
 
 			$d->insert('comments', $arr);
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				unset($_POST['comment']);
 				remove_captcha('comment');

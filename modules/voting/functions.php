@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -16,7 +16,7 @@ function _default()
 	global $d;
 
 	$d->query("SELECT * FROM #__voting WHERE `vote_status`='1' ORDER BY vote_id DESC");
-	if ($d->numRows() >= 1)
+	if ($d->num_rows() >= 1)
 	{
 		$html = '<ul id="apadana-voting-list">'.n;
 		while($row = $d->fetch())
@@ -47,7 +47,7 @@ function _result()
 	global $d;
 	$d->query("SELECT * FROM #__voting WHERE `vote_status`='1' AND vote_id = '".$id."' ORDER BY vote_id DESC LIMIT 1");
 
-	if ($d->numRows() >= 1)
+	if ($d->num_rows() >= 1)
 	{
 		$row = $d->fetch();
 		$msg = null;
@@ -104,7 +104,7 @@ function _save()
 	global $d;
 	$d->query("SELECT * FROM #__voting WHERE `vote_status`='1' AND vote_id = '".$id."' ORDER BY vote_id DESC LIMIT 1");
 
-	if ($d->numRows() >= 1)
+	if ($d->num_rows() >= 1)
 	{
 		$row = $d->fetch();
 		$ip = explode(',', $row['vote_ip']);

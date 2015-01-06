@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -75,7 +75,7 @@ function module_search_run()
 		$d->delete('search', "search_time < '".(time()-4*60*60)."'");
 		if (!empty($search['story']))
 		{
-			if ($d->numRows("SELECT search_id FROM `#__search` WHERE `search_key`='".$d->escapeString($search['key'])."'", true) <= 0)
+			if ($d->num_rows("SELECT search_id FROM `#__search` WHERE `search_key`='".$d->escape_string($search['key'])."'", true) <= 0)
 			{
 				foreach ($modules as $mod)
 				{
@@ -91,10 +91,10 @@ function module_search_run()
 
 			require_once(engine_dir.'pagination.class.php');
 			$pages = get_param($_GET, 'page', 1);
-			$total = $d->numRows("SELECT * FROM `#__search` WHERE `search_key`='".$d->escapeString($search['key'])."'", true);
+			$total = $d->num_rows("SELECT * FROM `#__search` WHERE `search_key`='".$d->escape_string($search['key'])."'", true);
 			$pagination = new pagination($total, $search['result-in-page'], $pages);
 			$sortby = $search['sortby']=='date'? 'search_date' : ($search['sortby']=='title'? 'search_title' : ($search['sortby']=='author'? 'search_author' : ('search_id')));
-			$result = $d->get_row("SELECT * FROM `#__search` WHERE `search_key`='".$d->escapeString($search['key'])."' ORDER BY ".$sortby." ".$search['sort-type']." LIMIT ".$pagination->Start.', '.$pagination->End);
+			$result = $d->get_row("SELECT * FROM `#__search` WHERE `search_key`='".$d->escape_string($search['key'])."' ORDER BY ".$sortby." ".$search['sort-type']." LIMIT ".$pagination->Start.', '.$pagination->End);
 		}
 		else
 		{
@@ -316,7 +316,7 @@ function module_search_run()
 	unset($result, $pagination, $search, $itpl);
 }
 
-function module_search_sitemap(&$sitemap)
+function module_search_sitemap($sitemap)
 {
 	$sitemap->addItem(url('search'), 0, 'never', '0.8');
 }

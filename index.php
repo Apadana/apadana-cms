@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -90,9 +90,9 @@ if (!defined('no_template') || no_template !== true)
 
 	$tpl->assign(array(
 		'{head}' => head(),
-		'{num-queries}' => $d->num_queries,
-		'{creation-time}' => apadana_substr(microtime(true)-start_time, 0, error_reporting? 7 : 4),
-		'{memory-get-usage}' => memoryGetUsage(),
+		'{num-queries}' => translate_number($d->num_queries),
+		'{creation-time}' => translate_number(apadana_substr(microtime(true)-start_time, 0, debug_system? 7 : 4)),
+		'{memory-get-usage}' => translate_number(apadana_memory_get_usage())
 	));
 
 	if (home === true)

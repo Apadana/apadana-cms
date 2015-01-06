@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -28,14 +28,14 @@ function referer_index()
 	$_page = get_param($_GET, 'page', 1);
 	$_page = $_page <= 0? 1 : $_page;
 
-	$total_ref = $d->numRows("SELECT `ref_id` FROM `#__referer`", true);
+	$total_ref = $d->num_rows("SELECT `ref_id` FROM `#__referer`", true);
 
 	$pagination = new pagination($total_ref, $total, $_page);
 
 	$itpl = new template('engine/admin/template/referer.tpl');
 	
 	$d->query("SELECT * FROM #__referer ORDER BY ref_id {$order} LIMIT $pagination->Start, $pagination->End");
-	if ($d->numRows() >= 1)
+	if ($d->num_rows() >= 1)
 	{
 		while ($data = $d->fetch()) 
 		{
@@ -144,7 +144,7 @@ function referer_delete()
 	
 	$d->delete('referer');
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		echo message('لینک دهندگان با موفقیت حذف شدند.', 'success');
 	}

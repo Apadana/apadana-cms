@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -18,7 +18,7 @@ function account_options()
 		global $d;
 		$d->query("SELECT `option_value` FROM `#__options` WHERE `option_name`='account' LIMIT 1");
 		$result = $d->fetch();
-		$d->freeResult();
+		$d->free_result();
 		$options_account = maybe_unserialize($result['option_value']);
 		set_cache('options-account', $options_account);
 	}
@@ -33,7 +33,7 @@ function block_account($op = null, $id = null, $position= null)
 	}
 	global $d, $member, $options;
 
-	$result = &counter_data();
+	$result = counter_data();
 
 	$file = get_tpl(root_dir.'modules/account/html/||block.tpl', template_dir.'||account/block.tpl');
 	$itpl = new template($file[1], $file[0]);
@@ -330,7 +330,7 @@ function block_counter($op = null, $id = null, $position= null)
 		return true;
 	}
 
-	$result = &counter_data();
+	$result = counter_data();
 
 	$html  = '<ul id="apadana-block-counter">'.n;
 	$html .= '<li id="counter-members-today">کاربران عضو شده امروز: <b>'.intval($result['membersToday']).'</b></li>'.n;
@@ -404,7 +404,7 @@ function module_account_run()
 	}
 }
 
-function module_account_sitemap(&$sitemap)
+function module_account_sitemap($sitemap)
 {
 	$sitemap->addItem(url('account/members'), 0, 'daily', '0.6');
 	$sitemap->addItem(url('account/register'), 0, 'never', '0.6');
@@ -451,8 +451,8 @@ function update_session()
 			$guest = 1;
 		}
 		
-		$query = "SELECT `session_ip` FROM `#__session` WHERE `session_member`='".$d->escapeString($member)."' OR `session_ip`='".$d->escapeString($ip)."'";
-		if ($d->numRows($query, true) <= 0) 
+		$query = "SELECT `session_ip` FROM `#__session` WHERE `session_member`='".$d->escape_string($member)."' OR `session_ip`='".$d->escape_string($ip)."'";
+		if ($d->num_rows($query, true) <= 0) 
 		{
 			$d->insert('session', array(
 				'session_member' => $member,
@@ -470,7 +470,7 @@ function update_session()
 				'session_guest' => $guest,
 				'session_page' => $page,
 				'session_time' => time(),
-			), "`session_member`='".$d->escapeString($member)."' OR `session_ip`='".$d->escapeString($ip)."'", 1);	
+			), "`session_member`='".$d->escape_string($member)."' OR `session_ip`='".$d->escape_string($ip)."'", 1);	
 		}
 	}
 	unset($ip, $member, $guest, $page, $dirname, $query, $strlen);

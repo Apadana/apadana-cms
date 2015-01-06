@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -38,7 +38,7 @@ function _list()
 	$itpl = new template('modules/voting/html/admin/votes.tpl');
 
 	$d->query("SELECT * FROM #__voting ORDER BY vote_id DESC");
-	if ($d->numRows() >= 1)
+	if ($d->num_rows() >= 1)
 	{
 		while($row = $d->fetch())
 		{
@@ -147,7 +147,7 @@ function _new()
 				'vote_date' => time(),
 			));	
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				echo '<script>apadana.hideID("form-new-voting")</script>';
 				echo message('نظرسنجی با موفقیت ثبت شد!', 'success');
@@ -229,7 +229,7 @@ function _edit()
 				'vote_status' => $vote['status'],
 			), "`vote_id`='{$id}'", 1);	
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				echo message('نظرسنجی با موفقیت ویرایش شد!', 'success');
 			}
@@ -258,7 +258,7 @@ function _status()
 		'vote_status' => $status,
 	), "`vote_id`='{$id}'", 1);
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		exit($status == 1? 'active' : 'inactive');
 	}
@@ -278,7 +278,7 @@ function _delete()
 	
 	$d->delete('voting', "`vote_id`='{$id}'", 1);
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		echo message('نظرسنجی با موفقیت حذف شد.', 'success');
 	}

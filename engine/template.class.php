@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -196,42 +196,49 @@ class template
 
 		if ($this->include && strpos($this->template, '{include file=') !== FALSE)
 		{
-			$this->template = preg_replace('#\\{include file=[\'"](.+?)[\'"]\\}#es', '$this->load(\'\\1\', \'include\')', $this->template);
+			$this->template = preg_replace_callback('#\\{include file=[\'"](.+?)[\'"]\\}#s', array( &$this ,'load_include_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '{a href=') !== FALSE)
 		{
-			$this->template = preg_replace('#\\{a href=[\'"](.+?)[\'"]\\}#es', 'url(\'\\1\')', $this->template);
+			//THIS LINE CHANGED (IN 1.2)
+			$this->template = preg_replace_callback('#\\{a href=[\'"](.+?)[\'"]\\}#s', create_function('$matches','return url($matches[1]);'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-module=') !== false)
 		{
-			$this->template = preg_replace('#\\[not-module=([a-zA-Z0-9-_]+)\\](.*?)\\[/not-module\\]#es', '$this->check_module(\'\\1\', \'\\2\', false)', $this->template);
+			//THIS LINE CHANGED (IN 1.2)
+			$this->template = preg_replace_callback('#\\[not-module=([a-zA-Z0-9-_]+)\\](.*?)\\[/not-module\\]#s', array( &$this ,'not_module_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[module=') !== false)
 		{
-			$this->template = preg_replace('#\\[module=([a-zA-Z0-9-_]+)\\](.*?)\\[/module\\]#es', '$this->check_module(\'\\1\', \'\\2\')', $this->template);
+			//THIS LINE CHANGED (IN 1.2)
+			$this->template = preg_replace_callback('#\\[module=([a-zA-Z0-9-_]+)\\](.*?)\\[/module\\]#s', array( &$this ,'module_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-group=') !== false)
 		{
-			$this->template = preg_replace('#\\[not-group=([0-9,]+)\\](.*?)\\[/not-group\\]#es', '$this->check_group(\'\\1\', \'\\2\', false)', $this->template);
+			//THIS LINE CHANGED (IN 1.2)
+			$this->template = preg_replace_callback('#\\[not-group=([0-9,]+)\\](.*?)\\[/not-group\\]#s',  array( &$this,'not_group_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[group=') !== false)
 		{
-			$this->template = preg_replace('#\\[group=([0-9,]+)\\](.*?)\\[/group\\]#es', '$this->check_group(\'\\1\', \'\\2\')', $this->template);
+			//THIS LINE CHANGED (IN 1.2)
+			$this->template = preg_replace_callback('#\\[group=([0-9,]+)\\](.*?)\\[/group\\]#s',  array( &$this ,'group_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-page=') !== false)
 		{
-			$this->template = preg_replace('#\\[not-page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/not-page\\]#es', '$this->check_page(\'\\1\', \'\\2\', false)', $this->template);
+			//THIS LINE CHANGED (IN 1.2)
+			$this->template = preg_replace_callback('#\\[not-page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/not-page\\]#s', array( &$this ,'not_page_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[page=') !== false)
 		{
-			$this->template = preg_replace('#\\[page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/page\\]#es', '$this->check_page(\'\\1\', \'\\2\')', $this->template);
+			//THIS LINE CHANGED (IN 1.2)
+			$this->template = preg_replace_callback('#\\[page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/page\\]#s', array( &$this ,'page_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[member]') !== false)
@@ -261,7 +268,8 @@ class template
 
 		if ($this->function && strpos($this->template, '{function name=') !== FALSE)
 		{
-			$this->template = preg_replace('#\\{function name=[\'"]([a-zA-Z0-9_]+)[\'"] args=[\'"](.+?)[\'"]\\}#es', '$this->get_function("\\1", "\\2")', $this->template);
+			//THIS LINE CHANGED (IN 1.2)
+			$this->template = preg_replace_callback('#\\{function name=[\'"]([a-zA-Z0-9_]+)[\'"] args=[\'"](.+?)[\'"]\\}#s',array( &$this ,'get_function_callback'), $this->template);
 		}
 
 		# for
@@ -412,6 +420,31 @@ class template
 		$this->parsed = null;
 		$this->tags = array();
 		$this->blocks = array();
+	}
+
+	function get_function_callback($matches){
+		return $this->get_function($matches[1],$matches[2]);
+	}
+	function load_include_callback($matches){
+		return $this->load($matches[1],'include');
+	}
+	function not_module_callback($matches){
+		return $this->check_module($matches[1],$matches[2],flase);
+	}
+	function module_callback($matches){
+		return $this->check_module($matches[1],$matches[2]);
+	}
+	function not_group_callback($matches){
+		return $this->check_group($matches[1],$matches[2],false);
+	}
+	function group_callback($matches){
+		return $this->check_group($matches[1],$matches[2]);
+	}
+	function not_page_callback($matches){
+		return $this->check_page($matches[1],$matches[2],false);
+	}
+	function page_callback($matches){
+		return $this->check_page($matches[1],$matches[2]);
 	}
 }
 

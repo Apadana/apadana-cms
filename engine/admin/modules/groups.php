@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -78,7 +78,7 @@ function _list()
 			'{data-admin}' => $g['group_admin'],
 			'{data-superAdmin}' => $g['group_superAdmin'],
 			'{data-rights}' => $g['group_rights'],
-			'{members}' => $g['group_id']==5? '--' : $d->numRows("SELECT member_id FROM #__members WHERE member_group='".$g['group_id']."'", true),
+			'{members}' => $g['group_id']==5? '--' : $d->num_rows("SELECT member_id FROM #__members WHERE member_group='".$g['group_id']."'", true),
 			'{admin}' => $g['group_admin']==1? true : false,
 			'{super-admin}' => $g['group_superAdmin']==1? true : false,
 			'{delete}' => $g['group_id']<=5? false : true,
@@ -148,7 +148,7 @@ function _new()
 			'group_admin' => $groups['admin']
 		));
 
-		if ($d->affectedRows())
+		if ($d->affected_rows())
 		{
 			remove_cache('member-groups');
 			echo '<script>apadana.hideID("form-new-group")</script>';
@@ -221,7 +221,7 @@ function _edit()
 				'group_admin' => $groups['admin']
 			), "group_id='".$_GET['c']."'", 1);
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				remove_cache('member-groups');
 				echo message('گروه کاربری با موفقیت ویرایش شد!', 'success');
@@ -246,7 +246,7 @@ function _delete()
 	if ($_GET['c'] > 5)
 	{
 		$d->delete('member_groups', "group_id='".$_GET['c']."'", 1);
-		if ($d->affectedRows())
+		if ($d->affected_rows())
 		{
 			$d->update('members', array('member_group'=>4), "member_group='".$_GET['c']."'");
 			remove_cache('member-groups');

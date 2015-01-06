@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -19,7 +19,7 @@ function _default()
 
 	$posts_options = posts_options();
 	$page_num = get_param($_GET, 'c', 1);
-	$total = $d->numRows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."'", true);
+	$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."'", true);
 	$pagination = new pagination($total, $posts_options['total-posts'], $page_num);
 
 	if ($page_num > $pagination->Pages && $pagination->Pages != 0)
@@ -90,9 +90,9 @@ function _author()
 		$total  = "SELECT p.post_id, m.member_name\n";
 		$total .= "FROM #__posts AS p\n";
 		$total .= "LEFT JOIN #__members AS m ON m.member_id=p.post_author\n";
-		$total .= "WHERE p.post_approve='1' AND p.post_date <= '".time_now."' AND m.member_name='".$d->escapeString($author)."'";
+		$total .= "WHERE p.post_approve='1' AND p.post_date <= '".time_now."' AND m.member_name='".$d->escape_string($author)."'";
 		$total .= "GROUP BY p.post_id\n";
-		$total = $d->numRows($total, true);
+		$total = $d->num_rows($total, true);
 
 		$pagination = new pagination($total, $posts_options['total-author'], $page_num);
 
@@ -102,7 +102,7 @@ function _author()
 		}
 		
 		$posts = get_posts(array(
-			'where' => "AND m.member_name='".$d->escapeString($author)."'",
+			'where' => "AND m.member_name='".$d->escape_string($author)."'",
 			'limit' => array($pagination->Start, $pagination->End)
 		));
 
@@ -146,9 +146,9 @@ function _tag()
 
 	$slug = get_param($_GET, 'c');
 
-	$term = $d->query("SELECT `term_id`,`term_name`,`term_slug` FROM `#__terms` WHERE term_type='p-tag' AND `term_slug`='".$d->escapeString(urlencode($slug))."' LIMIT 1");
+	$term = $d->query("SELECT `term_id`,`term_name`,`term_slug` FROM `#__terms` WHERE term_type='p-tag' AND `term_slug`='".$d->escape_string(urlencode($slug))."' LIMIT 1");
 
-	if ($d->numRows($term) <= 0 || (isset($_GET['d']) && !isnum($_GET['d'])))
+	if ($d->num_rows($term) <= 0 || (isset($_GET['d']) && !isnum($_GET['d'])))
 	{
 		module_error_run('404');
 	}
@@ -161,7 +161,7 @@ function _tag()
 
 		$page_num = get_param($_GET, 'd', 1);
 		$posts_options = posts_options();
-		$total = $d->numRows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."' AND FIND_IN_SET(".$term['term_id'].", `post_tags`)", true);
+		$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."' AND FIND_IN_SET(".$term['term_id'].", `post_tags`)", true);
 		$pagination = new pagination($total, $posts_options['total-tag'], $page_num);
 
 		if ($page_num > $pagination->Pages && $pagination->Pages != 0)
@@ -214,7 +214,7 @@ function _category()
 	global $d, $options;
 
 	$cat_id = get_param($_GET, 'c');
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	if ($options['rewrite'] == 1)
 	{
@@ -256,7 +256,7 @@ function _category()
 		}
 
 		$posts_options = posts_options();
-		$total = $d->numRows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."' AND (".str_replace('p.post_categories', 'post_categories', $children).")", true);
+		$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."' AND (".str_replace('p.post_categories', 'post_categories', $children).")", true);
 		$pagination = new pagination($total, $posts_options['total-category'], $page_num);
 
 		if ($page_num > $pagination->Pages && $pagination->Pages != 0)

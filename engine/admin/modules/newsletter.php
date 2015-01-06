@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -23,8 +23,8 @@ function _index()
 	$itpl = new template('newsletter.tpl', engine_dir.'admin/template/');
 	$itpl->assign(array(
 		'{textarea}' => wysiwyg_textarea('newsletter[text]', null),
-		'{members-0}' => $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_newsletter`='0'", true),
-		'{members-1}' => $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_newsletter`='1'", true),
+		'{members-0}' => $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_newsletter`='0'", true),
+		'{members-1}' => $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_newsletter`='1'", true),
 	));
 	set_content(null, $itpl->get_var());
 }

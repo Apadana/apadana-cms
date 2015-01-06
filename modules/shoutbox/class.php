@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -29,7 +29,7 @@ class shoutbox
 
 			($hook = get_hook('shoutbox_insert_start'))? eval($hook) : null;
 
-			if (!group_admin && $d->numRows("SELECT `shout_id` FROM `#__shoutbox` WHERE `shout_member`='".member_name."' AND `shout_time`>'".(time_now-30)."'", true) > 0)
+			if (!group_admin && $d->num_rows("SELECT `shout_id` FROM `#__shoutbox` WHERE `shout_member`='".member_name."' AND `shout_time`>'".(time_now-30)."'", true) > 0)
 			{
 				echo '<div class="shoutbox-error">میان هر پیام باید 30 ثانیه زمان باشد!</div>';
 			}
@@ -73,7 +73,7 @@ class shoutbox
 		$id = intval($id);
 
 		$d->query("SELECT `shout_member` FROM `#__shoutbox` WHERE `shout_id`='".$id."' LIMIT 1");
-		if ($d->numRows() <= 0)
+		if ($d->num_rows() <= 0)
 		{
 			echo '<div class="shoutbox-error">این پیام وجود ندارد!</div>';
 		}
@@ -108,7 +108,7 @@ class shoutbox
 		$total = intval($total) <= 0? 30 : intval($total);
 
 		$d->query("SELECT * FROM `#__shoutbox` ORDER BY shout_id DESC LIMIT $total");
-		if ($d->numRows() <= 0)
+		if ($d->num_rows() <= 0)
 		{
 			echo '<div class="shoutbox-error">هیچ پیامی وجود ندارد!</div>';
 		}
@@ -158,7 +158,7 @@ class shoutbox
 		$_page = get_param($_GET, 'page', 1);
 		$_page = $_page<=0? 1 : $_page;
 
-		$total_shout = $d->numRows("SELECT `shout_id` FROM `#__shoutbox`", true);
+		$total_shout = $d->num_rows("SELECT `shout_id` FROM `#__shoutbox`", true);
 
 		$pagination = new pagination($total_shout, $total, $_page);
 
@@ -168,7 +168,7 @@ class shoutbox
 		($hook = get_hook('shoutbox_archive_start'))? eval($hook) : null;
 
 		$d->query("SELECT * FROM `#__shoutbox` ORDER BY `shout_id` {$order} LIMIT $pagination->Start, $pagination->End");
-		if ($d->numRows() >= 1)
+		if ($d->num_rows() >= 1)
 		{
 			while ($row = $d->fetch()) 
 			{

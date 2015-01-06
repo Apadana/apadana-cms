@@ -68,10 +68,10 @@ function templates_info(name)
     apadana.html('templates-infoBox-description', apadana.value('data-templates-description-'+name));
     apadana.html('templates-infoBox-positions', apadana.value('data-templates-positions-'+name));
     apadana.html('templates-infoBox-pages', apadana.value('data-templates-pages-'+name));
-    apadana.html('templates-infoBox-compaction', apadana.value('data-templates-compaction-'+name)==1? 'فعال' : 'غیرفعال');
+    apadana.html('templates-infoBox-compaction', apadana.value('data-templates-compaction-'+name));
     apadana.html('templates-infoBox-authorUrl', apadana.value('data-templates-authorUrl-'+name)=='unknown'? 'ناشناخته' : 'مشاهده سایت سازنده');
     apadana.$('templates-infoBox-authorUrl').href = apadana.value('data-templates-authorUrl-'+name)=='unknown'? 'javascript:void(0)' : apadana.value('data-templates-authorUrl-'+name);
-	apadana.infoBox('#templates-info-box', 1);
+	apadana.infoBox('#templates-info-box', 1 , 1);
 }
 function templates_startUpload()
 {

@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -29,14 +29,14 @@ function _default()
 	$_page = get_param($_GET, 'page', 1);
 	$_page = $_page<=0? 1 : $_page;
 
-	$total_posts = $d->numRows("SELECT `post_id` FROM `#__posts`", true);
+	$total_posts = $d->num_rows("SELECT `post_id` FROM `#__posts`", true);
 
 	$pagination = new pagination($total_posts, $total, $_page);
 
 	$itpl = new template('modules/posts/html/admin/posts.tpl');
 
 	$d->query("SELECT * FROM #__posts ORDER BY post_fixed {$order}, post_date {$order}, post_id {$order} LIMIT $pagination->Start, $pagination->End");
-	if ($d->numRows() >= 1)
+	if ($d->num_rows() >= 1)
 	{
 		while ($data = $d->fetch()) 
 		{
@@ -140,7 +140,7 @@ function _title()
 
 	$d->query("SELECT `post_author`, `post_title` FROM `#__posts` WHERE `post_id`='{$id}' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('این پست وجود ندارد!');
 	}
@@ -170,7 +170,7 @@ function _title()
 			'post_title' => $title,
 		), "`post_id`='{$id}'", 1);	
 		
-		if ($d->affectedRows())
+		if ($d->affected_rows())
 		{
 			remove_cache('module-posts', true);
 			exit('ok');
@@ -192,7 +192,7 @@ function _approve()
 
 	$d->query("SELECT `post_author`, `post_approve` FROM #__posts WHERE `post_id`='{$id}' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('این پست وجود ندارد!');
 	}
@@ -208,7 +208,7 @@ function _approve()
 		'post_approve' => $data['post_approve'] == 1? 0 : 1,
 	), "`post_id`='{$id}'", 1);	
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		remove_cache('module-posts', true);
 		exit($data['post_approve'] == 1? 'no' : 'ok');
@@ -229,7 +229,7 @@ function _fixed()
 
 	$d->query("SELECT `post_author`, `post_fixed` FROM #__posts WHERE `post_id`='$id' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		exit('این پست وجود ندارد!');
 	}
@@ -245,7 +245,7 @@ function _fixed()
 		'post_fixed' => $data['post_fixed']==1? 0 : 1,
 	), "`post_id`='{$id}'", 1);	
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		remove_cache('module-posts', true);
 		exit($data['post_fixed'] == 1? 'no' : 'ok');
@@ -293,7 +293,7 @@ function _tags($data)
 				continue;
 			}
 
-			if ($d->numRows("SELECT * FROM `#__terms` WHERE `term_type`='p-tag' AND `term_name`='".$d->escapeString($tag)."'", true) <= 0)
+			if ($d->num_rows("SELECT * FROM `#__terms` WHERE `term_type`='p-tag' AND `term_name`='".$d->escape_string($tag)."'", true) <= 0)
 			{
 				$d->insert('terms', array(
 					'term_type' => 'p-tag',
@@ -310,9 +310,9 @@ function _tags($data)
     {
         if (!empty($tag))
         {
-            $tagID = $d->query("SELECT term_id FROM `#__terms` WHERE `term_type`='p-tag' AND `term_name`='".$d->escapeString($tag)."' LIMIT 1");
+            $tagID = $d->query("SELECT term_id FROM `#__terms` WHERE `term_type`='p-tag' AND `term_name`='".$d->escape_string($tag)."' LIMIT 1");
 
-			if ($d->numRows($tagID) <= 0)
+			if ($d->num_rows($tagID) <= 0)
 			{
 				continue;
 			}
@@ -399,7 +399,7 @@ function _new()
 			{
 				$msg[] = 'نام مستعار بیش از انداره طولانی است!';
 			}
-			elseif ($d->numRows("SELECT `post_id` FROM `#__posts` WHERE `post_name`='".$d->escapeString($posts['name'])."'", true) >= 1)
+			elseif ($d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_name`='".$d->escape_string($posts['name'])."'", true) >= 1)
 			{
 				$msg[] = 'نام مستعار تکراری است یک نام مستعار دیگر انتخاب کنید!';
 			}
@@ -469,7 +469,7 @@ function _new()
 				'post_author' => member_id,
 			));
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				$id = intval($id);
 				if (isset($posts['fields']) && is_array($posts['fields']) && count($posts['fields']) && $id > 0)
@@ -506,7 +506,7 @@ function _new()
 		exit;
 	}
 
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	$itpl = new template('modules/posts/html/admin/posts-new.tpl');
 
@@ -726,7 +726,7 @@ function _edit()
 				{
 					$msg[] = 'نام مستعار بیش از انداره طولانی است!';
 				}
-				elseif ($data['post_name'] != $posts['name'] && $d->numRows("SELECT `post_id` FROM `#__posts` WHERE `post_name`='".$d->escapeString($posts['name'])."'", true) >= 1)
+				elseif ($data['post_name'] != $posts['name'] && $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_name`='".$d->escape_string($posts['name'])."'", true) >= 1)
 				{
 					$msg[] = 'نام مستعار تکراری است یک نام مستعار دیگر انتخاب کنید!';
 				}
@@ -793,7 +793,7 @@ function _edit()
 							'field_value' => $value,
 							'field_type' => 'p',
 						));
-						if ($d->affectedRows()) $save++;
+						if ($d->affected_rows()) $save++;
 					}
 				}
 
@@ -819,7 +819,7 @@ function _edit()
 					'post_tags' => implode(',', $tags['id']),
 				), "post_id = '{$id}'", 1);
 				
-				if ($d->affectedRows() || $save > 0)
+				if ($d->affected_rows() || $save > 0)
 				{
 					# delete old tags
 					$new = isset($tags['id']) && is_array($tags['id']) && count($tags['id'])? $tags['id'] : array();
@@ -831,11 +831,11 @@ function _edit()
 							if (in_array($tag, $new)) continue;
 							
 							$tagsQuery = $d->query("SELECT `post_id` FROM `#__posts` WHERE FIND_IN_SET(".intval($tag).", `post_tags`)");
-							if ($d->numRows($tagsQuery) <= 0)
+							if ($d->num_rows($tagsQuery) <= 0)
 							{
 								$d->delete('terms', "`term_type`='p-tag' AND `term_id`='".intval($tag)."'", 1);
 							}
-							$d->freeResult($tagsQuery);
+							$d->free_result($tagsQuery);
 						}
 					}
 
@@ -850,7 +850,7 @@ function _edit()
 			exit;
 		}
 
-		$categories = &posts_categories();
+		$categories = posts_categories();
 
 		$itpl = new template('modules/posts/html/admin/posts-edit.tpl');
 
@@ -1038,7 +1038,7 @@ function _delete()
 
 	$d->query("SELECT `post_author`, `post_tags` FROM `#__posts` WHERE `post_id`='{$id}' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		redirect(admin_page.'&module=posts');
 	}
@@ -1051,7 +1051,7 @@ function _delete()
 		if (is_array($data['post_tags']) && count($data['post_tags']))
 		foreach ($data['post_tags'] as $tag)
 		{
-			if ($d->numRows("SELECT * FROM `#__posts` WHERE FIND_IN_SET(".intval($tag).", post_tags) AND `post_id`!='".intval($id)."'", true) <= 0)
+			if ($d->num_rows("SELECT * FROM `#__posts` WHERE FIND_IN_SET(".intval($tag).", post_tags) AND `post_id`!='".intval($id)."'", true) <= 0)
 			{
 				$d->delete('terms', "`term_type`='p-tag' AND `term_id`='".intval($tag)."'", 1);
 			}
@@ -1193,7 +1193,7 @@ function _fields_new()
 				'option_value' => serialize($op)
 			), "`option_name`='posts'", 1);	
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				echo message('فیلد <b>'.$fields['name'].'</b> با موفقیت ساخته شد.', 'success');
 				remove_cache('options-posts');
@@ -1276,7 +1276,7 @@ function _fields_edit()
 				'option_value' => serialize($op)
 			), "`option_name`='posts'", 1);	
 
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				echo message('فیلد <b>'.$name.'</b> با موفقیت ویرایش شد.', 'success');
 				remove_cache('options-posts');
@@ -1285,7 +1285,7 @@ function _fields_edit()
 				{
 					$d->update('fields', array(
 						'field_name' => $fields['name']
-					), "`field_type`='p' AND `field_name`='".$d->escapeString($name)."'", 1);	
+					), "`field_type`='p' AND `field_name`='".$d->escape_string($name)."'", 1);	
 				}
 			}
 			else
@@ -1320,13 +1320,13 @@ function _fields_delete()
 		'option_value' => serialize($op)
 	), "`option_name`='posts'", 1);	
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		echo message('فیلد <b>'.$name.'</b> با موفقیت حذف شد.', 'success');
 		remove_cache('options-posts');
 		
-		$d->delete('fields', "`field_type`='p' AND `field_name`='".$d->escapeString($name)."'");
-		if ($d->affectedRows())
+		$d->delete('fields', "`field_type`='p' AND `field_name`='".$d->escape_string($name)."'");
+		if ($d->affected_rows())
 		{
 			echo message('اطلاعات فیلد <b>'.$name.'</b> با موفقیت از دیتابیس حذف شد!', 'success');
 		}
@@ -1356,7 +1356,7 @@ function _categories()
 function _categories_parent()
 {
 	member::check_admin_page_access('posts-categories') or warning('عدم دسترسی!', 'شما دسترسی لازم برای مشاهده این بخش را ندارید!');
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	$array = array();
 	$array[0] = 'بدون سردسته (این موضوع سردسته است)';
@@ -1378,7 +1378,7 @@ function _categories_new()
 	global $cache, $d;
 
 	member::check_admin_page_access('posts-categories') or warning('عدم دسترسی!', 'شما دسترسی لازم برای مشاهده این بخش را ندارید!');
-	$categories_data = &posts_categories();
+	$categories_data = posts_categories();
 
 	$categories = get_param($_POST, 'categories', null, 1);
 
@@ -1406,7 +1406,7 @@ function _categories_new()
 			{
 				$msg[] = 'نام مستعار بیش از انداره طولانی است!';
 			}
-			elseif ($d->numRows("SELECT `term_id` FROM `#__terms` WHERE `term_type`='p-cat' AND `term_slug`='".$d->escapeString($categories['slug'])."'", true) >= 1)
+			elseif ($d->num_rows("SELECT `term_id` FROM `#__terms` WHERE `term_type`='p-cat' AND `term_slug`='".$d->escape_string($categories['slug'])."'", true) >= 1)
 			{
 				$msg[] = 'نام مستعار تکراری است یک نام مستعار دیگر انتخاب کنید!';
 			}
@@ -1432,7 +1432,7 @@ function _categories_new()
 				'term_type' => 'p-cat',
 			));	
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				remove_cache('module-posts-categories', true);
 				echo message('موضوع با موفقیت ذخیره شد!', 'success');
@@ -1457,14 +1457,14 @@ function _categories_edit()
 
 	$d->query("SELECT * FROM #__terms WHERE `term_id`='$id' LIMIT 1");
 
-	if ($d->numRows() <= 0)
+	if ($d->num_rows() <= 0)
 	{
 		echo message('این موضوع وجود ندارد!', 'error');
 		exit;
 	}
 
 	$data = $d->fetch();
-	$categories_data = &posts_categories();
+	$categories_data = posts_categories();
 	$categories = get_param($_POST, 'categories', null, 1);
 
 	if (isset($categories) && is_array($categories) && count($categories))
@@ -1491,7 +1491,7 @@ function _categories_edit()
 			{
 				$msg[] = 'نام مستعار بیش از انداره طولانی است!';
 			}
-			elseif ($categories['slug'] != $data['term_slug'] && $d->numRows("SELECT `term_id` FROM `#__terms` WHERE `term_type`='p-cat' AND `term_slug`='".$d->escapeString($categories['slug'])."'", true) >= 1)
+			elseif ($categories['slug'] != $data['term_slug'] && $d->num_rows("SELECT `term_id` FROM `#__terms` WHERE `term_type`='p-cat' AND `term_slug`='".$d->escape_string($categories['slug'])."'", true) >= 1)
 			{
 				$msg[] = 'نام مستعار تکراری است یک نام مستعار دیگر انتخاب کنید!';
 			}
@@ -1516,7 +1516,7 @@ function _categories_edit()
 				'term_description' => $categories['description'],
 			), "`term_type`='p-cat' AND `term_id`='{$id}'", 1);	
 			
-			if ($d->affectedRows())
+			if ($d->affected_rows())
 			{
 				remove_cache('module-posts-categories', true);
 				echo message('موضوع با موفقیت ویرایش شد!', 'success');
@@ -1527,7 +1527,7 @@ function _categories_edit()
 						'term_parent' => $categories['parent'],
 					), "`term_type`='p-cat' AND `term_parent`='{$id}'");
 
-					if ($d->affectedRows())
+					if ($d->affected_rows())
 					{
 						echo message('سردسته موضوعاتی که این موضوع، سردسته آنها بود به سردسته جدید این موضوع تغییر پیدا کرد!', 'success');
 					}
@@ -1548,7 +1548,7 @@ function _categories_list()
 	global $cache, $d;
 
 	member::check_admin_page_access('posts-categories') or warning('عدم دسترسی!', 'شما دسترسی لازم برای مشاهده این بخش را ندارید!');
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	$itpl = new template('modules/posts/html/admin/categories-list.tpl');
 
@@ -1623,7 +1623,7 @@ function _categories_delete()
 
 	$d->delete('terms', "`term_type`='p-cat' AND `term_id`='{$id}'", 1);
 
-	if ($d->affectedRows())
+	if ($d->affected_rows())
 	{
 		remove_cache('module-posts-categories', true);
 		$d->update('terms', array(
@@ -1676,7 +1676,7 @@ function _options()
 			'option_value' => serialize($op)
 		), "`option_name`='posts'", 1);	
 		
-		if ($d->affectedRows())
+		if ($d->affected_rows())
 		{
 			remove_cache('options-posts');
 			echo message('تنظیمات با موفقیت ذخیره شد!', 'success');
