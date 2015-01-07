@@ -5,7 +5,7 @@
 </div>
 <center>
 <button id="install" onClick="install_load('')">نصب آپادانا</button>
-<button id="upgrade" onClick="apadana.location('upgrade.php')">بروز رسانی</button>
+<button id="upgrade" disabled="disabled" >بروز رسانی(برای نسخه های آزمایشی غیر فعال)</button>
 </center>
 [/open]
 [lock]
