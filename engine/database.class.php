@@ -32,38 +32,24 @@ class database
 		$this->prefix = $db['prefix'];
 		$this->charset = $db['charset'];
 
-		if($this->debug)
-			if ($this->mysqli)
-			{
-				$this->connect = mysqli_connect($db['host'], $db['user'], $db['password']);
-			}
-			else
-			{
-				$this->connect = mysql_connect($db['host'], $db['user'], $db['password'], true);
-			}
-
+		if ($this->mysqli)
+		{
+			$this->connect = mysqli_connect($db['host'], $db['user'], $db['password']);
+		}
 		else
-			
-			if ($this->mysqli)
-			{
-				$this->connect = @mysqli_connect($db['host'], $db['user'], $db['password']);
-			}
-			else
-			{
-				$this->connect = @mysql_connect($db['host'], $db['user'], $db['password'], true);
-			}
+		{
+			$this->connect = mysql_connect($db['host'], $db['user'], $db['password'], true);
+		}
 
 		if (!$this->connect) 
 		{
-			return false;
+			exit('Unable to establish connection to MySQL!');
 		}
 
-		$this->select_db($db['name']);
-
-		return true;
+		$this->select($db['name'], $this->connect);
 	}
 
-	public function select_db($name) 
+	public function select($name) 
 	{
 		if ($this->mysqli)
 		{

@@ -36,7 +36,7 @@ function _inbox()
 
 	if ($get_pages > 1)
 	{
-		set_title('صفحه '.number2persian($get_pages));
+		set_title('صفحه '.translate_number($get_pages,'fa'));
 	}
 
 	_menu();
@@ -108,7 +108,7 @@ function _outbox()
 
 	if ($get_pages > 1)
 	{
-		set_title('صفحه '.number2persian($get_pages));
+		set_title('صفحه '.translate_number($get_pages,'fa'));
 	}
 
 	_menu();

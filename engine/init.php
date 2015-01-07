@@ -174,6 +174,21 @@ $page['meta']['keywords'] = $options['meta-keys'];
 $page['meta']['robots'] = null;
 $page['canonical'] = null;
 $page['head'] = array();
+
+/**
+* The Default scripts That Should be included
+*
+* You can remove them by $page variabe
+*
+* @see set_head_script()
+*
+* @since 1.1
+*/
+$page['script'] = array(
+	'jquery' => '<script type="text/javascript" src="'.url.'engine/javascript/jquery.js"></script>',
+	'core' => '<script type="text/javascript" src="'.url.'engine/javascript/core.js"></script>'
+	);
+
 $cache = array();
 $hooks = array();
 

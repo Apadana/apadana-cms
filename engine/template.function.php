@@ -166,8 +166,7 @@ function head()
 	$Header .= '<link rel="sitemap" href="'.url.($options['rewrite'] == 1? 'sitemap.xml' : '?a=sitemap').'" />'.n;
 	$Header .= '<link rel="search" type="application/opensearchdescription+xml" href="'.url('search/opensearch').'" title="'.$options['title'].'" />'.n;
 	$Header .= '<link rel="alternate" type="application/rss+xml" href="'.url('feed/posts/rss').'" title="'.$options['title'].'" />'.n;
-	$Header .= '<script type="text/javascript" src="'.url.'engine/javascript/jquery.js"></script>'. n;
-	$Header .= '<script type="text/javascript" src="'.url.'engine/javascript/core.js"></script>'. n;
+	$Header .= is_array($page['script']) && count($page['script'])? implode(n, $page['script']).n : null;
 	$Header .= '<script type="text/javascript">apadana.site={\'domain\':\''.domain.'\',\'path\':\''.path.'\',\'url\':\''.url.'\'}</script>'. n;
 	$Header .= is_array($page['head']) && count($page['head'])? implode(n, $page['head']).n : null;
     return trim($Header);
@@ -339,6 +338,38 @@ function set_head($code)
 	}
 }
 
+/**
+* Set site head script
+*
+* Add a script tag to the head tag with parameter you set.
+*
+* @since 1.1
+*
+* @param string $name An identifier for the script to handle it easily for example unset it throw modules etc.
+* @param string $type The type of script to show
+* @param string $src The source of script file.
+*
+* @return bool False if $src is empty
+*/
+function set_head_script($name = null, $type="type/javascript" , $src = null)
+{
+	global $page;
+
+	if (!empty($src) && is_string($src))
+	{
+		if(!empty($name))
+			$page['script'][] = '<script type="'.$type.'" src="'.$src.'">';
+		else
+			$page['script'][$name] = '<script type="'.$type.'" src="'.$src.'">';
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
+}
 function set_theme($file)
 {
 	global $page;

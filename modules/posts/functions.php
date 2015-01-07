@@ -39,7 +39,7 @@ function _default()
 	{
 		if ($page_num > 1)
 		{
-			set_title('صفحه '.number2persian($page_num));
+			set_title('صفحه '.translate_number($page_num,'fa'));
 		}
 		
 		if ($page_num <= 1)
@@ -125,7 +125,7 @@ function _author()
 		{
 			if ($page_num > 1)
 			{
-				set_title('صفحه '.number2persian($page_num));
+				set_title('صفحه '.translate_number($page_num,'fa'));
 			}
 
 			foreach ($posts as $post)
@@ -194,7 +194,7 @@ function _tag()
 		{
 			if ($page_num > 1)
 			{
-				set_title('صفحه '.number2persian($page_num));
+				set_title('صفحه '.translate_number($page_num,'fa'));
 			}
 
 			foreach ($posts as $post)
@@ -290,7 +290,7 @@ function _category()
 		{
 			if ($page_num > 1)
 			{
-				set_title('صفحه '.number2persian($page_num));
+				set_title('صفحه '.translate_number($page_num,'fa'));
 			}
 
 			foreach ($posts as $post)

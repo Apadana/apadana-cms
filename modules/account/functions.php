@@ -321,7 +321,7 @@ function _members()
 
 		if ($get_pages > 1 && $get_pages <= $pagination->Pages)
 		{
-			set_title('صفحه '.number2persian($get_pages));
+			set_title('صفحه '.translate_number($get_pages,'fa'));
 			set_canonical(url('account/members/'.$get_pages));
 		}
 

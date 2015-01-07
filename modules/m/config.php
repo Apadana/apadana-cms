@@ -46,7 +46,7 @@ function module_m_run()
 		{
 			if ($page_num > 1)
 			{
-				set_title('صفحه '.number2persian($page_num));
+				set_title('صفحه '.translate_number($page_num,'fa'));
 			}
 			
 			if ($pagination->Pages < $page_num || $page_num <= 1)

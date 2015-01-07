@@ -106,9 +106,9 @@ if(isset($options['first_install']) && $options['first_install'] == 1)
 		'[/intro]' => null
 	));
 	unset($options['first_install']);
-	remove_cache('options');
+	//remove_cache('options');
 
-	$d->delete('options' , " `option_name` = 'first_install' " , 1);
+	//$d->delete('options' , " `option_name` = 'first_install' " , 1);
 }
 else
 {

@@ -42,6 +42,7 @@
 			height: '650', 
 			//lang: 'en', // language (OPTIONAL)
 		}).elfinder('instance');
+		$('#footer').css('display','none');
 [/template]
 	});
 </script>
