@@ -226,33 +226,43 @@ function posts_categories()
 	return $cache['posts_categories'];
 }
 
+// ترتیب ul و li اشتباه بود
+// برای منوی جمع شوی سایت اینجوری باید باشه
 function block_categories($op = null, $id = null, $position= null)
 {
-	global $options;	
+	global $options;
 
 	if ($op == 'remove-cache') return true;
-	$categories = posts_categories();
+	$categories = &posts_categories();
 
 	if (isset($categories) && is_array($categories) && count($categories))
 	{
-		$html = '<ul id="apadana-block-posts-categories">'.n;
+		$html = '<ul  id="accordion">'.n;
 		foreach ($categories as $cat)
 		{
 			if ($cat['term_parent'] != 0) continue;
-			$html .= '<li class="cat-item cat-item-'.$cat['term_id'].'"><a href="'.url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id'])).'">'.$cat['term_name'].'</a></li>'.n;
-			
-			$i = 0;
+        	   $html .= '<li id="titr">';
+               $html .='<a href="'.url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id'])).'">'.$cat['term_name'].'</a>';
+               $html .=' </li>'.n;
+
+
+              	$i = 0;
 			foreach ($categories as $cat2)
 			{
 				if ($cat2['term_parent'] != $cat['term_id']) continue;
-				if ($i == 0) $html .= '<ul class="children">'.n;
-				$html .= '<li class="cat-item cat-item-'.$cat2['term_id'].'"><a href="'.url('posts/category/'.($options['rewrite'] == 1? $cat2['term_slug'] : $cat2['term_id'])).'">'.$cat2['term_name'].'</a></li>'.n;
-				$i++;
+			    if ($i == 0) $html .= '<ul >'.n;
+
+               	$html .= '<li><a id="level2" href="'.url('posts/category/'.($options['rewrite'] == 1? $cat2['term_slug'] : $cat2['term_id'])).'">'.$cat2['term_name'].'</a></li>';
+
+            $i++;
 			}
-			if ($i >= 1)
-			{
-				$html .= '</ul>'.n;
-			}
+               if ($i >= 1)
+           	{
+		   		$html .= '</ul>'.n;
+           	}
+
+
+
 		}
 		$html .= '</ul>'.n;
 		unset($cat, $cat2);
