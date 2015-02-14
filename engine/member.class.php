@@ -48,7 +48,7 @@ class member
 
 		if (!empty($member[0]) && !empty($member[1]))
 		{
-			$query = sprintf("SELECT * FROM #__members WHERE member_id='%d' AND member_status='1'", $member[0]);
+			$query = sprintf("SELECT * FROM #__members WHERE member_id='%d' AND member_status='1' LIMIT 1", $member[0]);
 			$query = $d->query($query);
 			$result = $d->fetch($query);
 			$loginKey = md5(self::loginKey($result['member_password']));

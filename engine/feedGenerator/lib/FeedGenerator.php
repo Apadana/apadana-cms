@@ -82,7 +82,7 @@ class FeedGenerator {
 	/**
 	 * @param Generator $generator Generator strategy (RSS/Atom)
 	 */
-    public function setGenerator(Generator $generator){
+    public function setGenerator(RGenerator $generator){
         $this->_generator=$generator;
         $this->_channel->setGeneratorName($this->_generator->generatorName());
     }
@@ -91,7 +91,7 @@ class FeedGenerator {
 	 * @throws FeedGeneratorException
 	 */
     public function generate(){
-    	if(!$this->_generator instanceof Generator) throw new FeedGeneratorException('There has been no generator strategy set.');
+    	if(!$this->_generator instanceof RGenerator) throw new FeedGeneratorException('There has been no generator strategy set.');
         $this->generated=$this->_generator->generate($this->_channel);
     }
 

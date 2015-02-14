@@ -3,7 +3,7 @@
 	<h1>اطلاعات کاربری مدیر سایت</h1>
 	لطفا اطلاعات مورد نیاز برای ساختن مدیر سایت را وارد کنید، نام کاربری باید حداقل 4 حرف باشد و پسورد باید حداقل 6 حرف باشد.
 </div>
-<form id="form-admin" onSubmit="return false" style="margin:0;">
+<form id="form-admin" onSubmit="return false">
 <table cellpadding="0" cellspacing="0" class="padding">
   <tr>
     <td style="width:230px">نام کاربری مدیر <font color="#CCCCCC" size="1" dir="ltr" style="float: left">(Admin User Name)</font></td>
@@ -23,7 +23,7 @@
   </tr>
   <tr>
     <td></td>
-    <td><button onClick="install_admin()" disabled="disabled" id="button-disabled">ایجاد مدیر سایت</button><button onClick="install_check('admin')" style="margin-left:10px">برسی اطلاعات</button></td>
+    <td><button onClick="install_admin()" disabled="disabled" id="button-disabled">ایجاد مدیر سایت</button><button onClick="install_check(\'admin\')" style="margin-left:10px">برسی اطلاعات</button></td>
   </tr>
 </table>
 </form>

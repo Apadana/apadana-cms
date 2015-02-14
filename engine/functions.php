@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -776,4 +776,29 @@ function gzip_out()
 	$d->close();
 
 	exit($contents);
+}
+
+/**
+* Fix the JSON extension IF it is not loaded
+*
+* @since 1.1
+*/
+
+if (!extension_loaded('json') || !function_exists('json_encode') || !function_exists('json_encode') )
+{
+	require_once(engine_dir.'json.class.php');
+
+	function json_encode($data)
+	{
+		$json = new Services_JSON();
+		return $json->encode($data);
+	}
+
+	require_once(engine_dir.'json.class.php');
+
+	function json_decode($data)
+	{
+		$json = new Services_JSON();
+		return $json->decode($data);
+	}
 }

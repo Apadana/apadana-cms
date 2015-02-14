@@ -90,10 +90,17 @@ if (!defined('no_template') || no_template !== true)
 
 	$tpl->assign(array(
 		'{head}' => head(),
+		'{foot}' => is_array($page['foot']) && count($page['foot'])? implode(n, $page['foot']).n : null,
 		'{num-queries}' => translate_number($d->num_queries),
 		'{creation-time}' => translate_number(apadana_substr(microtime(true)-start_time, 0, debug_system? 7 : 4)),
 		'{memory-get-usage}' => translate_number(apadana_memory_get_usage())
 	));
+
+	if ($options['allow-change-theme']) {
+		$tpl->assign('{templates-list}' , get_templates(true));
+	}else{
+		$tpl->assign('{templates-list}' , 'تغیر قالب غیر فعال است');
+	}
 
 	if (home === true)
 	{

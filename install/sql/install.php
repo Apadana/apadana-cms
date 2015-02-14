@@ -114,19 +114,19 @@ $d->query("CREATE TABLE `#__blocks` (
 # Dumping data for table '#__blocks'
 #
 
-$d->query("INSERT INTO `#__blocks` VALUES('1', '1', 'right', 'موضوعات', '', '1', 'categories', '', '1', '1', 'persian');");
-$d->query("INSERT INTO `#__blocks` VALUES('2', '14', 'top', 'جستجو در سایت', '[- options -]\nsize = 300', '1', 'search', '', '1', '0', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('3', '3', 'left', 'سامانه کاربری', '', '1', 'login', '', '1', '1', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('4', '5', 'right', 'اطلاعات آماری', '', '1', 'counter', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('1', '8', 'right', 'موضوعات', '', '1', 'categories', '', '1', '1', 'persian');");
+$d->query("INSERT INTO `#__blocks` VALUES('2', '13', 'top', 'جستجو در سایت', '[- options -]\nsize = 300', '1', 'search', '', '1', '0', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('3', '4', 'left', 'سامانه کاربری', '', '1', 'login', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('4', '12', 'right', 'اطلاعات آماری', '', '1', 'counter', '', '1', '1', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('5', '5', 'left', 'صفحات اضافی', '[- options -]\ntotal = 15\norder = desc', '1', 'pages', '', '1', '1', 'persian');");
-$d->query("INSERT INTO `#__blocks` VALUES('6', '4', 'right', 'لینکستان', '', '1', 'simple_links', '', '1', '1', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('7', '2', 'right', 'جدیدترین مطالب', '[- options -]\ntotal = 15', '1', 'last_posts', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('6', '11', 'right', 'لینکستان', '', '1', 'simple_links', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('7', '9', 'right', 'جدیدترین مطالب', '[- options -]\ntotal = 15', '1', 'last_posts', '', '1', '1', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('8', '2', 'bottom', 'بیشترین بازدید شده ها', '[- options -]\ntotal = 10\nhits = true\norder = desc', '1', 'last_posts', '', '0', '0', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('9', '3', 'right', 'نظرسنجی', '', '1', 'voting', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('9', '10', 'right', 'نظرسنجی', '', '1', 'voting', '', '1', '1', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('10', '1', 'bottom', 'آخرین نظرات', '[- options -]\ntotal = 15\norder = desc', '1', 'posts_comments', '', '1', '0', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('11', '6', 'left', 'جعبه پیام', '', '1', 'shoutbox', '', '1', '1', '');");
 $d->query("INSERT INTO `#__blocks` VALUES('12', '7', 'left', 'برچسب ها', '[- options -]\ntotal = 50', '1', 'tags_cloud', '', '1', '1', '');");
-$d->query("INSERT INTO `#__blocks` VALUES('13', '4', 'right', 'کاربران آنلاین', '', '1', 'onlines', '', '1', '1', '');");
+$d->query("INSERT INTO `#__blocks` VALUES('13', '3', 'left', 'کاربران آنلاین', '', '1', 'onlines', '', '1', '0', '');");
 
 
 # --------------------------------------------------------
@@ -153,7 +153,7 @@ $d->query("CREATE TABLE `#__comments` (
   PRIMARY KEY (`comment_id`),
   KEY `comment_type` (`comment_type`),
   KEY `comment_link` (`comment_link`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;");
 
 
 # --------------------------------------------------------
@@ -197,7 +197,7 @@ $d->query("CREATE TABLE `#__files` (
 # Dumping data for table '#__files'
 #
 
-$d->query("INSERT INTO `#__files` VALUES('1', 'demo-jpg', 'uploads/posts/demo.jpg', '1418733937', '1', '1', '0', '');");
+$d->query("INSERT INTO `#__files` VALUES('1', 'demo-jpg', 'uploads/posts/demo.jpg', '".time()."', '1', '1', '0', '');");
 
 
 # --------------------------------------------------------
@@ -266,9 +266,7 @@ $d->query("CREATE TABLE `#__members` (
 # Dumping data for table '#__members'
 #
 
-$d->query("INSERT INTO `#__members` VALUES('1', 'admin', '6f6d5f7b86e131a014cf0d1fe3172d20', '8b2349b7c5add80e157ffe3f871da188', 'msdn2013@gmail.com', '', '1416425510', '1420471100', '25', '127.0.0.1', '127.0.0.1', '1', '', 'admin', '', '1', '1', 'Iran (Islamic Republic of)', '', 'male', '');");
-$d->query("INSERT INTO `#__members` VALUES('2', 'msdn', '06b84164b4b35f75c0dc1c4ac6a3e0e9', 'c653d43e26b58c7086972ff6fd2acc77', 'smsd@gmail.com', '', '1419444299', '1419444299', '1', '127.0.0.1', '127.0.0.1', '1', '', 'msdn', '', '4', '1', 'Iran (Islamic Republic of)', '', 'male', '');");
-$d->query("INSERT INTO `#__members` VALUES('3', 'msdn2', '', 'c653d43e26b58c7086972ff6fd2acc77', 'smsd@gmail.com1', '', '1419444411', '1419444411', '1', '127.0.0.1', '127.0.0.1', '1', '', 'msdn2', '', '1', '1', 'Iran (Islamic Republic of)', '', 'male', '');");
+$d->query("INSERT INTO `#__members` VALUES('1', 'admin', '', '', '', '', '0', '0', '0', '', '', '1', '', 'مدیر', '', '1', '1', 'Iran (Islamic Republic of)', '', 'male', '');");
 
 
 # --------------------------------------------------------
@@ -341,24 +339,25 @@ $d->query("INSERT INTO `#__options` VALUES('account', 'a:9:{s:8:\"register\";i:1
 $d->query("INSERT INTO `#__options` VALUES('rules', '', '0');");
 $d->query("INSERT INTO `#__options` VALUES('replace-link', '0', '1');");
 $d->query("INSERT INTO `#__options` VALUES('last-banned', '1416425485', '1');");
-$d->query("INSERT INTO `#__options` VALUES('posts', 'a:5:{s:11:\"total-posts\";i:10;s:14:\"total-category\";i:10;s:9:\"total-tag\";i:10;s:12:\"total-author\";i:10;s:6:\"fields\";a:0:{}}', '0');");
-$d->query("INSERT INTO `#__options` VALUES('comments', 'a:5:{s:5:\"limit\";i:400;s:10:\"post-guest\";i:1;s:6:\"editor\";i:1;s:5:\"email\";i:1;s:7:\"approve\";i:1;}', '0');");
+$d->query("INSERT INTO `#__options` VALUES('posts', 'a:5:{s:11:\"total-posts\";i:1;s:14:\"total-category\";i:1;s:9:\"total-tag\";i:1;s:12:\"total-author\";i:1;s:6:\"fields\";a:0:{}}', '0');");
+$d->query("INSERT INTO `#__options` VALUES('comments', 'a:7:{s:5:\"limit\";i:400;s:10:\"post-guest\";i:1;s:6:\"editor\";i:1;s:5:\"email\";i:1;s:7:\"approve\";i:1;s:10:\"pagination\";i:1;s:8:\"per-page\";i:10;}', '0');");
 $d->query("INSERT INTO `#__options` VALUES('mail', 'no-reply@gmail.com', '1');");
 $d->query("INSERT INTO `#__options` VALUES('feed-limit', '10', '1');");
-$d->query("INSERT INTO `#__options` VALUES('rewrite', '0', '1');");
+$d->query("INSERT INTO `#__options` VALUES('rewrite', '1', '1');");
 $d->query("INSERT INTO `#__options` VALUES('http-referer', '1', '1');");
 $d->query("INSERT INTO `#__options` VALUES('separator-rewrite', '/', '1');");
 $d->query("INSERT INTO `#__options` VALUES('file-rewrite', '.html', '1');");
-$d->query("INSERT INTO `#__options` VALUES('editor-color', '#D9D327', '1');");
+$d->query("INSERT INTO `#__options` VALUES('editor-color', '#D3D3D3', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-host', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-port', '25', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-username', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-password', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('url-correction', '1', '1');");
 $d->query("INSERT INTO `#__options` VALUES('antiflood', '0', '1');");
-$d->query("INSERT INTO `#__options` VALUES('version', '1.0.1', '1');");
+$d->query("INSERT INTO `#__options` VALUES('version', '1.3-alpha3', '1');");
 $d->query("INSERT INTO `#__options` VALUES('admin-notes', 'محل یادداشت', '0');");
-$d->query("INSERT INTO `#__options` VALUES('first_install', '1', '1');");
+$d->query("INSERT INTO `#__options` VALUES('first-install', '1', '1');");
+$d->query("INSERT INTO `#__options` VALUES('allow-change-theme', '1', '1');");
 
 
 # --------------------------------------------------------
@@ -388,7 +387,7 @@ $d->query("CREATE TABLE `#__pages` (
 # Dumping data for table '#__pages'
 #
 
-$d->query("INSERT INTO `#__pages` VALUES('1', 'درباره ما', 'about-us', '1416425485', '1', '<p>\r\n	این یک صفحه آزمایشی است!</p>\r\n<p>\r\n	از بخش مدیریت می توانید آن را حذف و یا ویرایش کنید.</p>\r\n<p>\r\n	برای انتخاب سیستم مدیریت محتوای ایرانی <a href=\"http://www.apadanacms.ir/\" target=\"_blank\" title=\"Apadana\"><strong>آپادانا</strong></a> از شما سپاس گذاریم.</p>', '', '1', '0', '0', '1');");
+$d->query("INSERT INTO `#__pages` VALUES('1', 'درباره ما', 'about-us', '".time()."', '1', '<p>\r\n  این یک صفحه آزمایشی است!</p>\r\n<p>\r\n از بخش مدیریت می توانید آن را حذف و یا ویرایش کنید.</p>\r\n<p>\r\n  برای انتخاب سیستم مدیریت محتوای ایرانی <a href=\"http://www.apadanacms.ir/\" target=\"_blank\" title=\"Apadana\"><strong>آپادانا</strong></a> از شما سپاس گذاریم.</p>', '', '1', '0', '0', '1');");
 
 
 # --------------------------------------------------------
@@ -420,14 +419,14 @@ $d->query("CREATE TABLE `#__posts` (
   KEY `post_name` (`post_name`),
   KEY `post_categories` (`post_categories`(333)),
   KEY `post_tags` (`post_tags`(333))
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;");
 
 
 #
 # Dumping data for table '#__posts'
 #
 
-$d->query("INSERT INTO `#__posts` VALUES('1', '1', '1416425485', 'سیستم مدیریت محتوای آپادانا', 'apadana-content-management-system', '<p style=\"text-align: center;\">\r\n	&nbsp;</p>\r\n<p style=\"text-align: center;\">\r\n	&nbsp;</p>\r\n<p>\r\n	برخی از امکانات سیستم مدیریت محتوای ایرانی آپادانا:</p>\r\n<p>\r\n	مدیریت پست ها به صورت حرفه ای<br />\r\n	امکان ساخت فیلدهای اضافه برای پست ها<br />\r\n	امکان دانلود پست ها با فرمت PDF<br />\r\n	امکان ساخت نسخه پرینت برای پست ها<br />\r\n	امکان نمایش مطالب به گروه خاصی از کاربران<br />\r\n	امکان ایجاد پست ثابت<br />\r\n	امکان ارسال پست برای آینده<br />\r\n	سامانه کاربری قدرتمند برای جذب کاربر<br />\r\n	امکان ساخت بی نهایت گروه کاربری<br />\r\n	امکان ارسال پیام خصوصی بین کاربران<br />\r\n	امکان ارسال خبرنامه برای اعضای سایت<br />\r\n	امکان استفاده از smtp برای ارسال ایمیل<br />\r\n	مدیریت بلوک ها به صورت ایجکس و با امکانات فراوان<br />\r\n	دارای جعبه پیام کوتاه به صورت ایجکس<br />\r\n	دارای نسخه موبایل برای نمایش ساده مطالب با امکان طراحی قالب برای آن<br />\r\n	ماژول پذیر و سادگی طراحی ماژول برای آن<br />\r\n	مدیریت تم ها به صورت حرفه ای و با امکان ویرایش آنها از بخش مدیریت<br />\r\n	طراحی قالب به صورت کاملا Html و با تگ گذاری های ساده<br />\r\n	امکان طراحی قالب برای جزء به جزء بخش های سیستم<br />\r\n	آمارگیر حرفه ای با قابلیت نمایش چارتهای آماری در بخش مدیریت<br />\r\n	امکان مسدود سازی آی پی کاربران به صورت حرفه ای<br />\r\n	امکان پشتیبان گیری از دیتابیس با امکان بازگردانی و دانلود پشتیبان به صورت فایل فشرده<br />\r\n	دارای سیستم کشینگ حرفه ای برای افزایش سرعت و بازدهی سیستم<br />\r\n	امکان مدیریت فایل های کش از بخش مدیریت<br />\r\n	ذخیره سازی اطلاعات کامل سایت های لینک دهنده به صورت نامحدود<br />\r\n	دارای بخش مدیریت رسانه ها به صورت حرفه ای و کاملا ایجکس<br />\r\n	استفاده از ادیتور محبوب ckeditor<br />\r\n	پشتیبانی از rss و atom<br />\r\n	امکان ساخت خودکار نقشه برای موتورهای جستجو مانند گوگل و ...<br />\r\n	امکان نمایش پرچم کشور کاربران با استفاده ار بانک آی پی GeoIP<br />\r\n	هماهنگ سازی شده با انجمن ساز محبوب MyBB<br />\r\n	پشتیبانی از BBcode کدها در بخش نظرات و پیام خصوصی<br />\r\n	دارای بخش تماس با ما به صورت ایجکس<br />\r\n	دارای نظرسنجی حرفه ای و به صورت ایجکس<br />\r\n	دارای بخش صفحات مجزا با امکان طراحی قالب اختصاصی برای هر صفحه<br />\r\n	امکان ارسال نظر توسط کاربران برای پست ها و صفحات اضافی<br />\r\n	دارای بخش جستجو به صورت کاملا حرفه ای و پیشرفته<br />\r\n	دارای بخش قوانین برای سایت<br />\r\n	امکان غیرفعال سازی سایت به صورت موقت<br />\r\n	دارای لینک های سئو با قابلیت شخصی سازی<br />\r\n	بخش مدیریت به صورت ایجکس</p>', '', '24', '1', '2', '4,5,6,7,8', '1', '0', 'http://localhost/apadana/uploads/posts/demo.jpg', 'persian', '1', '1');");
+$d->query("INSERT INTO `#__posts` VALUES('1', '1', ''".time()."', 'سیستم مدیریت محتوای آپادانا', 'apadana-content-management-system', '<p style=\"text-align: center;\">\r\n  &nbsp;</p>\r\n<p style=\"text-align: center;\">\r\n &nbsp;</p>\r\n<p>\r\n برخی از امکانات سیستم مدیریت محتوای ایرانی آپادانا:</p>\r\n<p>\r\n  مدیریت پست ها به صورت حرفه ای<br />\r\n امکان ساخت فیلدهای اضافه برای پست ها<br />\r\n  امکان دانلود پست ها با فرمت PDF<br />\r\n امکان ساخت نسخه پرینت برای پست ها<br />\r\n امکان نمایش مطالب به گروه خاصی از کاربران<br />\r\n امکان ایجاد پست ثابت<br />\r\n  امکان ارسال پست برای آینده<br />\r\n  سامانه کاربری قدرتمند برای جذب کاربر<br />\r\n  امکان ساخت بی نهایت گروه کاربری<br />\r\n امکان ارسال پیام خصوصی بین کاربران<br />\r\n  امکان ارسال خبرنامه برای اعضای سایت<br />\r\n امکان استفاده از smtp برای ارسال ایمیل<br />\r\n  مدیریت بلوک ها به صورت ایجکس و با امکانات فراوان<br />\r\n  دارای جعبه پیام کوتاه به صورت ایجکس<br />\r\n دارای نسخه موبایل برای نمایش ساده مطالب با امکان طراحی قالب برای آن<br />\r\n ماژول پذیر و سادگی طراحی ماژول برای آن<br />\r\n  مدیریت تم ها به صورت حرفه ای و با امکان ویرایش آنها از بخش مدیریت<br />\r\n طراحی قالب به صورت کاملا Html و با تگ گذاری های ساده<br />\r\n  امکان طراحی قالب برای جزء به جزء بخش های سیستم<br />\r\n  آمارگیر حرفه ای با قابلیت نمایش چارتهای آماری در بخش مدیریت<br />\r\n امکان مسدود سازی آی پی کاربران به صورت حرفه ای<br />\r\n  امکان پشتیبان گیری از دیتابیس با امکان بازگردانی و دانلود پشتیبان به صورت فایل فشرده<br />\r\n  دارای سیستم کشینگ حرفه ای برای افزایش سرعت و بازدهی سیستم<br />\r\n امکان مدیریت فایل های کش از بخش مدیریت<br />\r\n  ذخیره سازی اطلاعات کامل سایت های لینک دهنده به صورت نامحدود<br />\r\n دارای بخش مدیریت رسانه ها به صورت حرفه ای و کاملا ایجکس<br />\r\n استفاده از ادیتور محبوب ckeditor<br />\r\n  پشتیبانی از rss و atom<br />\r\n  امکان ساخت خودکار نقشه برای موتورهای جستجو مانند گوگل و ...<br />\r\n امکان نمایش پرچم کشور کاربران با استفاده ار بانک آی پی GeoIP<br />\r\n  هماهنگ سازی شده با انجمن ساز محبوب MyBB<br />\r\n پشتیبانی از BBcode کدها در بخش نظرات و پیام خصوصی<br />\r\n دارای بخش تماس با ما به صورت ایجکس<br />\r\n  دارای نظرسنجی حرفه ای و به صورت ایجکس<br />\r\n دارای بخش صفحات مجزا با امکان طراحی قالب اختصاصی برای هر صفحه<br />\r\n امکان ارسال نظر توسط کاربران برای پست ها و صفحات اضافی<br />\r\n  دارای بخش جستجو به صورت کاملا حرفه ای و پیشرفته<br />\r\n دارای بخش قوانین برای سایت<br />\r\n  امکان غیرفعال سازی سایت به صورت موقت<br />\r\n  دارای لینک های سئو با قابلیت شخصی سازی<br />\r\n  بخش مدیریت به صورت ایجکس</p>', '', '228', '1', '2', '4,5,6,7,8', '1', '0', 'http://localhost/apadana/uploads/posts/demo.jpg', 'persian', '1', '1');");
 
 
 # --------------------------------------------------------
@@ -505,13 +504,6 @@ $d->query("CREATE TABLE `#__session` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 
-#
-# Dumping data for table '#__session'
-#
-
-$d->query("INSERT INTO `#__session` VALUES('admin', '1420471101', '127.0.0.1', 'engine/admin/template/images/top-content1.png', '0');");
-
-
 # --------------------------------------------------------
 #
 # Table structure for table '#__shoutbox'
@@ -531,7 +523,7 @@ $d->query("CREATE TABLE `#__shoutbox` (
 # Dumping data for table '#__shoutbox'
 #
 
-$d->query("INSERT INTO `#__shoutbox` VALUES('1', '1416425485', 'admin', 'گروه آپادانا افتتاح سایت شما را تبریک می گوید!');");
+$d->query("INSERT INTO `#__shoutbox` VALUES('1', '".time()."', 'admin', 'گروه آپادانا افتتاح سایت شما را تبریک می گوید!');");
 
 
 # --------------------------------------------------------
@@ -623,6 +615,6 @@ $d->query("CREATE TABLE `#__voting` (
 # Dumping data for table '#__voting'
 #
 
-$d->query("INSERT INTO `#__voting` VALUES('1', 'آپادانا از نظر شما؟', 'بسیارعالی|عالی|خوب|امیدوار کننده|بد نیست|خوب نیست|نظری ندارم!', '127.0.0.1', '', '1416425485', '1,0,0,0,0,0,0,0', 'ثبت رای', '1', '');");
+$d->query("INSERT INTO `#__voting` VALUES('1', 'آپادانا از نظر شما؟', 'بسیارعالی|عالی|خوب|امیدوار کننده|بد نیست|خوب نیست|نظری ندارم!', '127.0.0.1', '', '".time()."', '1,0,0,0,0,0,0,0', 'ثبت رای', '1', '');");
 
 ?>

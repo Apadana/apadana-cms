@@ -16,7 +16,7 @@ if (extension_loaded('mbstring') && function_exists('mb_internal_encoding'))
 {
     mb_internal_encoding('UTF-8');
 }
-error_reporting(E_ALL);
+
 # Determine Magic Quotes Status (< PHP 5.4)
 if (version_compare(PHP_VERSION, '5.4', '<'))
 {
@@ -95,9 +95,9 @@ switch ($_GET['action'])
 	if ($connect)
 	{
 
-		if ( ((mysqli && @mysqli_select_db( $connect , $_POST['config']['name']))) || @mysql_select_db($_POST['config']['name'], $connect))
+		if ( (mysqli && @mysqli_select_db( $connect , $_POST['config']['name'])) || @mysql_select_db($_POST['config']['name'], $connect))
 		{
-			if (is_string($_POST['config']['prefix']) && !preg_match("/^[0-9a-z_]{2,10}$/i", $_POST['config']['prefix']))
+			if (!preg_check("/^[0-9a-z_]{2,10}$/i", $_POST['config']['prefix']))
 			{
 				$result = 'prefix';
 			}
@@ -138,7 +138,7 @@ switch ($_GET['action'])
 	{
 		if ( (mysqli && @mysqli_select_db( $connect , $_POST['config']['name'])) || @mysql_select_db($_POST['config']['name'], $connect))
 		{
-			if (is_string($_POST['config']['prefix']) && preg_match("/^[0-9a-z_]{2,10}$/i", $_POST['config']['prefix']))
+			if (preg_check("/^[0-9a-z_]{2,10}$/i", $_POST['config']['prefix']))
 			{
 				$connect = 'success';
 			}
@@ -245,7 +245,6 @@ switch ($_GET['action'])
 
 	@set_time_limit(1200);
 	require_once('../engine/database.class.php');
-
 	$d = new database;
 	$result = $d->connect(array(
 		'host' => database_host,
@@ -255,9 +254,8 @@ switch ($_GET['action'])
 		'prefix' => database_prefix,
 		'charset' => database_charset,
 	));
-
 	if($result){
-		require_once('sql/install.php');
+		//require_once('sql/install.php');
 
 		$itpl->assign(array(
 			'[success]' => null,
@@ -289,7 +287,7 @@ switch ($_GET['action'])
 	$_POST['admin']['pass2'] = ($_POST['admin']['pass2']);
 	$result = 'error';
 	
-	if (is_string($_POST['admin']['name']) && !preg_match("/^[0-9a-z-_]{4,40}$/i", $_POST['admin']['name']))
+	if (!preg_check("/^[0-9a-z-_]{4,40}$/i", $_POST['admin']['name']))
 	{
 		$result = 'name';
 	}
@@ -336,7 +334,7 @@ switch ($_GET['action'])
 	@$_POST['admin']['pass1'] = ($_POST['admin']['pass1']);
 	@$_POST['admin']['pass2'] = ($_POST['admin']['pass2']);
 	
-	if (@is_string($_POST['admin']['name']) && @preg_match("/^[0-9a-z-_]{4,25}$/i", $_POST['admin']['name']))
+	if (@preg_check("/^[0-9a-z-_]{4,25}$/i", $_POST['admin']['name']))
 	{
 		if (@strlen($_POST['admin']['pass1']) > 5 && $_POST['admin']['pass1'] == $_POST['admin']['pass2'] && validate_email($_POST['admin']['email']))
 		{
@@ -374,7 +372,6 @@ switch ($_GET['action'])
 		file_put_contents('apadana.lock', 'Copyright © 2012-'.date('Y').' ApadanaCms.ir. All rights reserved.');
 
 		$itpl->assign(array(
-			'{url}' => url,
 			'[done]' => null,
 			'[/done]' => null
 			));
@@ -415,4 +412,3 @@ function my_path()
     $url = trim($url, '/');
 	return ($url != ''? '/'.$url : null).'/';
 }
-function get_hook($s){}

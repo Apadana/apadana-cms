@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) && MSDN (Mohammad Sadegh Dehghan Niri)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -46,7 +46,7 @@ define('rtl', true);
 require_once(engine_dir.'config.inc.php');
 require_once(engine_dir.'version.inc.php');
 require_once(engine_dir.'functions.php');
-// require_once(engine_dir.'error.inc.php');
+require_once(engine_dir.'error.inc.php');
 require_once(engine_dir.'hook.function.php');
 require_once(engine_dir.'cache.function.php');
 require_once(engine_dir.'filter.function.php');
@@ -105,7 +105,16 @@ if (!$options = get_cache('options'))
 	set_cache('options', $options);
 }
 
-define('template_dir', root_dir.'templates/'.$options['theme'].'/');
+//its better to understand if it is in admin page as soon as possible!!! :-)
+if (isset($_GET['admin']) && $_GET['admin'] == $options['admin'] && $options['admin'] != '')
+{
+	define('admin_page', url.'?admin='.$options['admin']);
+}
+else
+{
+	define('admin_page', false);
+}
+
 
 antiflood();
 check_banned();
@@ -169,38 +178,85 @@ $_GET['a'] = isset($_GET['a'])? $_GET['a'] : null;
 $page = array();
 $page['theme'] = null;
 $page['title'] = empty($options['title'])? 'Apadana Cms v'.version : $options['title'];
-$page['meta']['description'] = $options['meta-desc'];
-$page['meta']['keywords'] = $options['meta-keys'];
-$page['meta']['robots'] = null;
 $page['canonical'] = null;
 $page['head'] = array();
-
+$page['foot'] = array();
+$page['links'] = array();
+$page['meta'] = array();
 /**
-* The Default scripts That Should be included
+* The Default page vars That Should be included
 *
 * You can remove them by $page variabe
 *
-* @see set_head_script()
+* @see set_script()
+* @see set_link()
+* @see set_meta()
 *
 * @since 1.1
 */
-$page['script'] = array(
+$page['scripts'] = array(
 	'jquery' => '<script type="text/javascript" src="'.url.'engine/javascript/jquery.js"></script>',
 	'core' => '<script type="text/javascript" src="'.url.'engine/javascript/core.js"></script>'
 	);
 
+if( ! admin_page ){
+$page['links'] = array(
+	'home' => '<link rel="start" href="'.url.'" title="Home" />',
+	'sitemap' => '<link rel="sitemap" href="'.url.($options['rewrite'] == 1? 'sitemap.xml' : '?a=sitemap').'" />',
+	'search' => '<link rel="search" type="application/opensearchdescription+xml" href="'.url('search/opensearch').'" title="'.$options['title'].'" />',
+	'rss' => '<link rel="alternate" type="application/rss+xml" href="'.url('feed/posts/rss').'" title="'.$options['title'].'" />'
+	);
+
+$page['meta'] = array(
+	'author' => $options['title'] ,
+	'description' => $options['meta-desc'] ,
+	'keywords' =>  $options['meta-keys'] ,
+	'distribution' => 'global',
+	'robots' => 'index, follow',
+	'revisit-after' => '1 days',
+	'rating' => 'general'
+	);
+}
 $cache = array();
 $hooks = array();
 
-if (isset($_GET['admin']) && $_GET['admin'] == $options['admin'] && $options['admin'] != '')
+
+
+/**
+* Change the theme
+*
+* Allow user to choose the preferd theme
+* we should save the name of unchanged theme. maybe we need it later specially in admin panel.
+*
+* @since 1.1
+*/
+
+$options['original_theme'] = $options['theme'];
+
+
+if( !admin_page && $options['allow-change-theme']){
+
+	if( isset($_GET['theme'])  &&  template_exists($_GET['theme'] ) )
+	{
+		$options['theme'] = $_GET['theme'];
+		set_cookie('theme', $_GET['theme'] );
+	}
+	elseif ( isset($_COOKIE['theme'])  &&  template_exists($_COOKIE['theme']) ) 
+	{
+		$options['theme'] = $_COOKIE['theme'];
+	}
+}
+
+define('template_dir', root_dir.'templates/'.$options['theme'].'/');
+//we really need it. in future maybe we want to chane the name of modules folder to plugins!!!!
+define('modules_dir', root_dir.'modules/');
+
+if ( admin_page )
 {
-	define('admin_page', url.'?admin='.$options['admin']);
 	$tpl = new template('body.tpl', root_dir.'engine/admin/template/');
 }
 else
 {
-	define('admin_page', false);
-
 	if ($options['offline'] == 1 && group_admin != 1)
 	{
 		if (!$options['offline-message'] = get_cache('options-offline-message'))

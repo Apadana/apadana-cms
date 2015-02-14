@@ -62,6 +62,7 @@ function _index()
 		'{keywords}' => htmlspecialchars(str_replace(',', ', ', $options['meta-keys'])),
 		'{rules}' => wysiwyg_textarea('options[rules]', $options['rules']),
 		'{comment-limit}' => $options['comments']['limit'],
+		'{comments-per-page}' => $options['comments']['per-page'],
 		'{smtp-host}' => $options['smtp-host'],
 		'{smtp-port}' => $options['smtp-port'],
 		'{smtp-username}' => $options['smtp-username'],
@@ -78,6 +79,18 @@ function _index()
 	else
 	{
 		$itpl->block('#\\[anti-flood\\](.*?)\\[/anti-flood\\]#s', '');
+	}
+
+	if ($options['allow-change-theme'] == 1)
+	{
+		$itpl->assign(array(
+			'[change-theme]' => null,
+			'[/change-theme]' => null,
+		));
+	}
+	else
+	{
+		$itpl->block('#\\[change-theme\\](.*?)\\[/change-theme\\]#s', '');
 	}
 	
 	if ($options['http-referer'] == 1)
@@ -176,6 +189,18 @@ function _index()
 		$itpl->block('#\\[comment-approve\\](.*?)\\[/comment-approve\\]#s', '');
 	}
 	
+	if ($options['comments']['pagination'] == 1)
+	{
+		$itpl->assign(array(
+			'[comment-pagi]' => null,
+			'[/comment-pagi]' => null,
+		));
+	}
+	else
+	{
+		$itpl->block('#\\[comment-pagi\\](.*?)\\[/comment-pagi\\]#s', '');
+	}
+
 	if ($options['offline'] == 1)
 	{
 		$itpl->assign(array(
@@ -205,7 +230,7 @@ function _save()
 	if (is_array($op) && count($op))
 	{
 		$options_names = array(
-			'admin', 'default-module', 'title', 'slogan', 'mail', 'editor-color', 'feed-limit', 'http-referer', 'replace-link',
+			'admin', 'default-module', 'title', 'slogan', 'mail', 'editor-color', 'allow-change-theme' ,'feed-limit', 'http-referer', 'replace-link',
 			'rewrite', 'file-rewrite', 'separator-rewrite', 'meta-desc', 'meta-keys', 'comments', 'offline-message', 'offline',
 			'rules', 'url-correction', 'antiflood',
 			'smtp-host', 'smtp-username', 'smtp-password', 'smtp-port'
@@ -218,6 +243,7 @@ function _save()
 		$op['slogan'] = htmlencode($op['slogan'], 'preview');
 		$op['mail'] = apadana_strtolower(nohtml($op['mail']));
 		$op['editor-color'] = is_alphabet($op['editor-color'])? '#'.$op['editor-color'] : '#d3d3d3';
+		$op['allow-change-theme'] = isset($op['allow-change-theme']) && $op['allow-change-theme'] == 1? 1 : 0;
 		$op['feed-limit'] = intval($op['feed-limit']) <= 0? 1 : intval($op['feed-limit']);
 		$op['antiflood'] = isset($op['antiflood']) && $op['antiflood'] == 1? 1 : 0;
 		$op['http-referer'] = isset($op['http-referer']) && $op['http-referer'] == 1? 1 : 0;
@@ -235,6 +261,8 @@ function _save()
 		$op['comments']['editor'] = !isset($op['comments']['editor']) || intval($op['comments']['editor'])<=0? 0 : 1;
 		$op['comments']['email'] = !isset($op['comments']['email']) || intval($op['comments']['email'])<=0? 0 : 1;
 		$op['comments']['approve'] = !isset($op['comments']['approve']) || intval($op['comments']['approve'])<=0? 0 : 1;
+		$op['comments']['pagination'] = !isset($op['comments']['pagination']) || intval($op['comments']['pagination'])<=0? 0 : 1;
+		$op['comments']['per-page'] = intval($op['comments']['per-page']) <= 0? 20 : intval($op['comments']['per-page']);
 		$op['comments'] = serialize($op['comments']);
 
 		$op['offline-message'] = isset($op['offline-message'])? $op['offline-message'] : null;

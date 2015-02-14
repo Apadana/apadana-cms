@@ -63,7 +63,7 @@
   </tr>
   <tr>
 	<td>نسخه آپادانا</td>
-	<td style="border-left:#999999 1px dashed">{version}</td>
+	<td style="border-left:#999999 1px dashed" dir="ltr">{version}</td>
 	<td>نمایش خطاها</td>
 	<td>{error-reporting}</td>
   </tr>

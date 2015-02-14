@@ -10,12 +10,12 @@
  */
 
 defined('security') or exit('Direct Access to this location is not allowed.');
-$ob_level = ob_get_level();
+
 function _error_handler($severity, $message, $filepath, $line)
 {
 	$is_error = (((E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
-	// When an error occurred, set the status header to '500 Internal Server Error'
+	// When a fatal error occurred, set the status header to '500 Internal Server Error'
 	if ($is_error)
 	{
 		header('Status: 500 Internal Server Error',true);
@@ -41,13 +41,16 @@ function _error_handler($severity, $message, $filepath, $line)
 	// default error handling. See http://www.php.net/manual/en/errorfunc.constants.php
 	if ($is_error)
 	{
-		exit(1); // EXIT_ERROR
+		exit(); // EXIT_ERROR
 	}
 }
 
 function show_php_error($severity, $message, $filepath, $line)
 {
 	global $ob_level;
+
+	static $have_error;
+
 	$error_levels = array(
 		E_STRICT		=>	'Runtime Notice',
 		E_ERROR			=>	'Error',
@@ -69,12 +72,13 @@ function show_php_error($severity, $message, $filepath, $line)
 	$filepath = str_replace('\\', '/', $filepath);
 	$filepath = str_replace(root_dir, "", $filepath);
 
-	$itpl = new template('error.tpl', 'engine/templates/',false);
+	$itpl = new template('error.tpl', root_dir.'engine/templates/',false);
 
-	if (ob_get_level() > $ob_level + 1)
-	{
-		ob_end_flush();
+	if( !isset($have_error) || $have_error != true){
+		echo "<style>.apadana_error_main{background:#FFE1E1;border:#FF6A6A 1px solid;padding:5px;margin:5px;direction:ltr;text-align:left}.apadana_error_highlight{background-color: #FFFCFC;border-radius: 4px;padding: 2px;border: 1px solid #AAA;}.trace{background-color: #F7F7F9;border: 1px solid #B9B9D1;border-radius: 4px;padding: 9px 14px;direction:ltr;text-align:left;margin-top: -1px;}.erbacktr{list-style: none;padding: 0;margin: 0;}.erbacktr li:first-child{border-radius: 5px 5px 0 0;}.erbacktr li{border-radius: 0;}.erbacktr li:last-child{border-radius: 0 0 5px 5px;}</style>";
+		$have_error = true;
 	}
+	
 	$itpl->assign(array(
 		'{severity}' => $severity,
 		'{filepath}' => $filepath,
@@ -108,4 +112,4 @@ function show_php_error($severity, $message, $filepath, $line)
 //We Should Tell The PHP We Have Our Own Error And Shutdown Handler.
 if(!is_ajax())
 	set_error_handler('_error_handler');
-// register_shutdown_function('_shutdown_handler');
+// register_shutdown_function('_error_handler');

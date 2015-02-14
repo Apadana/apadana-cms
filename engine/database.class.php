@@ -43,19 +43,19 @@ class database
 
 		if (!$this->connect) 
 		{
-			exit('Unable to establish connection to MySQL!');
+			return false;
 		}
 
-		$this->select($db['name'], $this->connect);
+		return $this->select_db($db['name'], $this->connect);
 	}
 
-	public function select($name) 
+	public function select_db($name) 
 	{
 		if ($this->mysqli)
 		{
 			if (!mysqli_select_db($this->connect, $name)) 
 			{
-				exit('Unable to select MySQL database!');
+				return false;
 			}
 
 			mysqli_query($this->connect, 'SET CHARACTER SET '.$this->charset.';');
@@ -66,15 +66,13 @@ class database
 		{
 			if (!mysql_select_db($name, $this->connect)) 
 			{
-				exit('Unable to select MySQL database!');
+				return false;
 			}
 
 			mysql_query('SET CHARACTER SET '.$this->charset.';', $this->connect);
 			mysql_query('SET SESSION collation_connection="'.$this->charset.'_general_ci"', $this->connect);		
 			mysql_set_charset('utf8', $this->connect);
 		}
-
-		register_shutdown_function(array(&$this, 'close'));
 	}	
 
 	protected function replace_prefix($sql, $prefix = '#__') 
@@ -562,7 +560,12 @@ class database
 		return preg_replace('/[^0-9.].*/', '', $this->mysqli? mysqli_get_server_info($this->connect) : mysql_get_server_info($this->connect));
 	}
 
-	public function close() 
+	public function __destruct()
+	{
+		return $this->close();
+	}
+
+	public function close()
 	{
 		if ($this->connect)
 		{
@@ -581,6 +584,7 @@ class database
 		else
 		{
 			return false;
-		}		
-	}	
+		}
+	}
+
 }

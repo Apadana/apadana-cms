@@ -17,6 +17,6 @@
   <h1>خطا در اطلاعات</h1>
   خطا در اطلاعات', 'اطلاعات وارد شده صحیح نیست، بازگردید و آن ها را به صورت صحیح وارد کنید!
 </div>
-<button onClick="install_load('admin')">بازگشت</button>
+<button onClick="install_load(\'admin\')">بازگشت</button>
 [/error]
 [ajax]<div class="clear"></div>[/ajax]

@@ -84,6 +84,10 @@ function closexAjaxDiv()
 	<td>لینک ها</td>
 	<td><label><input type="checkbox" name="options[replace-link]" value="1"[replace] checked="checked"[/replace]  />&nbsp;کاربران غیر عضو به لینک های موجود در پست ها و سایر محتوا ها دسترسی نداشته باشند.</label></td>
   </tr>
+   <tr>
+  	<td>اجازه تغیر قالب</td>
+  	<td><input name="options[allow-change-theme]" type="checkbox"  value="1"[change-theme] checked="checked"[/change-theme] />&nbsp;کاربر اجازه دارد از بین قالب های نصب شده یکی را به دلخواه انتخاب کند</td>
+   </tr>
   <tr>
 	<td>رنگ ادیتور</td>
 	<td><input name="options[editor-color]" type="text" style="width:45px;text-align:center" value="{editor-color}" class="color" dir="ltr" /></td>
@@ -156,6 +160,22 @@ function closexAjaxDiv()
 	<td>تایید</td>
 	<td><label><input type="checkbox" name="options[comments][approve]" value="1"[comment-approve] checked="checked"[/comment-approve] />&nbsp;نظرات پس از تایید مدیران سایت نمایش داده شود.</label></td>
   </tr>
+
+  <tr>
+  	<td>صفحه بندی</td>
+  	<td>
+		<label><input type="checkbox" name="options[comments][pagination]" value="1" [comment-pagi] checked="checked" [/comment-pagi] />&nbsp;صفحه بندی نظرات فعال باشد.&nbsp;<font size="1" color="#BBB">اگر صفحه بندی فعال باشد نظرات هر مطلب صفحه بندی شده و تمام نظرات به صورت یکجا در زیر مطلب نمایش داده نمی شود</font>
+		</label>
+  	</td>
+  </tr>
+
+    <tr>
+    	<td>تعداد</td>
+    	<td>
+	  		 حداکثر تعداد نظرات در هر صفحه <input style="width:30px;text-align:center;" type="text" value="{comments-per-page}" name="options[comments][per-page]" />  باشد.
+    	</td>
+    </tr>
+
   <tr>
 	<td colspan="2"><input type="submit" value="ذخیره تنظیمات" onclick="saveOptions();return false" /></td>
   </tr>

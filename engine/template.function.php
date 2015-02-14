@@ -71,6 +71,29 @@ function template_exists($theme)
 	return false;
 }
 
+function get_templates($form)
+{
+	$handle = opendir((root_dir.'templates/'));
+
+	if($handle){
+
+		$temps = array();
+
+		while (false !== ($dir = readdir($handle))) {
+			$dir = trim($dir);
+			if( (is_dir(root_dir.'templates/'.$dir)) && $dir != '.' && $dir != '..' && template_exists($dir))
+				$temps[$dir] = $dir;
+		}
+
+		if($form == false)
+			return $temps;
+
+		global $options;
+		return '<form method="GET" action="" />' . html::select( 'theme', $temps , $options['theme'] , 'onchange="submit()"' ) . '</form>';
+	}
+	return false;
+}
+
 function template_info($theme)
 {
 	static $save;
@@ -133,16 +156,13 @@ function head()
 	global $options, $page;
 
 	$Header  = '<title>'.$page['title'].'</title>'.n;
-	$Header .= '<base href="'.url.'" />'.n;
+	#$Header .= '<base href="'.url.'" />'.n;
 	$Header .= '<meta http-equiv="content-type" content="text/html; charset='.charset.'" />'.n;
-	$Header .= '<meta name="author" content="'.$options['title'].'" />'.n;
 	$Header .= base64_decode('PG1ldGEgbmFtZT0iZ2VuZXJhdG9yIiBjb250ZW50PSJBcGFkYW5hIENtcyBDb3B5cmlnaHQgwqkg') . date('Y') . base64_decode('Ij4=').n;
-	$Header .= '<meta name="description" content="'.$page['meta']['description'].'" />'.n;
-	$Header .= '<meta name="keywords" content="'.$page['meta']['keywords'].'" />'.n;
-	$Header .= '<meta name="distribution" content="global" />'.n;
-	$Header .= '<meta name="robots" content="'.(!empty($page['meta']['robots'])? $page['meta']['robots'] : 'index, follow').'" />'.n;
-	$Header .= '<meta name="revisit-after" content="1 days" />'.n;
-	$Header .= '<meta name="rating" content="general" />'.n;
+
+	foreach($page['meta'] as $name => $content){
+		$Header .= '<meta name="'. $name .'" content="'.$content.'" />'.n;
+	}
 
     if (($_GET['a'] == $options['default-module'] && (!isset($_GET) || empty($_GET))) || (!isset($_GET) || empty($_GET)))
 	{
@@ -162,13 +182,14 @@ function head()
 		$Header .= '<link rel="shortcut icon" type="image/x-icon" href="'.url.'favicon.ico" />'.n;
 	}
 
-	$Header .= '<link rel="start" href="'.url.'" title="Home" />'.n;
-	$Header .= '<link rel="sitemap" href="'.url.($options['rewrite'] == 1? 'sitemap.xml' : '?a=sitemap').'" />'.n;
-	$Header .= '<link rel="search" type="application/opensearchdescription+xml" href="'.url('search/opensearch').'" title="'.$options['title'].'" />'.n;
-	$Header .= '<link rel="alternate" type="application/rss+xml" href="'.url('feed/posts/rss').'" title="'.$options['title'].'" />'.n;
-	$Header .= is_array($page['script']) && count($page['script'])? implode(n, $page['script']).n : null;
+	$Header .= is_array($page['links']) && count($page['links'])? implode(n, $page['links']).n : null;
+
+	$Header .= is_array($page['scripts']) && count($page['scripts'])? implode(n, $page['scripts']).n : null;
+
 	$Header .= '<script type="text/javascript">apadana.site={\'domain\':\''.domain.'\',\'path\':\''.path.'\',\'url\':\''.url.'\'}</script>'. n;
+
 	$Header .= is_array($page['head']) && count($page['head'])? implode(n, $page['head']).n : null;
+
     return trim($Header);
 }
 
@@ -255,40 +276,31 @@ function warning($title, $message)
 	gzip_out();
 }
 
-function message($message, $type = 'info', $go_back = false)
+function message($message, $type = 'info')
 {
-	switch ($type) 
-	{
-		case 'error':
-		$class = 'error';
-		break;
+	($hook = get_hook('message'))? eval($hook) : null;
 
-		case 'success':
-		$class = 'success';
-		break;
-
-		default:
-		$class = 'info';
-		break;
-	}
-
-	$html  = '<div class="apadana-message-'.$class.'"><span>'.$message;
-
-	if ($go_back)
-	{
-		$html .= '&nbsp;&nbsp;[<a href="javascript:history.go(-1);" target="_self" title="Go Back!" class="apadana-go-back">بازگشت به صفحه قبل</a>] ';
-	}
-
-	$html .= '</span></div>';
-	return $html;
+	return '<div class="apadana-message-'.$type.'"><div class="apadana-message-body">'.$message.'</div></div>';
 }
 
-function odd_even($even = 'apadana-even', $odd = 'apadana-odd')
+function odd_even($even = 'apadana-even', $odd = 'apadana-odd', $start = null)
 {
-    static $save;
+    static $number;
 
-    $save = (!$save || $save == $odd? $even : $odd);
-    return $save;
+	($hook = get_hook('odd_even'))? eval($hook) : null;
+
+	if ($start !== null && (!isset($number) || $number != $start))
+	{
+		$number = intval($start);
+	}
+	elseif (!isset($number))
+	{
+		$number = 0;
+	}
+
+	$number++;
+
+    return $number%2 == 0? $even : $odd;
 }
 
 function set_title($title, $type = 'add')
@@ -326,22 +338,39 @@ function set_head($code)
 {
 	global $page;
 
+	$code = trim($code);
+
 	if ($code == '')
 	{
 		return false;
 	}
 
-	$code = trim($code);
 	if(!in_array($code, $page['head']))
 	{
 		$page['head'][] = $code;
 	}
 }
 
+function set_foot($code)
+{
+	global $page;
+
+	$code = trim($code);
+
+	if ($code == '')
+	{
+		return false;
+	}
+
+	if (!in_array($code, $page['foot']))
+	{
+		$page['foot'][] = $code;
+	}
+}
 /**
-* Set site head script
+* Set site script
 *
-* Add a script tag to the head tag with parameter you set.
+* Add a link tag to page with parameter you set.
 *
 * @since 1.1
 *
@@ -351,16 +380,16 @@ function set_head($code)
 *
 * @return bool False if $src is empty
 */
-function set_head_script($name = null, $type="type/javascript" , $src = null)
+function set_script($name = null, $type="type/javascript" , $src = null)
 {
 	global $page;
 
 	if (!empty($src) && is_string($src))
 	{
-		if(!empty($name))
-			$page['script'][] = '<script type="'.$type.'" src="'.$src.'">';
+		if(empty($name))
+			$page['scripts'][] = '<script type="'.$type.'" src="'.$src.'" />';
 		else
-			$page['script'][$name] = '<script type="'.$type.'" src="'.$src.'">';
+			$page['scripts'][$name] = '<script type="'.$type.'" src="'.$src.'" />';
 
 		return true;
 	}
@@ -370,6 +399,47 @@ function set_head_script($name = null, $type="type/javascript" , $src = null)
 	}
 
 }
+/**
+* Set site links
+*
+* Add a link tag to page with parameter you set.
+*
+* @since 1.1
+*
+* @param string $name An identifier for the link to handle it easily for example unset it throw modules etc.
+* @param string $rel The rel of link to show
+* @param string $type The type of link to show
+* @param string $href The source of link file
+* @param string $title The title of link
+*
+* @return bool False if $href is empty
+*/
+function set_link($name = null, $rel = null ,$type="text/css" , $href = null , $title = null)
+{
+	global $page;
+
+	if (!empty($href) && is_string($href))
+	{
+		$rel = empty($rel) ? null : 'rel="'.$rel.'" ';
+		$type = empty($type) ? null : 'type="'.$type.'" ';
+		$href = empty($href) ? null : 'href="'.$href.'" ';
+		$title = empty($title) ? null : 'title="'.$title.'"';
+
+		$link = '<link ' . $rel . $type . $href . $title . ' />';
+		if(empty($name))
+			$page['links'][] = $link;
+		else
+			$page['links'][$name] = $link;
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
+}
+
 function set_theme($file)
 {
 	global $page;

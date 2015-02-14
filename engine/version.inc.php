@@ -11,6 +11,6 @@
 
 defined('security') or exit('Direct Access to this location is not allowed.');
 
-define('version', '1.1-alpha2');
+define('version', '1.1-alpha3');
 
 ?>

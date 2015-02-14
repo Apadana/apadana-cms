@@ -323,10 +323,11 @@ function _single()
 	else
 	{
 		$post = $post[0];
+		$url = url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id']));
 		set_theme('single-post');
 		set_title($post['post_title']);
 		set_meta('description', $post['post_title'], 'add');
-		set_canonical(url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id'])));
+		set_canonical( $url );
 
 		if (is_array($post['post_tags']) && count($post['post_tags']))
 		{
@@ -348,66 +349,45 @@ function _single()
 		if ($post['post_comment'] == 1)
 		{
 			require_once(engine_dir.'comments.class.php');
+
 			$comments = new comments('posts', $post['post_id'], url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id'])));
+
+			//I think it's better to get the comments options from its class. its more logical than common way!!
+			if($comments->options['pagination'] == 1){
+
+				require_once(engine_dir.'pagination.class.php');
+
+				$total = $comments->get_total_comments();
+
+				$raw_page = get_param($_GET, 'c');
+
+				if( !empty($raw_page) ) {
+					if ( $options['rewrite'] == 1 )
+						preg_match('#comments\-page\-([1-9]+)#', $raw_page,$match) ? $page = $match[1] : $page = 1;
+					else
+						is_int($raw_page) ? $page = $raw_page : $page = 1 ;
+				}
+				else
+					$page = 1;
+
+				$pagination = new pagination($total, $comments->options['per-page'] , $page);
+
+				if ($page > $pagination->Pages && $pagination->Pages != 0)
+				{
+					redirect( $url );
+				}
+
+				$comments->set_limits( $pagination->Start , $pagination->End );
+
+				$pagination->build( url( ('posts/'.($options['rewrite'] == 1? ($post['post_name']."/comments-page-{page}") : ($post['post_id']."/{page}") )) ) ) ;
+			}
+
 			$comments->build();
+
 		}
 	}
 
 	unset($id, $post, $comments);
-}
-
-function _pdf()
-{
-	global $d, $options;
-
-	$id = get_param($_GET, 'c', 0);
-	
-	$post = get_posts(array(
-		'where' => "AND p.post_id='".intval($id)."'",
-		'limit' => array(1)
-	));
-	
-	if (!isset($post[0]) || !is_array($post[0]) || !count($post[0]))
-	{
-		module_error_run('404');
-	}
-	else
-	{
-		require_once(engine_dir.'PDF/PDF.php');
-
-		$post = $post[0];
-
-		if ($post['post_view'] == 2 && !member) $post['post_more'] = message('این بخش فقط برای اعضا نمایش داده می شود!', 'error');
-		elseif ($post['post_view'] == 3 && member) $post['post_more'] = message('این بخش فقط برای کاربران مهمان نمایش داده می شود!', 'error');
-		elseif ($post['post_view'] == 4 && !group_admin) $post['post_more'] = message('این بخش فقط برای مدیران سایت نمایش داده می شود!', 'error');
-		elseif ($post['post_view'] == 5 && !group_super_admin) $post['post_more'] = message('این بخش فقط برای مدیر کل سایت نمایش داده می شود!', 'error');
-
-		$author = empty($post['post_author_alias'])? $post['post_author_neme'] : $post['post_author_alias'];
-		$content  = '<h3>'.$post['post_title'].'</h3>';
-		$content .= str_replace('src="'.url, 'src="', $post['post_text']).'<br />';
-		$content .= str_replace('src="'.url, 'src="', $post['post_more']).'<br /><hr />';
-		$content .= 'نویسنده: '.$author.'، ';
-		$content .= 'تاریخ ارسال: '.jdate('l j F Y ساعت g:i A', $post['post_date']).' ';
-
-		($hook = get_hook('posts_pdf'))? eval($hook) : null;
-
-		// set document information
-		$pdf->SetHeaderData('', '', $options['title'], $options['slogan']);
-		$pdf->SetCreator(PDF_CREATOR);
-		$pdf->SetAuthor($author);
-		$pdf->SetTitle($post['post_title']);
-		// set font
-		$pdf->SetFont('dejavusans', '', 11);
-		// add a page
-		$pdf->AddPage();
-		$pdf->WriteHTML($content, true, 0, true, 0);
-		// ---------------------------------------------------------
-		//Close and output PDF document
-		$pdf->Output('post-'.$post['post_id'].'.pdf', 'I');
-		exit;
-	}
-
-	unset($post, $id);
 }
 
 function _print()
@@ -512,7 +492,6 @@ function _theme($post, $single = false)
 	$itpl = new template('post.tpl', $tpl->base_dir);
 	$array = array(
 		'{url}' => url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id'])),
-		'{pdf}' => url('posts/pdf/'.$post['post_id']),
 		'{print}' => url('posts/print/'.$post['post_id']),
 		'{id}' => $post['post_id'],
 		'{title}' => $post['post_title'],
@@ -694,7 +673,7 @@ function _theme($post, $single = false)
 	}
 
 	$itpl->assign($array);
-	$itpl->block('|{date format=[\'"](.+?)[\'"]}|es', 'jdate("\\1", "'.$post['post_date'].'")');
+	$itpl->block_callback('|{date format=[\'"](.+?)[\'"]}|s', create_function('$m','return jdate($m[1],'.$post['post_date'].');'));
 
 	($hook = get_hook('posts_theme_end'))? eval($hook) : null;
 

@@ -1,0 +1,122 @@
+ @font-face {
+	font-family: Mitra;
+	font-weight: normal;
+	font-style: normal;
+	src:url("../fonts/BMitra-Regular.eot");
+	src:url("../fonts/BMitra-Regular.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/BMitra-Regular.woff") format("woff"),
+		url("../fonts/BMitra-Regular.ttf") format("truetype"),
+		url("../fonts/BMitra-Regular.svg#Mitra") format("svg")
+}
+
+@font-face {
+	font-family: Mitra;
+	font-weight: bold;
+	font-style: normal;
+	src:url("../fonts/BMitra-Bold.eot");
+	src:url("../fonts/BMitra-Bold.eot?#iefix") format("embedded-opentype"),
+		url("../fonts/BMitra-Bold.woff") format("woff"),
+		url("../fonts/BMitra-Bold.ttf") format("truetype"),
+		url("../fonts/BMitra-Bold.svg#Mitra") format("svg")
+}
+@font-face {
+    font-family: 'saye';
+    src: url('../fonts/saye.eot');
+    src: url('../fonts/saye.otf') format('opentype'),
+         url('../fonts/saye.woff') format('woff'),
+         url('../fonts/saye.ttf') format('truetype'),
+         url('../fonts/saye.svg#Dastnevis') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0600â€“06FF;
+}
+
+@font-face {
+    font-family: 'titrdf';
+    src: url('../fonts/titrdf.eot');
+    src: url('../fonts/titrdf.otf') format('opentype'),
+         url('../fonts/titrdf.woff') format('woff'),
+         url('../fonts/titrdf.ttf') format('truetype'),
+         url('../fonts/titrdf.svg#Dastnevis') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0600â€“06FF;
+}
+
+@font-face {
+    font-family: 'Dnevis';
+    src: url('../fonts/Dastnevis.eot');
+    src: url('../fonts/Dastnevis.otf') format('opentype'),
+         url('../fonts/Dastnevis.woff') format('woff'),
+         url('../fonts/Dastnevis.ttf') format('truetype'),
+         url('../fonts/Dastnevis.svg#Dastnevis') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0600â€“06FF;
+}
+
+@font-face {
+    font-family: 'Yekan';
+    src: url('../fonts/WeWYekan.eot');
+    src: url('../fonts/WebYekan.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/WebYekan.woff') format('woff'),
+         url('../fonts/WebYekan.ttf') format('truetype'),
+         url('../fonts/WebYekan.svg#WebYekan') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0600â€“06FF;
+}
+
+@font-face {
+    font-family: 'BTitrBold';
+    src: url('../fonts/BTitrBold.eot');
+    src: url('../fonts/BTitrBold.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/BTitrBold.woff') format('woff'),
+         url('../fonts/BTitrBold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0600â€“06FF;
+}
+
+@font-face {
+    font-family: 'kufi';
+    src: url('../fonts/DroidKufi-Regular.eot');
+    src: url('../fonts/DroidKufi-Regular.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/DroidKufi-Regular.woff') format('woff'),
+         url('../fonts/DroidKufi-Regular.woff2') format('woff2'),
+         url('../fonts/DroidKufi-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0600â€“06FF;
+}
+
+@font-face {
+    font-family: 'kufib';
+    src: url('../fonts/DroidKufi-Bold.eot');
+    src: url('../fonts/DroidKufi-Bold.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/DroidKufi-Bold.woff') format('woff'),
+         url('../fonts/DroidKufi-Bold.woff2') format('woff2'),
+         url('../fonts/DroidKufi-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+0600â€“06FF;
+}
+body {
+  font-family: kufi, Tahoma, Geneva, sans-serif;
+  font-size: 13px;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: yekan, Tahoma, Geneva, sans-serif;
+}
+
+input,button,select,textarea {
+  font-family: yekan, Tahoma, Geneva, sans-serif;
+}
+
+select,textarea,input[type="text"],input[type="password"],input[type="datetime"],input[type="datetime-local"],input[type="date"],input[type="month"],
+input[type="time"],input[type="week"],input[type="number"],input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"],
+.uneditable-input {
+  font-size: 14px;
+}
+

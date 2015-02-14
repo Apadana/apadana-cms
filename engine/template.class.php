@@ -15,6 +15,7 @@ class template
 {
 	public $tags = array();
 	public $blocks = array();
+	public $callback_blocks = array();
 	public $foreach = array();
 	public $base_dir = null;
 	public $include = true;
@@ -172,6 +173,32 @@ class template
 		$this->blocks[$pattern] = $replacement;
 	}
 
+	/**
+	 * Callback Blocks
+	 *
+	 * This function allow developers to use callback functions for the block pattern!!
+	 *
+	 * @param string $pattern A string that you want to replace. Becareful it should be in PCRE format!!
+	 * @param string $replacement A function that you want to handle the result with it!! it must be callable by php! 
+	 *
+	 * @return void
+	 * @since 1.1 
+	 **/
+	function block_callback ($pattern, $replacement)
+	{
+		if (!is_string($pattern) || empty($pattern))
+		{
+			echo 'Block pattern is not a string or is empty!';
+			return FALSE;
+		}
+		if (empty($replacement) || !is_callable($replacement) )
+		{
+			echo 'Block replacement is not callable!';
+			return FALSE;
+		}
+		$this->callback_blocks[$pattern] = $replacement;
+	}
+
 	function add_for($name, $array)
 	{
 		if (!is_string($name) || empty($array))
@@ -268,7 +295,6 @@ class template
 
 		if ($this->function && strpos($this->template, '{function name=') !== FALSE)
 		{
-			//THIS LINE CHANGED (IN 1.2)
 			$this->template = preg_replace_callback('#\\{function name=[\'"]([a-zA-Z0-9_]+)[\'"] args=[\'"](.+?)[\'"]\\}#s',array( &$this ,'get_function_callback'), $this->template);
 		}
 
@@ -290,6 +316,13 @@ class template
 						{
 							$tmp = preg_replace(array_keys($for_array['replace']), array_values($for_array['replace']), $tmp);
 							unset($for_array['replace']);
+						}
+						if (isset($for_array['callback_replace']) && is_array($for_array['callback_replace']) && count($for_array['callback_replace']))
+						{
+							foreach ($for_array['callback_replace'] as $key => $value) {
+								$tmp = preg_replace_callback($key, $value, $tmp);
+							}
+							unset($for_array['callback_replace']);
 						}
 						if (is_array($for_array) && count($for_array))
 						{
@@ -315,7 +348,15 @@ class template
 			}
 			unset($this->tags['{content}']);
 		}
-		
+
+		#callback blocks
+		if (is_array($this->callback_blocks) && count($this->callback_blocks))
+		{
+			foreach ($this->callback_blocks as $key => $value) {
+				$this->template = preg_replace_callback($key, $value, $this->template);
+			}
+		}
+
 		# blocks
 		if (is_array($this->blocks) && count($this->blocks))
 		{
