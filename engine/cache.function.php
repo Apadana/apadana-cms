@@ -13,6 +13,11 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 
 function set_cache($name, $content, $serialize = true)
 {
+
+	if( defined('disable_cache') && disable_cache ){
+		return false;
+	}
+
 	static $test;
 	
 	if (isset($test) && !$test)
@@ -55,6 +60,11 @@ function set_cache($name, $content, $serialize = true)
 
 function get_cache($name, $life = true)
 {
+
+	if( defined('disable_cache') && disable_cache ){
+		return false;
+	}
+
 	if (!is_alphabet($name))
 	{
 		return false;
@@ -64,7 +74,7 @@ function get_cache($name, $life = true)
 
 	if (file_exists($cache) && is_readable($cache))
 	{
-		//Fixed in 1.0.5 : We can't use == for here!!!
+		//Fixed in 1.1 : We can't use == for here!!!
 		if ($life === true)
 		{
 			return maybe_unserialize(file_get_contents($cache));
@@ -98,6 +108,11 @@ function get_cache($name, $life = true)
 
 function remove_cache($name, $search = false)
 {
+
+	if( defined('disable_cache') && disable_cache ){
+		return false;
+	}
+
 	if (!is_alphabet($name))
 	{
 		return false;

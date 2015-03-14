@@ -1,69 +1,64 @@
-.apadana-message-error {
-	border: #D49E34 1px solid;
-	background: #F4DE64;
-	margin-bottom: 6px
+/******************* MESSAGE */
+.apadana-message-info{
+	background: #C4E8FF;
+	border-bottom: #0099CC 1px solid;
+	color: #006F93;
+	cursor: default;
+	margin-bottom: 8px;
+	padding: 8px;
 }
-.apadana-message-error span {
-    background: #FFF url(../images/message-error.gif) no-repeat 99% 50%;
-	padding:10px 50px 10px 10px;
-    margin: 6px;
-	cursor:default;
-	display:block
+.apadana-message-success{
+	background: #D6FFC1;
+	border-bottom: #339900 1px solid;
+	color: #308800;
+	cursor: default;
+	margin-bottom: 8px;
+	padding: 8px;
 }
-.apadana-message-success {
-	border: #249224 1px solid;
-	background: #8CDA5C;
-	margin-bottom: 6px
+.apadana-message-error{
+	background: #ffd3a8;
+	border-bottom: #b35900 1px solid;
+	color: #b35900;
+	cursor: default;
+	margin-bottom: 8px;
+	padding: 8px;
 }
-.apadana-message-success span {
-    background: #FFF url(../images/message-success.gif) no-repeat 99% 50%;
-	padding:10px 50px 10px 10px;
-    margin: 6px;
-	cursor:default;
-	display:block
-}
-.apadana-message-info {
-	border: #266AAD 1px solid;
-	background: #ECF5FF;
-	margin-bottom: 6px
-}
-.apadana-message-info span {
-    background: #FFF url(../images/message-info.gif) no-repeat 99% 50%;
-	padding:10px 50px 10px 10px;
-    margin: 6px;
-	cursor:default;
-	display:block
-}
-#apadana-loading-layer {
-    background: Black;
-	color: White;
-	cursor:default;
-	text-shadow: 1px 1px 0px Black;
-	border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	opacity: 0.5;
-	filter: alpha(opacity=50);
-	padding: 18px 20px;
-}
-div#apadana-tooltip {
-	background: White;
-	border: 1px solid #AAAAAA;
-	border-radius: 5px;
-	box-shadow: 0px 0px 8px #999999;
-	color: #000000;
-	direction: rtl;
-	display: none;
-	font-size: 9pt;
-	-moz-border-radius: 5px;
-	-moz-box-shadow: 0px 0px 8px #999999;
-	padding: 5px;
+/******************* END MESSAGE */
+
+/******************* TOOLTIP & LOADING */
+#apadana-tooltip{
+	max-width: 260px;
 	position: absolute;
-	text-shadow: 1px 1px 0px White;
-	-webkit-border-radius: 5px;
-	-webkit-box-shadow: 0px 0px 8px #999999;
-	z-index: 99999999999;
+	background: #000;
+	padding: 6px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	text-align: right;
+	display: none;
+	color: #fff;
+	opacity: 0.75;
+	filter:alpha(opacity=75);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 999999999;
 }
+#apadana-loading-layer{
+	width: 200px;
+	height: 50px;
+	line-height: 50px;
+	background: #004080;
+	color: White;
+	text-align: center;
+	opacity: 0.86;
+	filter:alpha(opacity=86);
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+/******************* END TOOLTIP & LOADING */
+
 table.apadana-table {
 	width: 100%;
 	text-align: center;

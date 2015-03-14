@@ -17,6 +17,7 @@ function templates_load()
     			apadana.html('template-button', 'ویرایش فایل '+fileEdit);
     			apadana.value('template-contents', data);
     			apadana.showID('template-form');
+                change(fileEdit);
 			}
         }
     });
@@ -62,6 +63,7 @@ function templates_edit()
         }
     });
 }
+
 </script>
 
 <div align="center" style="margin:10px 0px">
@@ -73,8 +75,43 @@ function templates_edit()
 <button onclick="templates_new()">ساختن فایل یا پوشه جدید</button>
 </div>
 
-<div id="template-form" style="display:none">
+<div id="template-form" dir="ltr" style="">
+<span id="modeinfo"></span>
 <p style="margin: 10px 0px">در حال ویرایش فایل <b dir="ltr" id="template-file-name"></b>:</p>
-<textarea name="g" dir="ltr" id="template-contents" style="width:99%;height:500px"></textarea>
+<textarea name="g" dir="ltr" id="template-contents" style="width:90%;height:500px"></textarea>
 <center><button onclick="templates_edit()" id="template-button" style="margin:5px 0px">ویرایش فایل</button></center>
 </div>
+<script>
+    
+    //CodeMirror Options
+
+CodeMirror.modeURL = "{site-url}/engine/javascript/codemirror/mode/%N/%N.js";
+var editor = CodeMirror.fromTextArea(document.getElementById("template-contents"), {
+  lineNumbers: true
+});
+function change(val) {
+  var m, mode, spec;
+  if (m = /.+\.([^.]+)$/.exec(val)) {
+    var info = CodeMirror.findModeByExtension(m[1]);
+    if (info) {
+      mode = info.mode;
+      spec = info.mime;
+    }
+  } else if (/\//.test(val)) {
+    var info = CodeMirror.findModeByMIME(val);
+    if (info) {
+      mode = info.mode;
+      spec = val;
+    }
+  } else {
+    mode = spec = val;
+  }
+  if (mode) {
+    editor.setOption("mode", spec);
+    CodeMirror.autoLoadMode(editor, mode);
+    document.getElementById("modeinfo").textContent = spec;
+  } else {
+    alert("Could not find a mode corresponding to " + val);
+  }
+}
+</script>

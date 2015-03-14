@@ -380,16 +380,16 @@ function set_foot($code)
 *
 * @return bool False if $src is empty
 */
-function set_script($name = null, $type="type/javascript" , $src = null)
+function set_script($name = null, $src ,$type="text/javascript" )
 {
 	global $page;
 
 	if (!empty($src) && is_string($src))
 	{
 		if(empty($name))
-			$page['scripts'][] = '<script type="'.$type.'" src="'.$src.'" />';
+			$page['scripts'][] = '<script type="'.$type.'" src="'.$src.'" ></script>';
 		else
-			$page['scripts'][$name] = '<script type="'.$type.'" src="'.$src.'" />';
+			$page['scripts'][$name] = '<script type="'.$type.'" src="'.$src.'" ></script>';
 
 		return true;
 	}
@@ -414,7 +414,7 @@ function set_script($name = null, $type="type/javascript" , $src = null)
 *
 * @return bool False if $href is empty
 */
-function set_link($name = null, $rel = null ,$type="text/css" , $href = null , $title = null)
+function set_link($name = null, $href , $rel = "stylesheet" ,$type="text/css" , $title = null)
 {
 	global $page;
 

@@ -219,7 +219,7 @@ ul,li{
 .content .content-top{
 	width: 892px;
 	height: 8px;
-	background: url(../images/top-content1.png) no-repeat top center;
+/*	background: url(../images/top-content1.png) no-repeat top center;*/
 }
 .content .content-main{
 	width: 892px;

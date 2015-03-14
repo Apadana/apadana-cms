@@ -17,7 +17,7 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 	version 2.55 :: 1391/08/24 = 1433/12/18 = 2012/11/15
 */
 
-function jdate($format, $timestamp = 'now', $number_type = 'fa')
+function jdate($format, $timestamp = 'now', $number_type = 'en')
 {
 	$T_sec = 0; /* رفع خطاي زمان سرور ، با اعداد '+' و '-' بر حسب ثانيه */
 

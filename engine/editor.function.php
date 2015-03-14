@@ -52,7 +52,7 @@ function wysiwyg_textarea($name, $value, $type = 'apadana', $class = null, $extr
 
 	    case 'BBcode':
 		$config['extraPlugins'] = 'bbcode';
-		$config['removePlugins'] = 'bidi,button,dialogadvtab,div,filebrowser,flash,format,forms,horizontalrule,iframe,indent,justify,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates';
+		$config['removePlugins'] = 'bidi,dialogadvtab,div,filebrowser,flash,format,forms,horizontalrule,iframe,justify,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates';
 		$config['disableObjectResizing'] = true;
 		$config['fontSize_sizes'] = '30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%';
 		$config['toolbar'] = array(

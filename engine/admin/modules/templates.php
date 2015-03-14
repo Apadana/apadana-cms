@@ -325,7 +325,7 @@ function _edit()
 			set_title('ویرایش تم');
 			$list = _files(root_dir.'templates/'.$name);
 
-			$files = array('html', 'htm', 'php', 'txt', 'tpl', 'css', 'inc', 'ihtml');
+			$files = array('html', 'htm', 'php', 'txt', 'tpl', 'css', 'inc', 'ihtml','js');
 			$itpl = new template('engine/admin/template/templates-edit.tpl');
 			
 			foreach($list as $f)
@@ -343,6 +343,16 @@ function _edit()
 				'{template}' => $name,
 				'{error}' => md5(member_id.member_name.group_rights),
 			));
+
+			/**
+			* CodeMirror Library files
+			* @since 1.1
+			**/
+			set_link('codemirror_theme',url.'engine/javascript/codemirror/theme/monokai.css');
+			set_link('codemirror_dtheme',url.'engine/javascript/codemirror/lib/codemirror.css');
+			set_script('codemirror',url.'engine/javascript/codemirror/lib/codemirror.js');
+			set_script('codemirror_addon_loadmode',url.'engine/javascript/codemirror/addon/mode/loadmode.js');
+			set_script('codemirror_meta',url.'engine/javascript/codemirror/mode/meta.js');
 
 			set_content(false, $itpl->get_var());
 			unset($itpl);

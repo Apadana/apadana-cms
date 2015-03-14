@@ -21,6 +21,16 @@ class comments
     public $comments_count;
     public $message;
     public $total;
+
+    /**
+    * This var show comment posing status.if a comment posted and added to database it will be true 
+    * else if comment posting was unsuccessful it will be false else if there is no comment to post 
+    * it is null (by default)
+	*
+	* @since 1.1
+	*/
+
+    public $comment_posted = null;
     public $start = 1;
     public $length = null;
 
@@ -309,6 +319,8 @@ class comments
 		
 		require_once(engine_dir.'captcha.function.php');
 		$message = array();
+
+		$this->comment_posted = false;
 		
 		($hook = get_hook('comments_post_start'))? eval($hook) : null;
 
@@ -412,7 +424,7 @@ class comments
 				'comment_date' => time(),
 				'comment_text' => $post['text'],
 				'comment_member_id' => member_id,
-				'comment_approve' => (group_super_admin || member::check_admin_page_access("comments")) ? 1 : 0,
+				'comment_approve' => (group_super_admin || member::check_admin_page_access("comments") || $this->options['approve'] == 0) ? 1 : 0
 			);
 
 			$d->insert('comments', $arr);
@@ -421,7 +433,15 @@ class comments
 				unset($_POST['comment']);
 				remove_captcha('comment');
 				remove_cache('comments', true);
+
+				$this->comment_posted = true;
+
 				($hook = get_hook('comments_post_save'))? eval($hook) : null;
+
+				/**
+				* @since 1.1 
+				*/
+				($hook = get_hook('comments_post_save_'. $this->type))? eval($hook) : null;
 			}
 			else
 			{
