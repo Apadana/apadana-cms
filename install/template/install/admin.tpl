@@ -23,7 +23,7 @@
   </tr>
   <tr>
     <td></td>
-    <td><button onClick="install_admin()" disabled="disabled" id="button-disabled">ایجاد مدیر سایت</button><button onClick="install_check(\'admin\')" style="margin-left:10px">برسی اطلاعات</button></td>
+    <td><button onClick="install_admin()" disabled="disabled" id="button-disabled">ایجاد مدیر سایت</button><button onClick="install_check('admin')" style="margin-left:10px">برسی اطلاعات</button></td>
   </tr>
 </table>
 </form>

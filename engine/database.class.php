@@ -46,7 +46,7 @@ class database
 			return false;
 		}
 
-		return $this->select_db($db['name'], $this->connect);
+		return $this->select_db($db['name']);
 	}
 
 	public function select_db($name) 
@@ -73,6 +73,7 @@ class database
 			mysql_query('SET SESSION collation_connection="'.$this->charset.'_general_ci"', $this->connect);		
 			mysql_set_charset('utf8', $this->connect);
 		}
+		return true;
 	}	
 
 	protected function replace_prefix($sql, $prefix = '#__') 

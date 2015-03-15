@@ -168,6 +168,7 @@ switch ($_GET['action'])
 		$php .= 'define(\'database_charset\', \'utf8\');'."\r\n";
 		$php .= 'define(\'database_save_queries\', false);'."\r\n\r\n";
 		$php .= 'define(\'debug_system\', false);'."\r\n";
+		$php .= 'define(\'show_debug_backtrace\', false);'."\r\n";
 		$php .= 'define(\'charset\', \'utf-8\');'."\r\n";
 		$php .= 'define(\'sitekey\', \''.generate_password(40).'\');'."\r\n";
 		$php .= 'define(\'domain\', \''.$_POST['config']['domain'].'\');'."\r\n";
@@ -255,7 +256,7 @@ switch ($_GET['action'])
 		'charset' => database_charset,
 	));
 	if($result){
-		//require_once('sql/install.php');
+		require_once('sql/install.php');
 
 		$itpl->assign(array(
 			'[success]' => null,
@@ -373,7 +374,8 @@ switch ($_GET['action'])
 
 		$itpl->assign(array(
 			'[done]' => null,
-			'[/done]' => null
+			'[/done]' => null,
+			'{url}' => url
 			));
 		$itpl->block('#\\[error\\](.*?)\\[/error\\]#s', '');
 	}
@@ -411,4 +413,19 @@ function my_path()
     $url = str_replace(array('http://', 'https://'), null, $url);   
     $url = trim($url, '/');
 	return ($url != ''? '/'.$url : null).'/';
+}
+function preg_check($expression, $value)
+{
+	if (is_string($value))
+	{
+		return preg_match($expression, $value);
+	}
+	else
+	{
+		return false;
+	}
+}
+function get_hook($h)
+{
+	return false;
 }

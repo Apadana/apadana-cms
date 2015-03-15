@@ -359,13 +359,8 @@ function _single()
 
 				$total = $comments->get_total_comments();
 
-				$raw_page = get_param($_GET, 'c');
-
-				if( !empty($raw_page) ) {
-					if ( $options['rewrite'] == 1 )
-						preg_match('#comments\-page\-([1-9]+)#', $raw_page,$match) ? $page = $match[1] : $page = 1;
-					else
-						is_int($raw_page) ? $page = $raw_page : $page = 1 ;
+				if( $_GET['c'] == 'comments-page' && isset($_GET['d']) && !empty($_GET['d']) && is_numeric($_GET['d']) ) {
+					$page = $_GET['d'] ;
 				}
 				else
 					$page = 1;
@@ -377,12 +372,27 @@ function _single()
 					redirect( $url );
 				}
 
+				$pagination->Pages != 1 && $comments->action = url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id']) ."/comments-page/".$pagination->Pages );
+
 				$comments->set_limits( $pagination->Start , $pagination->End );
 
-				$pagination->build( url( ('posts/'.($options['rewrite'] == 1? ($post['post_name']."/comments-page-{page}") : ($post['post_id']."/{page}") )) ) ) ;
+				$pagination->build( url( ('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id'])."/comments-page/{page}")  ) ) ;
 			}
 
 			$comments->build();
+
+			if( $comments->comment_posted == true){
+
+				if (group_super_admin || member::check_admin_page_access("comments") || $comments->options['approve'] == 0){
+					$d->query("UPDATE `#__posts` SET `post_comment_count`= `post_comment_count` + 1  WHERE `post_id`='".intval($post['post_id'])."' LIMIT 1");
+				}
+				
+				if( ($total%$comments->options['per-page']) + 1 == 1){
+					$page = $pagination->Pages + 1;
+					redirect(url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id']) ."/comments-page/".$page ));
+				}
+							
+			}
 
 		}
 	}
@@ -682,4 +692,196 @@ function _theme($post, $single = false)
 	unset($categories, $tags, $post, $array, $itpl, $posts_fields);
 }
 
+function _archives(){
+
+	if( ! $links = get_cache('posts_archive') ){
+		global $d;
+
+		$date = $d->fetch("SELECT MIN(post_date) AS min_date ,MAX(post_date) AS max_date FROM #__posts WHERE `post_approve` = '1' AND `post_date` <= '".time_now."'",'assoc',true);
+
+		$max_month = jdate('n',$date['max_date']) + 1;
+		$max_year = jdate('Y',$date['max_date']);
+
+		if ($max_month > 12) {
+			$max_month = 1;
+			$max_year++;
+		}
+
+		$min_month = jdate('n',$date['min_date']);
+		$min_year = jdate('Y',$date['min_date']);
+
+		$min_time = jmktime(0,0,0,$min_month,1,$min_year);
+
+		$up_month = $max_month;
+		$up_year = $max_year;
+
+		$links = array();
+
+		while( jmktime(0,0,0,$up_month,1,$up_year) >= $min_time ){
+
+			$down_month = $up_month - 1;
+			$down_year = $up_year;
+
+			if ($down_month < 1) {
+				$down_month = 12;
+				$down_year--;
+			}
+
+			$down_time = jmktime(0,0,0,$down_month,1,$down_year);
+
+			$up_time = jmktime(0,0,0,$up_month,1,$up_year);
+
+			$count = $d->fetch('SELECT COUNT(post_id) AS count FROM #__posts WHERE `post_approve` = "1" AND  post_date BETWEEN "'.$down_time.'" AND "'. ( $up_time > time_now ? time_now : $up_time ).'"',"assoc",true);
+			$count = $count['count'];
+
+			if($count >= 1){
+				$links[] = array( $down_time , $up_time ,$count ) ;
+			}
+
+			$up_year = $down_year;
+			$up_month = $down_month;
+
+		}
+		set_cache('posts_archive' , $links );
+	}
+
+	foreach ($links as $key => $value) {
+		$links[$key] = '<a href="'.url('posts/archives/'.jdate('Y\/n',$value[0])).'" >'.jdate('F Y',$value[0])."({$value[2]})".'</a>';
+	}
+	set_content('آرشیو پست ها',implode('<br>', $links));
+}
+
+function _archives_show_posts()
+{
+	$year = $month = $day = $page = false;
+
+	$year = get_param( $_GET , 'c' , null );
+	$year = ( empty($year) || ! is_numeric($year) || $year < 1380 || $year > jdate('Y') ) ? false : $year ;
+
+	if(! $year){
+		module_error_run();
+		return;
+	}
+
+	$_d = get_param( $_GET , 'd' , false );
+
+	if( $_d ){
+
+		if( ! empty($_d) && is_numeric($_d) && $_d >= 1 && $_d <= 12){
+			$month = $_d;
+		}
+		elseif ( ! empty($_d) && $_d == "page" ) {
+
+			$page = get_param( $_GET , 'e' , 1 );
+			if( !is_numeric($page) ){
+				module_error_run();
+				return;
+			}
+		}else{
+			module_error_run();
+			return;
+		}
+	}
+
+	$e = get_param( $_GET , 'e' , false );
+
+	if( $e ){
+
+		if( $month && ! empty($e) && is_numeric($e) && $e >= 1 && $e <= 31){
+			$day = $e;
+		}
+		elseif ( ! $page && ! empty($e) && $e == "page" ) {
+			
+			$page = get_param( $_GET , 'f' , 1 );
+			if( !is_numeric($page) ){
+				module_error_run();
+				return;
+			}
+		}else{
+			module_error_run();
+			return;
+		}
+	}
+
+	if(! $page){
+		$f = get_param( $_GET , 'f' , false );
+		if($f == 'page'){
+			$page = get_param( $_GET , 'g' , 1 );
+			if( !is_numeric($page) ){
+				module_error_run();
+				return;
+			}
+		}
+	}
+
+	if( $day && ! jcheckdate( $month  , $day , $year ) ){
+		module_error_run();
+		return;
+	}
+
+	if( $day ){
+		$start_time = jmktime( 0, 0, 0, $month, $day, $year );
+		$end_time = jmktime( 24, 0, 0, $month, $day, $year );
+	}elseif( $month ) {
+		$start_time = jmktime( 0, 0, 0, $month, 1, $year ) ;
+		$end_time = jmktime( 0, 0, 0, ($month + 1 ), 1 , $year ) ;
+	}else{
+		$start_time = jmktime( 0, 0, 0, 1 , 1, $year ) ;
+		$end_time = jmktime( 0, 0, 0, 1 , 1 , ($year + 1) ) ;
+	}
+
+	$posts = array();
+
+	if( $start_time < time_now ){
+
+		global $d, $options;
+
+		require_once(engine_dir.'pagination.class.php');
+
+		$posts_options = posts_options();
+		$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` BETWEEN '".$start_time."' AND '". ( $end_time > time_now ? time_now : $end_time )."'", true);
+		$pagination = new pagination($total, $posts_options['total-posts'], $page);
+
+		$url = 'posts/archives/'.$year;
+		$url .= $month ? ('/'.$month) : '';
+		$url .= $day ? ('/'.$day) : '';
+		$full_url = $url . ($page ? ('/page/'.$page) : '');
+
+		$page = !$page ? 1 : $page ;
+		if ($page > $pagination->Pages && $pagination->Pages != 0)
+		{
+			redirect(url($url));
+		}
+		
+		// dump(array($start_time,$end_time));
+		$posts = get_posts(array(
+			'limit' => array($pagination->Start, $pagination->End),
+			'date' => array($start_time, ( $end_time > time_now ? time_now : $end_time ) )
+		));
+
+	}
+
+	if (!is_array($posts) || !count($posts))
+	{
+		set_content('بدون مطلب!', message('هیچ مطلبی برای نمایش در سایت یافت نشد!', 'error'));
+	}
+	else
+	{
+		if ($page > 1)
+		{
+			set_title('صفحه '.translate_number($page,'fa'));
+		}
+		
+
+		set_canonical(url($full_url));
+
+		foreach ($posts as $post)
+		{
+			_theme($post);
+		}
+
+		$pagination->build(url($url.'/page/{page}'));
+	}
+
+}
 ?>

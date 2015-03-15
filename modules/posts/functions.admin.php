@@ -190,7 +190,7 @@ function _approve()
 
 	$id = get_param($_GET, 'id', 0);
 
-	$d->query("SELECT `post_author`, `post_approve` FROM #__posts WHERE `post_id`='{$id}' LIMIT 1");
+	$d->query("SELECT `post_author`, `post_approve` , `post_date` FROM #__posts WHERE `post_id`='{$id}' LIMIT 1");
 
 	if ($d->num_rows() <= 0)
 	{
@@ -211,6 +211,7 @@ function _approve()
 	if ($d->affected_rows())
 	{
 		remove_cache('module-posts', true);
+		remove_cache('posts_archive');
 		exit($data['post_approve'] == 1? 'no' : 'ok');
 	}
 	else
@@ -493,10 +494,28 @@ function _new()
 					}
 				}
 
+				if( $date <= time_now &&  ($links = get_cache('posts_archive')) ){
+
+					foreach ($links as $k => $v) {
+						if( $date >= $v[0] && $date <= $v[1]){
+							$links[$k][2]++;
+							$find = true;
+							break;
+						}
+					}
+
+					if(!isset($find))
+						remove_cache('posts_archive');
+					else
+						set_cache('posts_archive' , $links );
+				}
+
+
 				echo message('پست جدید با موفقیت ذخیره شد!', 'success');
 				echo message('<a href="javascript:void(0)" onclick="post_reset()">برای ارسال پست جدید کلیک کنید ...</a>', 'info');
 				echo '<script>$("#form-new-posts").slideUp("slow")</script>';
 				remove_cache('module-posts', true);
+
 			}
 			else
 			{
@@ -841,6 +860,7 @@ function _edit()
 
 					echo message('پست با موفقیت ویرایش شد!', 'success');
 					remove_cache('module-posts', true);
+					remove_cache('posts_archive');
 				}
 				else
 				{
@@ -1036,7 +1056,7 @@ function _delete()
 
 	$id = get_param($_GET, 'id', 0);
 
-	$d->query("SELECT `post_author`, `post_tags` FROM `#__posts` WHERE `post_id`='{$id}' LIMIT 1");
+	$d->query("SELECT `post_author`, `post_tags`,`post_date` FROM `#__posts` WHERE `post_id`='{$id}' LIMIT 1");
 
 	if ($d->num_rows() <= 0)
 	{
@@ -1061,6 +1081,8 @@ function _delete()
 		$d->delete('posts', "`post_id`='".intval($id)."'", 1);
 		echo message('پست با موفقیت حذف شد!', 'success');
 		remove_cache('module-posts', true);
+		remove_cache('posts_archive');
+
 	}
 	else
 	{

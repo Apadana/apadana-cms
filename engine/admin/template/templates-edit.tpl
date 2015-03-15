@@ -17,6 +17,7 @@ function templates_load()
     			apadana.html('template-button', 'ویرایش فایل '+fileEdit);
     			apadana.value('template-contents', data);
     			apadana.showID('template-form');
+                editor.setOption("value", data);
                 change(fileEdit);
 			}
         }
@@ -48,7 +49,7 @@ function templates_edit()
 	apadana.ajax({
         type: 'POST',
         action: '{admin-page}&section=templates&do=edit&name={template}',
-        data: 'file='+fileEdit+'&contents='+encodeURIComponent(apadana.value('template-contents')),
+        data: 'file='+fileEdit+'&contents='+encodeURIComponent(editor.getValue()),
         success: function(data)
         {
             data = apadana.trim(data);
@@ -75,10 +76,11 @@ function templates_edit()
 <button onclick="templates_new()">ساختن فایل یا پوشه جدید</button>
 </div>
 
-<div id="template-form" dir="ltr" style="">
-<span id="modeinfo"></span>
-<p style="margin: 10px 0px">در حال ویرایش فایل <b dir="ltr" id="template-file-name"></b>:</p>
-<textarea name="g" dir="ltr" id="template-contents" style="width:90%;height:500px"></textarea>
+<div id="template-form" style="display:none;">
+<p style="margin: 10px 0px">در حال ویرایش فایل <b dir="ltr" id="template-file-name"></b>:                  نوع فایل :<span dir="ltr" id="modeinfo"></span></p>
+<div class="editor" dir="ltr" style="text-align:left;" >
+    <textarea name="g" id="template-contents" style=""></textarea>
+</div>
 <center><button onclick="templates_edit()" id="template-button" style="margin:5px 0px">ویرایش فایل</button></center>
 </div>
 <script>
@@ -87,11 +89,26 @@ function templates_edit()
 
 CodeMirror.modeURL = "{site-url}/engine/javascript/codemirror/mode/%N/%N.js";
 var editor = CodeMirror.fromTextArea(document.getElementById("template-contents"), {
-  lineNumbers: true
+  lineNumbers: true,
+  keyMap: "sublime",
+  autoCloseBrackets: true,
+  matchBrackets: true,
+  showCursorWhenSelecting: true,
+  theme: "monokai",
+  indentUnit: 4,
+  extraKeys: {
+      "F11": function(cm) {
+        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+      },
+      "Esc": function(cm) {
+        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+      }
+    }
 });
 function change(val) {
   var m, mode, spec;
   if (m = /.+\.([^.]+)$/.exec(val)) {
+    m[1] == 'tpl' ? m[1] = 'html' : null;
     var info = CodeMirror.findModeByExtension(m[1]);
     if (info) {
       mode = info.mode;

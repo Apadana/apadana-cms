@@ -32,10 +32,14 @@ function get_posts($do)
 	{
 		$where[] = "p.post_approve = '1'";
 	}
-	
-	if ($do['date'] > 0)
+
+	$do['date'] = ( is_array($do['date']) && count($do['date']) == 1) ? $do['date'][0] : $do['date'] ;
+	if ( is_numeric($do['date']) && $do['date'] > 0)
 	{
-		$where[] = "p.post_date <= '".intval($do['date'])."'";
+		$where[] = "p.post_date <= '".$do['date']."'";
+	}elseif ( is_array($do['date']) ) {
+		$where[] = "p.post_date >= '".intval($do['date'][0])."'";
+		$where[] = "p.post_date <= '".intval($do['date'][1])."'";
 	}
 
 	$where = implode(' AND ', $where);
@@ -264,6 +268,104 @@ function block_categories($op = null, $id = null, $position= null)
 	return $html;
 }
 
+function block_posts_calendar($op = null, $id = null, $position= null)
+{
+	if($op == 'remove-cache'){
+		return true;
+	}
+
+	$month =  isset($op['month']) && is_numeric($op['month']) && $op['month'] < 13 && $op['month'] > 0 ? $op['month'] : jdate('n');
+	$year = isset($op['year']) && is_numeric($op['year']) &&  $op['year'] > 1380 ? $op['year'] : jdate('Y');
+
+	global $d;
+
+	$today = jdate('j');
+	$this_month = ($month != jdate('n')) || ( $year != jdate('Y') ) ? false : true ;
+	$prev_time = jmktime( 0 , 0 , 0 , ($month - 1) < 1 ? 12 : ($month - 1)  , 1 , ($month - 1) < 1 ? ($year- 1 ) : $year );
+	$down_time = jmktime( 0 , 0 , 0 , $month , 1 , $year);
+	$up_time = jmktime( 0 , 0 , 0 , ($month + 1) , 1 , $year);
+
+	$events = array();
+
+	//if the time is pointing to future why should we looking for a published post???
+	if( $down_time < time_now ){
+		$d->query("SELECT post_date FROM #__posts WHERE post_date >= '".$down_time."' AND post_date <= '". ($up_time > time_now ? time_now : $up_time )."' AND post_approve = '1' ");
+
+		while($data= $d->fetch()){
+			$day = jdate('j' , $data['post_date'] );
+			$events[$day] = true ;
+		}
+	}
+
+	$first_day = jdate('w',$down_time) ;
+	$days_in_month = jdate('t',$down_time);
+
+	$day = 1  ;
+	$counter = $first_day + 1;
+	$itpl = new template('modules/posts/html/block_posts_calendar.tpl');
+
+	if($first_day == 0)
+		$itpl->block('#\\[before\\](.*?)\\[/before\\]#s','');
+	else
+		$itpl->assign(array(
+			'[before]' => '',
+			'[/before]' => '',
+			'{before_colspan}' => $first_day
+			));
+
+	$itpl->assign('{full_name}' , jdate('F Y' , $down_time) );
+
+	while ( $day <= $days_in_month) {
+
+		$array = array();
+		$array['replace'] = array();
+
+		$array['{day}'] = $day;
+
+		if($counter == 7 ){
+			$array['replace']['#\\[tr\\](.*?)\\[/tr\\]#s'] = '\\1' ;
+			$array['{class}'] = 'apadana_calendar_friday';
+			$counter = 0;
+		}else{
+			$array['replace']['#\\[tr\\](.*?)\\[/tr\\]#s'] = '' ;
+			$array['{class}'] = 'apadana_calendar_day';
+		}
+		if( $this_month && $today == $day) $array['{class}'] .= ' apadana_calendar_today';
+		
+		if( isset($events[$day]) && $events[$day] ){
+			$array['{class}'] .= ' apadana_calendar_active';
+			$array['[active]'] = $array['[/active]'] = "";
+			$array['{url}'] = url("posts/archives/{$year}/{$month}/{$day}");
+		}else{
+			$array['replace']['#\\[active\\](.*?)\\[/active\\]#s'] = '' ;
+		}
+
+		$itpl->add_for('day',$array );
+
+		$day++;
+		$counter++;
+	}
+
+	//in last day counter added for nothing so we should use 8 instead of 7
+	if( (8 - $counter ) == 0)
+		$itpl->block('#\\[after\\](.*?)\\[/after\\]#s','');
+	else
+		$itpl->assign(array(
+			'[after]' => '',
+			'[/after]' => '',
+			'{after_colspan}' => (8 - $counter )
+			));
+
+	$itpl->assign(array(
+		'{next_month}' => jdate("Y,n" , $up_time),
+		'{prev_month}' => jdate("Y,n" , $prev_time)
+		));
+
+	$cal = $itpl->get_var();
+
+	return $cal;
+}
+
 function block_tags_cloud($op = null, $id = null, $position= null)
 {
 	if ($op == 'remove-cache') // admin
@@ -353,10 +455,13 @@ function block_last_posts($op = null, $id = null, $position = null)
 		remove_cache('module-posts-block-last-'.$id);
 		return true;
 	}
+
+	//we need it in hole function
+	$op['hits'] = !isset($op['hits']) || strtolower($op['hits'])!='true'? false : true;
+
 	if (!$rows = get_cache('module-posts-block-last-'.$id, 'short'))
 	{
 		$op['total'] = !isset($op['total']) || intval($op['total'])<=0? 10 : intval($op['total']);
-		$op['hits'] = !isset($op['hits']) || strtolower($op['hits'])!='true'? false : true;
 		$op['order'] = !isset($op['order'])? 'DESC' : strtoupper($op['order']);
 		$op['order'] = $op['order']!='DESC' && $op['order']!='ASC'? 'DESC' : $op['order'];
 		
@@ -494,15 +599,23 @@ function module_posts_run()
 		}
 		break;
 
-		case 'pdf':
-		if (!isset($_GET['c']) || !isnum($_GET['c']))
-		{
-			module_error_run('404');
-		}
-		else
-		{
-			_pdf();
-		}
+		case 'archives':
+			if(isset($_GET['c']))
+				_archives_show_posts();
+			else
+				_archives();
+		break;
+
+		case 'calendar':
+			if(is_ajax()){
+				$op = array();
+				$op['year'] = isset($_GET['c']) ? $_GET['c'] : null ;
+				$op['month'] = isset($_GET['d']) ? $_GET['d'] : null ;
+				echo block_posts_calendar($op);
+				define('no_template',true);
+			}
+			else
+				module_error_run();
 		break;
 
 		case 'print':

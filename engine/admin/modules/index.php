@@ -99,16 +99,16 @@ foreach ($admin as $row)
 	));
 	$itpl->block('#\\[counter\\](.*?)\\[/counter\\]#s', '');
 
-if(/*isset($options['first-install']) && $options['first-install'] == 1*/ 0)
+if(isset($options['first-install']) && $options['first-install'] == 1)
 {
 	$itpl->assign(array(
 		'[intro]' => null,
 		'[/intro]' => null
 	));
 	unset($options['first_install']);
-	//remove_cache('options');
+	remove_cache('options');
 
-	//$d->delete('options' , " `option_name` = 'first_install' " , 1);
+	$d->delete('options' , " `option_name` = 'first-install' " , 1);
 }
 else
 {

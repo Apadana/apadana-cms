@@ -84,7 +84,7 @@ defined('magic_quotes') or define('magic_quotes', false);
 check_xss();
 
 $d = new database;
-$d->connect(array(
+$result = $d->connect(array(
     'host' => database_host,
     'user' => database_user,
     'password' => database_password,
@@ -92,6 +92,11 @@ $d->connect(array(
     'prefix' => database_prefix,
     'charset' => database_charset,
 ));
+
+if(! $result)
+	exit('Can\'t connect to database!!');
+
+unset($result);
 
 if (!$options = get_cache('options'))
 {
@@ -286,7 +291,7 @@ else
 	{
 		warning('خطا در تم سایت', 'متاسفانه تم سایت ناقص می باشد!');
 	}
-	
+
 	$tpl = new template('body.tpl', root_dir.'templates/'.$options['theme'].'/');
 }
 

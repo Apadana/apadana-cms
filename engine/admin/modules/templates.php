@@ -348,11 +348,22 @@ function _edit()
 			* CodeMirror Library files
 			* @since 1.1
 			**/
-			set_link('codemirror_theme',url.'engine/javascript/codemirror/theme/monokai.css');
 			set_link('codemirror_dtheme',url.'engine/javascript/codemirror/lib/codemirror.css');
+			set_link('codemirror_theme',url.'engine/javascript/codemirror/theme/monokai.css');
+			set_link('codemirror_addon_dialog',url.'engine/javascript/codemirror/addon/dialog/dialog.css');
+			set_link('codemirror_addon_fullscreen',url.'engine/javascript/codemirror/addon/display/fullscreen.css');
+
 			set_script('codemirror',url.'engine/javascript/codemirror/lib/codemirror.js');
 			set_script('codemirror_addon_loadmode',url.'engine/javascript/codemirror/addon/mode/loadmode.js');
+			set_script('codemirror_addon_search',url.'engine/javascript/codemirror/addon/search/search.js');
+			set_script('codemirror_addon_searchcursor',url.'engine/javascript/codemirror/addon/search/searchcursor.js');
+			set_script('codemirror_addon_dialog',url.'engine/javascript/codemirror/addon/dialog/dialog.js');
+			set_script('codemirror_addon_matchbrackets',url.'engine/javascript/codemirror/addon/edit/matchbrackets.js');
+			set_script('codemirror_addon_closebrackets',url.'engine/javascript/codemirror/addon/edit/closebrackets.js');
+			set_script('codemirror_addon_comment',url.'engine/javascript/codemirror/addon/comment/comment.js');
+			set_script('codemirror_addon_fullscreen',url.'engine/javascript/codemirror/addon/display/fullscreen.js');
 			set_script('codemirror_meta',url.'engine/javascript/codemirror/mode/meta.js');
+			set_script('codemirror_keymap',url.'engine/javascript/codemirror/keymap/sublime.js');
 
 			set_content(false, $itpl->get_var());
 			unset($itpl);

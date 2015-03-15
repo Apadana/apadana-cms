@@ -532,6 +532,11 @@ desc به معنای چینش نزولی است و asc صعودی.<br />
 در صورتی که hits دارای مقدار true باشد چینش بر اساس دفعات نمایش خواهد بود و در غیر اینصورت بر اساس تاریخ انتشار پست.
 </div>		
 
+<div class="list-func" onclick="$('#show-posts_calendar').slideToggle('slow')">posts_calendar</div>
+<div id="show-posts_calendar" class="content-func" style="display:none">
+با این تابع شما می توانید یک تقویم رومیزی را نشان دهید. این تقویم شامل پست ها هم می شود.
+</div>
+
 <div class="list-func" onclick="$('#show-posts_comments').slideToggle('slow')">posts_comments</div>
 <div id="show-posts_comments" class="content-func" style="display:none">
 این تابع لیست نظرات پست ها را نمایش می دهد و تنظیمات اختصاصی دارد.
