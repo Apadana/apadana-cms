@@ -1,6 +1,7 @@
 [message]{message}
 [/message]<form action="{a href='search/result'}" method="get">
-<table cellpadding="0" cellspacing="0" width="100%" id="module-search">
+[not-rewrite]<input type="hidden" name="a" value="search" /><input type="hidden" name="b" value="result" />
+[/not-rewrite]<table cellpadding="0" cellspacing="0" width="100%" id="module-search">
     <tr>
         <td>
             <div align="center">
@@ -59,7 +60,7 @@
                     <tr>
                         <td colspan="2">
                             <div align="center">
-                                [not-rewrite]<input type="hidden" name="a" value="search" /><input type="hidden" name="b" value="result" />[/not-rewrite]<input type="submit" style="margin:10px 10px 0 0px" value="جستجو در سایت" />
+                                <input type="submit" style="margin:10px 10px 0 0px" value="جستجو در سایت" />
                             </div>
                         </td>
                     </tr>
