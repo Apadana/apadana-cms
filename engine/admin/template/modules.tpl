@@ -109,7 +109,7 @@ function modules_info(name)
     apadana.html('modules-infoBox-authorUrl', apadana.value('data-modules-authorUrl-'+name)=='unknown'? 'ناشناخته' : 'مشاهده سایت سازنده');
     apadana.$('modules-infoBox-authorUrl').href = apadana.value('data-modules-authorUrl-'+name)=='unknown'? 'javascript:alert(\'آدرسی برای این ماژول در دسترس نمی باشد!\');return false' : apadana.value('data-modules-authorUrl-'+name);
 
-	apadana.infoBox('#module-info-box', 1);
+	apadana.infoBox('#module-info-box', 1,1);
 }
 function modules_startUpload()
 {
