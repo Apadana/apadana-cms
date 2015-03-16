@@ -99,16 +99,16 @@ foreach ($admin as $row)
 	));
 	$itpl->block('#\\[counter\\](.*?)\\[/counter\\]#s', '');
 
-if(isset($options['first-install']) && $options['first-install'] == 1)
+if(/*isset($options['first-install']) && $options['first-install'] == 1*/ 0)
 {
 	$itpl->assign(array(
 		'[intro]' => null,
 		'[/intro]' => null
 	));
 	unset($options['first_install']);
-	remove_cache('options');
+	//remove_cache('options');
 
-	$d->delete('options' , " `option_name` = 'first-install' " , 1);
+	//$d->delete('options' , " `option_name` = 'first_install' " , 1);
 }
 else
 {
@@ -159,8 +159,8 @@ $itpl->assign($array);
 
 if(! $server = get_cache('admin-server-info',86400)){
 	$server = array();
-	$server['{server-os}'] = (@php_uname( "s" ) . " " . @php_uname( "r" )) == '' ? 'تعریف نشده' : php_uname( "s" ) . " " . php_uname( "r" );
-	$server['{server-php}'] = @phpversion() == '' ? 'تعریف نشده' : phpversion();
+	$server['{server-os}'] = !function_exists('php_uname') || (@php_uname( "s" ) . @php_uname( "r" )) == '' ? 'تعریف نشده' : php_uname( "s" ) . " " . php_uname( "r" );
+	$server['{server-php}'] = function_exists('phpversion') && @phpversion() == '' ? 'تعریف نشده' : phpversion();
 	$server['{server-mysql}'] = $d->version() == '' ? 'تعریف نشده' : $d->version();
 	$server['{server-mysqli}'] = @extension_loaded('mysqli') ? '<font color=green><b>فعال</b></font>' : '<font color=red><b>غیرفعال</b></font>';
 	
@@ -175,7 +175,7 @@ if(! $server = get_cache('admin-server-info',86400)){
 	$server['{server-upload-limit}'] = $max_upload == 0 ? 'تعریف نشده' : file_size($max_upload);
 	$max_memory = ((int) @ini_get('memory_limit')) * 1024 * 1024;
 	$server['{server-memory-limit}'] = $max_memory == 0 ? 'تعریف نشده' : file_size($max_memory);
-	$server['{server-free}'] = disk_free_space('.') ? file_size(disk_free_space('.')) : 'تعریف نشده';
+	$server['{server-free}'] = function_exists('disk_free_space') && disk_free_space('.') ? file_size(disk_free_space('.')) : 'تعریف نشده';
 
 	if( function_exists( 'apache_get_modules' ) ) {
 		if( array_search( 'mod_rewrite', apache_get_modules() ) ) {
