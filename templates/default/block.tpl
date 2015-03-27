@@ -1,4 +1,4 @@
-<div class="block">
+<div class="block {name}">
 <h3 class="title">{title}</h3>
 <div class="main">
 <div class="padding">
