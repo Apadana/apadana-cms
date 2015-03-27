@@ -5,7 +5,7 @@
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2015 ApadanaCMS.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -108,6 +108,7 @@ function blocks()
 			}
 
 			$block['block_content'] = trim($block['block_content']);
+			$block['block_name'] = 'block-html';
 
 			if (is_alphabet($block['block_function']) && function_exists('block_'.$block['block_function']))
 			{
@@ -144,6 +145,7 @@ function blocks()
 
 				$func = 'block_'.$block['block_function'];
 				$block['block_content'] = $func($block['block_content'], $block['block_id'], $position);
+				$block['block_name'] = str_replace('_', '-', $func);
 			}
 			elseif (!empty($block['block_function']))
 			{
@@ -170,6 +172,7 @@ function blocks()
 			$itpl = new template($file, template_dir);
 			$itpl->assign(array(
 				'{id}' => $block['block_id'],
+				'{name}' => $block['block_name'],
 				'{title}' => $block['block_title'],
 				'{content}' => $block['block_content'],
 			));
