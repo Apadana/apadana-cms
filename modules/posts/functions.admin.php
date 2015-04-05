@@ -547,18 +547,25 @@ function _new()
 	$date['second'] = $date['hour'][2];
 	$date['hour'] = $date['hour'][0];
 
-	$array['{categories}'] = '<select name="posts[categories][]" size="8" style="width:755px" multiple="multiple">';
-	$array['{categories}'] .= '<option value="0" style="font-weight: bold">-->&nbsp;بدون موضوع!</option>';
+	/**
+	* Chosen Library
+	* @since 1.1
+	*/
+	set_script('chosen',url.'engine/javascript/chosen/chosen.jquery.min.js');
+	set_link('chosen',url.'engine/javascript/chosen/chosen.min.css');
+
+	$array['{categories}'] = '<select data-placeholder="موضوع پست خود را وارد کنید" name="posts[categories][]" style="width:755px" multiple="true" class="chosen-select chosen-rtl">';
+	$array['{categories}'] .= '<option value="0" style="font-weight: bold">بدون موضوع!</option>';
 	if (isset($categories) && is_array($categories) && count($categories))
 	{
 		foreach ($categories as $c)
 		{
 			if ($c['term_parent'] != 0) continue;
-			$array['{categories}'] .= '<option value="'.$c['term_id'].'" style="font-weight: bold">-->&nbsp;'.$c['term_name'].'</option>';
+			$array['{categories}'] .= '<option value="'.$c['term_id'].'" style="font-weight: bold">'.$c['term_name'].'</option>';
 			foreach ($categories as $p)
 			{
 				if ($p['term_parent'] != $c['term_id']) continue;
-				$array['{categories}'] .= '<option value="'.$p['term_id'].'">:::&nbsp;'.$p['term_name'].'</option>';
+				$array['{categories}'] .= '<option value="'.$p['term_id'].'">&nbsp;&nbsp;&nbsp;&nbsp;'.$p['term_name'].'</option>';
 			}
 		}
 	}

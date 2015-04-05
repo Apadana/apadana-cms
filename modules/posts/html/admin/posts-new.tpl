@@ -125,6 +125,9 @@ function post_handleKeyPress(e)
 		return false;
 	}
 }
+
+apadana.onloadArray.push("$('.chosen-select').chosen({width : '775px' , no_results_text: 'یافت نشد' , search_contains : true });");	
+
 /*]]>*/
 </script>
 <style>
@@ -192,7 +195,13 @@ function post_handleKeyPress(e)
   </tr>
   <tr>
 	<td>موضوعات</td>
-	<td>{categories}</td>
+	<td >
+
+	<div style="width:776px;">
+		{categories}
+	</div>
+
+	</td>
   </tr>
   <tr>
 	<td>برچسب ها</td>
