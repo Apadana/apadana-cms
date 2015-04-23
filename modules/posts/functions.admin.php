@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -893,19 +893,22 @@ function _edit()
 		$array['{fixed}'] = html::radio('posts[fixed]', array(1=>'فعال', 0=>'غیرفعال'), $data['post_fixed']);
 		$array['{view}'] = html::select('posts[view]', array(1=>'همه کاربران', 2=>'فقط کاربران عضو سایت', 3=>'فقط کاربران غیر عضو سایت', 4=>'فقط مدیران سایت', 5=>'فقط مدیر کل سایت'), $data['post_view']);
 
-		$array['{categories}'] = '<select name="posts[categories][]" size="8" style="width:755px" multiple="multiple">';
-		$array['{categories}'] .= '<option value="0" style="font-weight: bold">-->&nbsp;بدون موضوع!</option>';
+		set_script('chosen',url.'engine/javascript/chosen/chosen.jquery.min.js');
+		set_link('chosen',url.'engine/javascript/chosen/chosen.min.css');
+
+		$array['{categories}'] = '<select data-placeholder="موضوع پست خود را وارد کنید" name="posts[categories][]" style="width:755px" multiple="true" class="chosen-select chosen-rtl">';
+		$array['{categories}'] .= '<option value="0" style="font-weight: bold">بدون موضوع!</option>';
 		if (isset($categories) && is_array($categories) && count($categories))
 		{
 			$cats = explode(',', $data['post_categories_id']);
 			foreach ($categories as $c)
 			{
 				if ($c['term_parent'] != 0) continue;
-				$array['{categories}'] .= '<option value="'.$c['term_id'].'"'.(in_array($c['term_id'], $cats)? ' selected="selected"' : null).' style="font-weight: bold">-->&nbsp;'.$c['term_name'].'</option>';
+				$array['{categories}'] .= '<option value="'.$c['term_id'].'"'.(in_array($c['term_id'], $cats)? ' selected="selected"' : null).' style="font-weight: bold">'.$c['term_name'].'</option>';
 				foreach ($categories as $p)
 				{
 					if ($p['term_parent'] != $c['term_id']) continue;
-					$array['{categories}'] .= '<option value="'.$p['term_id'].'"'.(in_array($p['term_id'], $cats)? ' selected="selected"' : null).'>:::&nbsp;'.$p['term_name'].'</option>';
+					$array['{categories}'] .= '<option value="'.$p['term_id'].'"'.(in_array($p['term_id'], $cats)? ' selected="selected"' : null).'>&nbsp;&nbsp;&nbsp;&nbsp;'.$p['term_name'].'</option>';
 				}
 			}
 		}
@@ -1385,21 +1388,33 @@ function _categories()
 function _categories_parent()
 {
 	member::check_admin_page_access('posts-categories') or warning('عدم دسترسی!', 'شما دسترسی لازم برای مشاهده این بخش را ندارید!');
-	$categories = posts_categories();
+	
+	global $cache;
 
-	$array = array();
-	$array[0] = 'بدون سردسته (این موضوع سردسته است)';
-	if (isset($categories) && is_array($categories) && count($categories))
+	if( !isset($cache['posts_categories']) || !$cache['posts_categories'] )
+		posts_categories();
+
+	$list = array();
+	$list[0] = 'بدون سردسته (این موضوع سردسته است)';
+	if (isset($cache['posts_categories']) && is_array($cache['posts_categories']) && count($cache['posts_categories']))
 	{
-		foreach ($categories as $cat)
-		{
-			if ($cat['term_parent'] != 0) continue;
-			$array[$cat['term_id']] = $cat['term_name'];
-		}
+		_get_categories_parent(0,$list);
 	}
 
-	echo html::select('categories[parent]', $array, isset($_GET['edit'])? -1 : 0, isset($_GET['edit'])? 'id="categories-parent-edit"' : 'id="categories-parent"');
+	echo html::select('categories[parent]', $list, isset($_GET['edit'])? -1 : 0, isset($_GET['edit'])? 'id="categories-parent-edit"' : 'id="categories-parent"');
 	exit;
+}
+
+function _get_categories_parent($parent , &$array  , $depth = ''){
+	global $cache;
+
+	foreach ($cache['posts_categories'] as $cat)
+	{
+		if ($cat['term_parent'] != $parent) continue;
+		$array[$cat['term_id']] = $depth . $cat['term_name'];
+		_get_categories_parent($cat['term_id'],$array, ( $depth.'&nbsp;&nbsp;&nbsp;') );
+	}
+	return $array;
 }
 
 function _categories_new()
@@ -1577,51 +1592,13 @@ function _categories_list()
 	global $cache, $d;
 
 	member::check_admin_page_access('posts-categories') or warning('عدم دسترسی!', 'شما دسترسی لازم برای مشاهده این بخش را ندارید!');
-	$categories = posts_categories();
+	posts_categories();
 
 	$itpl = new template('modules/posts/html/admin/categories-list.tpl');
 
-	if (isset($categories) && is_array($categories) && count($categories))
+	if (isset($cache['posts_categories']) && is_array($cache['posts_categories']) && count($cache['posts_categories']))
 	{
-		foreach ($categories as $c)
-		{
-			if ($c['term_parent'] != 0) continue;
-			
-			$itpl->add_for('categories', array(
-				'{odd-even}' => odd_even(),
-				'{id}' => $c['term_id'],
-				'{name}' => $c['term_name'],
-				'{description}' => $c['term_description'],
-				'{slug}' => urldecode($c['term_slug']),
-				'{parent}' => $c['term_parent'],
-				'{parent-name}' => 'بدون سردسته',
-				'[not-child]' => null,
-				'[/not-child]' => null,
-				'replace' => array(
-					'#\\[child\\](.*?)\\[/child\\]#s' => ''
-				)
-			));
-			
-			foreach ($categories as $p)
-			{
-				if ($p['term_parent'] != $c['term_id']) continue;
-				
-				$itpl->add_for('categories', array(
-					'{odd-even}' => odd_even(),
-					'{id}' => $p['term_id'],
-					'{name}' => $p['term_name'],
-					'{description}' => $p['term_description'],
-					'{slug}' => urldecode($p['term_slug']),
-					'{parent}' => $p['term_parent'],
-					'{parent-name}' => $c['term_name'],
-					'[child]' => null,
-					'[/child]' => null,
-					'replace' => array(
-						'#\\[not-child\\](.*?)\\[/not-child\\]#s' => ''
-					)
-				));
-			}
-		}
+		_get_categories_list(0,$itpl,'');
 		
 		$itpl->assign(array(
 			'[categories]' => null,
@@ -1642,6 +1619,36 @@ function _categories_list()
 	define('no_template', true);
 }
 
+function _get_categories_list($parent , &$itpl  , $depth = ''){
+	global $cache;
+	//print_r(get_class_methods($itpl));exit;
+	foreach ($cache['posts_categories'] as $cat)
+	{
+		if ($cat['term_parent'] != $parent) continue;
+		$array = array(
+			'{odd-even}' => odd_even(),
+			'{id}' => $cat['term_id'],
+			'{name}' => $depth . $cat['term_name'],
+			'{description}' => $cat['term_description'],
+			'{slug}' => urldecode($cat['term_slug']),
+			'{parent}' => $cat['term_parent'],
+			'{parent-name}' => $parent != 0 ? $cache['posts_categories'][$cat['term_parent']]['term_name'] : $cat['term_name']
+		);
+
+		if( $parent != 0 ){
+			$array['[child]'] = null;
+			$array['[/child]'] = null;
+			$array['replace']['#\\[not-child\\](.*?)\\[/not-child\\]#s'] = '';
+		}else{
+			$array['[not-child]'] = null;
+			$array['[/not-child]'] = null;
+			$array['replace']['#\\[child\\](.*?)\\[/child\\]#s'] = '';
+		}
+		$itpl->add_for('categories', $array );
+		_get_categories_list($cat['term_id'],$itpl, ( $depth.':: ') );
+	}
+}
+
 function _categories_delete()
 {
 	global $d;
@@ -1658,19 +1665,11 @@ function _categories_delete()
 		$d->update('terms', array(
 			'term_parent' => 0,
 		), "`term_type`='p-cat' AND `term_parent`='{$id}'");
-
-		$q = $d->query("SELECT post_categories, post_id FROM #__posts WHERE FIND_IN_SET(".$id.", post_categories) ORDER BY post_id");
-		while ($data = $d->fetch($q)) 
-		{
-			$data['post_categories'] = explode(',', $data['post_categories']);
-			$index = array_search($id, $data['post_categories']);
-			unset($data['post_categories'][$index]);
-			$data['post_categories'] = implode(',', $data['post_categories']);
-
-			$d->update('posts', array(
-				'post_categories' => $data['post_categories'],
-			), "`post_id`='{$data['post_id']}'", 1);
-		}
+		/**
+		* Very Optimized query than one used in 1.0.1
+		* @since 1.1
+		*/
+		$d->query("UPDATE #__posts SET post_categories = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', post_categories, ','), ',".$id.",', ',')) WHERE FIND_IN_SET('".$id."', post_categories)");
 		
 		echo message('موضوع مورد نظر با موفقیت حذف شد.', 'success');
 	}

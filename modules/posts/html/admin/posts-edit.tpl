@@ -114,6 +114,7 @@ $(document).ready(function(){
 		post_add_tag()
 	}
 })
+apadana.onloadArray.push("$('.chosen-select').chosen({width : '775px' , no_results_text: 'یافت نشد' , search_contains : true });");	
 /*]]>*/
 </script>
 <style>
