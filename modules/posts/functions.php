@@ -323,11 +323,13 @@ function _single()
 	else
 	{
 		$post = $post[0];
-		$url = url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id']));
+		$post['post_text'] = mb_substr(trim(str_replace(array("\n", "\r", "\t"), ' ', nohtml($post['post_text']))), 0, 100);
+		$post['post_text'] = mb_strlen($post['post_text']) < 30? $post['post_title'] : $post['post_text'];
+
 		set_theme('single-post');
 		set_title($post['post_title']);
-		set_meta('description', $post['post_title'], 'add');
-		set_canonical( $url );
+		set_meta('description', $post['post_text']);
+		set_canonical(url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id'])));
 
 		if (is_array($post['post_tags']) && count($post['post_tags']))
 		{
