@@ -36,11 +36,26 @@ function blocks()
 	$positions = template_info($options['theme']);
 	$positions = explode(',', $positions['positions']);
 
-	if (!isset($cache['blocks']) || !is_array($cache['blocks']) || !count($cache['blocks']) || !is_array($positions) || !count($positions))
+	if (empty($positions) || !is_array($positions))
 	{
 		return null;
 	}
-	
+
+	if (empty($cache['blocks']) || !is_array($cache['blocks']))
+	{
+		foreach ($positions as $position)
+		{
+			$tpl->block('#\\[block-'.$position.'\\](.*?)\\[/block-'.$position.'\\]#s', '');
+			$tpl->assign(array(
+				'{block-'.$position.'}' => null,
+				'[not-block-'.$position.']' => null,
+				'[/not-block-'.$position.']' => null
+			));
+		}
+
+		return null;
+	}
+
 	$current = current_url();
 	$parse = parse_url($current);
 	$strrpos = apadana_strpos($current, path, $parse['scheme'] == 'https'? 8 : 7);
