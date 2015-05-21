@@ -1,4 +1,4 @@
-ApadanaCMS
+ApadanaCMS [![Build Status](https://travis-ci.org/Apadana/apadana-cms.svg?branch=develop)](https://travis-ci.org/Apadana/apadana-cms)
 -------------
 Apadana CMS is a free CMS that based on php language and it's under GPL V3 LICENCE.
 
