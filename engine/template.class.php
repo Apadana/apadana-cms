@@ -228,43 +228,36 @@ class template
 
 		if (strpos($this->template, '{a href=') !== FALSE)
 		{
-			//THIS LINE CHANGED (IN 1.2)
 			$this->template = preg_replace_callback('#\\{a href=[\'"](.+?)[\'"]\\}#s', create_function('$matches','return url($matches[1]);'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-module=') !== false)
 		{
-			//THIS LINE CHANGED (IN 1.2)
 			$this->template = preg_replace_callback('#\\[not-module=([a-zA-Z0-9-_]+)\\](.*?)\\[/not-module\\]#s', array( &$this ,'not_module_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[module=') !== false)
 		{
-			//THIS LINE CHANGED (IN 1.2)
 			$this->template = preg_replace_callback('#\\[module=([a-zA-Z0-9-_]+)\\](.*?)\\[/module\\]#s', array( &$this ,'module_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-group=') !== false)
 		{
-			//THIS LINE CHANGED (IN 1.2)
 			$this->template = preg_replace_callback('#\\[not-group=([0-9,]+)\\](.*?)\\[/not-group\\]#s',  array( &$this,'not_group_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[group=') !== false)
 		{
-			//THIS LINE CHANGED (IN 1.2)
 			$this->template = preg_replace_callback('#\\[group=([0-9,]+)\\](.*?)\\[/group\\]#s',  array( &$this ,'group_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-page=') !== false)
 		{
-			//THIS LINE CHANGED (IN 1.2)
 			$this->template = preg_replace_callback('#\\[not-page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/not-page\\]#s', array( &$this ,'not_page_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[page=') !== false)
 		{
-			//THIS LINE CHANGED (IN 1.2)
 			$this->template = preg_replace_callback('#\\[page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/page\\]#s', array( &$this ,'page_callback'), $this->template);
 		}
 

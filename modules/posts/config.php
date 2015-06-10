@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -221,7 +221,7 @@ function posts_categories()
 {
 	global $cache, $d; 
 
-	if (!$cache['posts_categories'] = get_cache('module-posts-categories'))
+	if ( (!isset($cache['posts_categories']) || !is_array($cache['posts_categories']) ) && !$cache['posts_categories'] = get_cache('module-posts-categories'))
 	{
 		$cache['posts_categories'] = $d->get_row("SELECT * FROM `#__terms` WHERE `term_type`='p-cat'", 'assoc', 'term_id');
 		set_cache('module-posts-categories', $cache['posts_categories']);
@@ -240,32 +240,40 @@ function block_categories($op = null, $id = null, $position= null)
 	if (isset($categories) && is_array($categories) && count($categories))
 	{
 		$html = '<ul id="apadana-block-posts-categories">'.n;
-		foreach ($categories as $cat)
-		{
-			if ($cat['term_parent'] != 0) continue;
-			$html .= '<li class="cat-item cat-item-'.$cat['term_id'].'"><a href="'.url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id'])).'">'.$cat['term_name'].'</a></li>'.n;
-			
-			$i = 0;
-			foreach ($categories as $cat2)
-			{
-				if ($cat2['term_parent'] != $cat['term_id']) continue;
-				if ($i == 0) $html .= '<ul class="children">'.n;
-				$html .= '<li class="cat-item cat-item-'.$cat2['term_id'].'"><a href="'.url('posts/category/'.($options['rewrite'] == 1? $cat2['term_slug'] : $cat2['term_id'])).'">'.$cat2['term_name'].'</a></li>'.n;
-				$i++;
-			}
-			if ($i >= 1)
-			{
-				$html .= '</ul>'.n;
-			}
-		}
+		$html = _get_sub_categories(0,$html);
 		$html .= '</ul>'.n;
-		unset($cat, $cat2);
 	}
 	else
 	{
 		$html = 'بدون موضوع';
 	}
 	return $html;
+}
+/**
+* Get Sub Categories
+*
+* This function get sub categories for categories block
+*
+* @since 1.1
+*
+* @see block_categories
+* @param string $parent category parent
+* @param string $out it saves the results
+*
+* @return string an string of categories
+*/
+function _get_sub_categories($parent , &$out ){
+	global $cache,$options;
+	$ul_open = false;
+	foreach ($cache['posts_categories'] as $cat)
+	{
+		if ($cat['term_parent'] != $parent) continue;
+		if( $ul_open == false ){ $out .= ('<ul'.($parent != 0 ? ' class = "children" ' : '').'>'); $ul_open = true; }
+		$out .= '<li class="cat-item cat-item-'.$cat['term_id'].'"><a href="'.url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id'])).'">'.$cat['term_name'].'</a></li>'.n;
+		_get_sub_categories($cat['term_id'],$out );
+	}
+	if($ul_open == true) $out .='</ul>';
+	return $out;
 }
 
 function block_posts_calendar($op = null, $id = null, $position= null)

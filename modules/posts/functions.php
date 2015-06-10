@@ -354,14 +354,14 @@ function _single()
 
 			$comments = new comments('posts', $post['post_id'], url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id'])));
 
-			//I think it's better to get the comments options from its class. its more logical than common way!!
+			//I think it's better to get the comments options from its class. its more logical than common way!! (MSDN)
 			if($comments->options['pagination'] == 1){
 
 				require_once(engine_dir.'pagination.class.php');
 
 				$total = $comments->get_total_comments();
 
-				if( $_GET['c'] == 'comments-page' && isset($_GET['d']) && !empty($_GET['d']) && is_numeric($_GET['d']) ) {
+				if( isset($_GET['c']) && $_GET['c'] == 'comments-page' && isset($_GET['d']) && !empty($_GET['d']) && is_numeric($_GET['d']) ) {
 					$page = $_GET['d'] ;
 				}
 				else
@@ -383,7 +383,7 @@ function _single()
 
 			$comments->build();
 
-			if( $comments->comment_posted == true){
+			if( $comments->options['pagination'] == 1 && $comments->comment_posted == true){
 
 				if (group_super_admin || member::check_admin_page_access("comments") || $comments->options['approve'] == 0){
 					$d->query("UPDATE `#__posts` SET `post_comment_count`= `post_comment_count` + 1  WHERE `post_id`='".intval($post['post_id'])."' LIMIT 1");

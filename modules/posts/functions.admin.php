@@ -558,16 +558,9 @@ function _new()
 	$array['{categories}'] .= '<option value="0" style="font-weight: bold">بدون موضوع!</option>';
 	if (isset($categories) && is_array($categories) && count($categories))
 	{
-		foreach ($categories as $c)
-		{
-			if ($c['term_parent'] != 0) continue;
-			$array['{categories}'] .= '<option value="'.$c['term_id'].'" style="font-weight: bold">'.$c['term_name'].'</option>';
-			foreach ($categories as $p)
-			{
-				if ($p['term_parent'] != $c['term_id']) continue;
-				$array['{categories}'] .= '<option value="'.$p['term_id'].'">&nbsp;&nbsp;&nbsp;&nbsp;'.$p['term_name'].'</option>';
-			}
-		}
+		$out= '';
+		$sel = array();
+		$array['{categories}'] .= _get_categories_list_for_posts(0,$out,'',$sel);
 	}
 	$array['{categories}'] .= '</select>';
 
@@ -678,6 +671,18 @@ function _new()
 	
 	$tpl->assign('{content}', $itpl->get_var());
 	unset($itpl);
+}
+
+function _get_categories_list_for_posts($parent , &$data  , $depth = '',&$select){
+	global $cache;
+
+	foreach ($cache['posts_categories'] as $cat)
+	{
+		if ($cat['term_parent'] != $parent) continue;
+		$data .= '<option value="'.$cat['term_id'].'"'.(in_array($cat['term_id'], $select)? ' selected="selected" ' : null).( $parent == 0 ? ' style="font-weight: bold" ' : null ).'>'.$depth .$cat['term_name'].'</option>';
+		_get_categories_list_for_posts($cat['term_id'],$data, ( $depth.'&nbsp;&nbsp;&nbsp;'),$select );
+	}
+	return $data;
 }
 
 function _edit()
@@ -901,16 +906,9 @@ function _edit()
 		if (isset($categories) && is_array($categories) && count($categories))
 		{
 			$cats = explode(',', $data['post_categories_id']);
-			foreach ($categories as $c)
-			{
-				if ($c['term_parent'] != 0) continue;
-				$array['{categories}'] .= '<option value="'.$c['term_id'].'"'.(in_array($c['term_id'], $cats)? ' selected="selected"' : null).' style="font-weight: bold">'.$c['term_name'].'</option>';
-				foreach ($categories as $p)
-				{
-					if ($p['term_parent'] != $c['term_id']) continue;
-					$array['{categories}'] .= '<option value="'.$p['term_id'].'"'.(in_array($p['term_id'], $cats)? ' selected="selected"' : null).'>&nbsp;&nbsp;&nbsp;&nbsp;'.$p['term_name'].'</option>';
-				}
-			}
+
+			$out= '';
+			$array['{categories}'] .= _get_categories_list_for_posts(0,$out,'',$cats);
 		}
 		$array['{categories}'] .= '</select>';
 
@@ -1621,14 +1619,15 @@ function _categories_list()
 
 function _get_categories_list($parent , &$itpl  , $depth = ''){
 	global $cache;
-	//print_r(get_class_methods($itpl));exit;
+
 	foreach ($cache['posts_categories'] as $cat)
 	{
 		if ($cat['term_parent'] != $parent) continue;
 		$array = array(
 			'{odd-even}' => odd_even(),
 			'{id}' => $cat['term_id'],
-			'{name}' => $depth . $cat['term_name'],
+			'{name}' => $cat['term_name'],
+			'{depth}' => $depth ,
 			'{description}' => $cat['term_description'],
 			'{slug}' => urldecode($cat['term_slug']),
 			'{parent}' => $cat['term_parent'],
@@ -1657,25 +1656,35 @@ function _categories_delete()
 
 	$id = get_param($_GET, 'id', 0);
 
-	$d->delete('terms', "`term_type`='p-cat' AND `term_id`='{$id}'", 1);
+	if($d->num_rows("SELECT `term_parent` FROM #__terms WHERE `term_type`='p-cat' AND `term_id`='{$id}'",true)){
 
-	if ($d->affected_rows())
-	{
-		remove_cache('module-posts-categories', true);
-		$d->update('terms', array(
-			'term_parent' => 0,
-		), "`term_type`='p-cat' AND `term_parent`='{$id}'");
-		/**
-		* Very Optimized query than one used in 1.0.1
-		* @since 1.1
-		*/
-		$d->query("UPDATE #__posts SET post_categories = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', post_categories, ','), ',".$id.",', ',')) WHERE FIND_IN_SET('".$id."', post_categories)");
-		
-		echo message('موضوع مورد نظر با موفقیت حذف شد.', 'success');
+		$data = $d->fetch();
+		$d->delete('terms', "`term_type`='p-cat' AND `term_id`='{$id}'", 1);
+
+		if ($d->affected_rows())
+		{
+			remove_cache('module-posts-categories', true);
+
+			$d->update('terms', array(
+				'term_parent' => $data['term_parent'],
+			), "`term_type`='p-cat' AND `term_parent`='{$id}'");
+
+			/**
+			* Very Optimized query than one used in 1.0.1
+			* @since 1.1
+			*/
+			$d->query("UPDATE #__posts SET post_categories = TRIM(BOTH ',' FROM REPLACE(CONCAT(',', post_categories, ','), ',".$id.",', ',')) WHERE FIND_IN_SET('".$id."', post_categories)");
+			
+			echo message('موضوع مورد نظر با موفقیت حذف شد.', 'success');
+		}
+		else
+		{
+			echo message('در حذف موضوع خطایی رخ داده مجدد تلاش کنید!', 'error');
+		}
 	}
 	else
 	{
-		echo message('در حذف موضوع خطایی رخ داده مجدد تلاش کنید!', 'error');
+		echo message('چنین موضوعی وجود ندارد!', 'error');
 	}
 
 	_categories_list();
