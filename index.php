@@ -20,10 +20,16 @@
 
 define('security', true);
 define('root_dir', dirname(__FILE__).'/');
-define('engine_dir', root_dir.'/engine/');
+define('engine_dir', root_dir.'engine/');
+
+/**
+* @since 1.1
+*/
+define('modules_dir', root_dir.'modules/');
+
 require_once(engine_dir.'init.php');
 
-if (isset($_GET['admin']) && $_GET['admin'] == $options['admin'] && $options['admin'] != '')
+if ( admin_page )
 {
 	define('home', false);
 	require_once(engine_dir.'admin/init.php');

@@ -120,6 +120,32 @@ else
 	define('admin_page', false);
 }
 
+/**
+* Change the theme
+*
+* Allow user to choose the preferd theme
+* we should save the name of unchanged theme. maybe we need it later specially in admin panel.
+*
+* @since 1.1
+*/
+
+$options['original_theme'] = $options['theme'];
+
+
+if( !admin_page && $options['allow-change-theme']){
+
+	if( isset($_GET['theme'])  &&  template_exists($_GET['theme'] ) )
+	{
+		$options['theme'] = $_GET['theme'];
+		set_cookie('theme', $_GET['theme'] );
+	}
+	elseif ( isset($_COOKIE['theme'])  &&  template_exists($_COOKIE['theme']) ) 
+	{
+		$options['theme'] = $_COOKIE['theme'];
+	}
+}
+
+define('template_dir', root_dir.'templates/'.$options['theme'].'/');
 
 antiflood();
 check_banned();
@@ -224,37 +250,6 @@ $page['meta'] = array(
 }
 $cache = array();
 $hooks = array();
-
-
-
-/**
-* Change the theme
-*
-* Allow user to choose the preferd theme
-* we should save the name of unchanged theme. maybe we need it later specially in admin panel.
-*
-* @since 1.1
-*/
-
-$options['original_theme'] = $options['theme'];
-
-
-if( !admin_page && $options['allow-change-theme']){
-
-	if( isset($_GET['theme'])  &&  template_exists($_GET['theme'] ) )
-	{
-		$options['theme'] = $_GET['theme'];
-		set_cookie('theme', $_GET['theme'] );
-	}
-	elseif ( isset($_COOKIE['theme'])  &&  template_exists($_COOKIE['theme']) ) 
-	{
-		$options['theme'] = $_COOKIE['theme'];
-	}
-}
-
-define('template_dir', root_dir.'templates/'.$options['theme'].'/');
-//we really need it. in future maybe we want to chane the name of modules folder to plugins!!!!
-define('modules_dir', root_dir.'modules/');
 
 if ( admin_page )
 {

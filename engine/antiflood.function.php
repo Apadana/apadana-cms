@@ -30,11 +30,9 @@ function antiflood()
 	$numrow = $d->num_rows("SELECT `flood_time` FROM `#__antiflood` WHERE `flood_ip`='".$d->escape_string($ip)."'", true);
 	if ($numrow > 7)
 	{
-		Header('HTTP/1.0 403 Forbidden');
-		exit('<title>AntiFlood</title><br><br><center><b>Sorry, too many page loads in so little time!</b></center>');
+		header('HTTP/1.0 403 Forbidden');
+		exit('<html><head><title>AntiFlood</title></head><body><br/><br/><center><b>Sorry, too many page loads in so little time!</b></center></body></html>');
 	}
 
 	unset($ip, $numrow);
 }
-
-?>

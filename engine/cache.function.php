@@ -19,7 +19,7 @@ function set_cache($name, $content, $serialize = true)
 	}
 
 	static $test;
-	
+
 	if (isset($test) && !$test)
 	{
 		return false;
@@ -27,8 +27,12 @@ function set_cache($name, $content, $serialize = true)
 
 	if (!is_dir(engine_dir.'cache'))
 	{
-		@mkdir(engine_dir.'cache', 0777);
-		@apadana_chmod(engine_dir.'cache', 0777);
+		mkdir(engine_dir.'cache', 0777);
+		apadana_chmod(engine_dir.'cache', 0777);
+		file_put_contents(engine_dir.'cache/index.html', '<a href="http://www.apadanacms.ir">POWERED BY APADANACMS.IR</a>');
+		apadana_chmod(engine_dir.'cache/index.html', 0444);
+		file_put_contents(engine_dir.'cache/.htaccess', 'deny from all');
+		apadana_chmod(engine_dir.'cache/.htaccess', 0444);
 	}
 
 	if (is_dir(engine_dir.'cache') && is_readable(engine_dir.'cache') && is_writable(engine_dir.'cache'))
@@ -49,7 +53,7 @@ function set_cache($name, $content, $serialize = true)
 
 	if (file_put_contents($cache, $serialize? serialize($content) : $content))
 	{
-		@apadana_chmod($cache, 0666);
+		apadana_chmod($cache, 0666);
 		return true;
 	}
 	else
@@ -91,7 +95,7 @@ function get_cache($name, $life = true)
 				$life = 10800; // 3 Hours
 				break;
 			}
-			
+
 			$life = intval($life);
 			$life = $life <= 100? 10800 : $life;
 			$fileLife = filemtime($cache);
@@ -146,5 +150,3 @@ function remove_cache($name, $search = false)
 	}
 	return false;
 }
-
-?>

@@ -175,7 +175,7 @@ function blocks()
 				$file = file_exists(template_dir.'block-'.$position.'-function-'.$func.'.tpl')? 'block-'.$position.'-function-'.$func.'.tpl' : null;
 				$file = empty($file) && file_exists(template_dir.'block-function-'.$func.'.tpl')? 'block-function-'.$func.'.tpl' : $file;
 			}
-			
+
 			$file = empty($file) && file_exists(template_dir.'block-'.$position.'.tpl')? 'block-'.$position.'.tpl' : $file;
 			$file = empty($file) && file_exists(template_dir.'block.tpl')? 'block.tpl' : $file;
 
@@ -187,7 +187,7 @@ function blocks()
 			$itpl = new template($file, template_dir);
 			$itpl->assign(array(
 				'{id}' => $block['block_id'],
-				'{name}' => $block['block_name'],
+				'{class}' => $block['block_name'],
 				'{title}' => $block['block_title'],
 				'{content}' => $block['block_content'],
 			));
@@ -201,7 +201,7 @@ function blocks()
 			$test[$position] = true;
 		}
 	}
-	
+
 	foreach($positions as $position)
 	{
 		if (!isset($test[$position]))
@@ -223,5 +223,3 @@ function blocks()
 
 	unset($position, $blocks, $block, $page, $p, $positions, $test, $parse, $current);
 }
-
-?>

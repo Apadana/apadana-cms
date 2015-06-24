@@ -342,5 +342,3 @@ class httpdownload {
 		else return true; //you must use a handler
 	}
 }
-
-?>

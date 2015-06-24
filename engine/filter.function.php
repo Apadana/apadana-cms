@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Apadana CMS Development Team
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -31,7 +31,7 @@ function verify_image($file)
 
 function isnum($string)
 {
-	return is_numeric($string) && !strpos($string, '.') && $string > 0? true : false;
+	return is_numeric($string) && strpos($string, '.') === false && $string > 0? true : false;
 }
 
 function is_alphabet($string)
@@ -173,5 +173,3 @@ function check_xss()
 		}
 	}
 }
-
-?>

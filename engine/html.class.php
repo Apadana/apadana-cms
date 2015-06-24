@@ -70,5 +70,3 @@ class html
         return '<textarea name="'.$name.'"'.$size.$extra.'>'.$value.'</textarea>';
     }
 }
-
-?>

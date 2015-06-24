@@ -29,5 +29,3 @@ function get_hook($id)
 
 	return (!defined('disable_hooks') || disable_hooks !== true) && isset($hooks[$id])? implode("\n", $hooks[$id]) : false;
 }
-
-?>

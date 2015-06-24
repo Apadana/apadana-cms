@@ -116,5 +116,3 @@ function send_mail($toname, $toemail, $fromname, $fromemail, $subject, $message,
 		return true;
 	}
 }
-
-?>

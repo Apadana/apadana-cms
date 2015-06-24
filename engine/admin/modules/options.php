@@ -333,13 +333,13 @@ function _save()
 			
 			if ($save)
 			{
+				remove_cache('options');
 				if ($op['admin'] != $options['admin'])
 				{
 					refresh('?admin='.$op['admin'].'&section=options', 5);
 					echo message('کلید بخش مدیریت تغییر کرده، لطفا صبر کنید تا چند لحظه دیگر صفحه مجدد بارگذاری خواهد شد.<br>کلید جدید: <u dir=ltr>'.$op['admin'].'</u>', 'info');
 				}
 				echo message('تنظیمات با موفقیت ذخیره شد!', 'success');
-				remove_cache('options');
 			}
 			else
 			{

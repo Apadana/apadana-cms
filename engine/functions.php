@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -356,6 +356,16 @@ function generate_password($count = 8, $add = '!@#%^&*()_+=-:;?~{}|÷.,', $reset
 function is_ajax()
 {
 	return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+}
+
+/**
+* Check If Apadana Run in CLI Mod
+*
+* @since 1.1
+**/
+function is_cli()
+{
+	return (PHP_SAPI === 'cli' OR defined('STDIN'));
 }
 
 function is_rtl()
@@ -752,7 +762,6 @@ function gzip_out()
 
 	$template_info = template_info($options['theme']);
 	$encoding = check_can_gzip();
-	$encoding = false;
 	$gzip_level = 9;
 
 	($hook = get_hook('gzip_out'))? eval($hook) : null;

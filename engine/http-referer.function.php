@@ -37,5 +37,3 @@ function http_referer()
 		unset($referer, $parse);
 	}
 }
-
-?>

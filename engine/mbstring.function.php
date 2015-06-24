@@ -134,5 +134,3 @@ function dec_to_utf8($src)
 	}
 	return $dest;
 }
-
-?>

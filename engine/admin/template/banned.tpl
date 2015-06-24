@@ -138,7 +138,7 @@ function banned_delete(ID)
 <table cellpadding="6" cellspacing="0">
   <tr>
 	<td width="80">آی پی</td>
-	<td><input name="banned[ip][1]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][2]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][3]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][4]" type="text" style="width:25px;text-align:center"></td>
+	<td dir="ltr"><input name="banned[ip][1]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][2]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][3]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][4]" type="text" style="width:25px;text-align:center"></td>
   </tr>
   <tr>
 	<td>دلیل</td>

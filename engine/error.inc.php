@@ -110,6 +110,6 @@ function show_php_error($severity, $message, $filepath, $line)
 }
 
 //We Should Tell The PHP We Have Our Own Error And Shutdown Handler.
-if(!is_ajax())
+if(!is_ajax() && !is_cli() )
 	set_error_handler('_error_handler');
 // register_shutdown_function('_error_handler');
