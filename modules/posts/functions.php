@@ -233,7 +233,9 @@ function _category()
 	{
 		$cat_id = intval($cat_id);
 	}
-	
+	$query_match = $cat_id;
+	$query_match = _get_sub_cat_for_query($cat_id,$query_match);
+
 	if (!isset($categories[$cat_id]) || !is_array($categories[$cat_id]) || (isset($_GET['d']) && !isnum($_GET['d'])))
 	{
 		module_error_run('404');
@@ -245,15 +247,10 @@ function _category()
 		$page_num = get_param($_GET, 'd', 1);
 		$cat = $categories[$cat_id];
 
-		$children = 'FIND_IN_SET('.$cat['term_id'].', p.post_categories)';
-		if ($cat['term_parent'] == 0)
-		{
-			foreach ($categories as $c)
-			{
-				if ($c['term_parent'] != $cat['term_id']) continue;
-				$children .= ' OR FIND_IN_SET('.$c['term_id'].', p.post_categories)';
-			}
-		}
+		if ( $query_match == $cat_id )
+			$children = 'FIND_IN_SET('.$cat['term_id'].', p.post_categories)';
+		else
+			$children = "p.post_categories regexp '[[:<:]](" . $query_match . ")[[:>:]]'";
 
 		$posts_options = posts_options();
 		$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."' AND (".str_replace('p.post_categories', 'post_categories', $children).")", true);
@@ -304,6 +301,27 @@ function _category()
 		unset($pagination, $posts, $total, $page_num, $cat, $children, $posts_options);
 	}
 }
+
+/**
+* Return a string for use in mysql query to match correct cats!!
+*
+* @see _category()
+* @since 1.1
+*/
+
+function _get_sub_cat_for_query($id,&$txt){
+	global $cache,$options;
+
+	foreach ($cache['posts_categories'] as $cat)
+	{
+		if ($cat['term_parent'] != $id) continue;
+		$txt .= '|'. $cat['term_id'];
+		_get_sub_cat_for_query($cat['term_id'],$txt );
+	}
+
+	return $txt;
+}
+
 
 function _single()
 {
