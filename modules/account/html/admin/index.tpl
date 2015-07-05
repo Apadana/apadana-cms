@@ -141,7 +141,7 @@ function account_status(ID)
 <div class="content">
 <div class="content-tabs">
 <ul>
-  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2, function(){account_ajax(1)})">لست کاربران</li>
+  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2, function(){account_ajax(1)})">لیست کاربران</li>
   <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 2, function(){account_ajax(2)})">ویرایش کاربر</li>
 </ul>
 </div>

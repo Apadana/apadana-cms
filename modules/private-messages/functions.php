@@ -396,7 +396,7 @@ function _remove()
 	set_title('حذف پیام');
 
 	_menu();
-	set_content('حذف پیام', message('متاسفیم کاربر گیرنده این پیام را خوانده است و فقط او می توانید این پیام را حذف کند.', 'error'));
+	set_content('حذف پیام', message('متاسفیم کاربر گیرنده این پیام را خوانده است و فقط او می تواند این پیام را حذف کند.', 'error'));
 	unset($private_messages, $query);
 }
 

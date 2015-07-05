@@ -194,7 +194,7 @@ else
 			set_cache('options-offline-message', $options['offline-message'], 0);
 		}
 	
-		if (file_exists(engine_dir.'templates/offline.tpl') && is_readable(engine_dir.'templates/offline.tpl'))
+		if (file_exists(template_dir.'offline.tpl') && is_readable(template_dir.'offline.tpl'))
 		{
 			@Header('Content-type: text/html; charset='.charset);
 			$tpl = new template('offline.tpl', template_dir);
