@@ -30,7 +30,6 @@ class bbcode
 		'/\[mail\](.*?)\[\/mail\]/is',
 		'/\[img\](.*?)\[\/img\]/is',
 		'/\[img\=(\d*?)x(\d*?)\](.*?)\[\/img\]/is',
-		'/\[img (.*?)\](.*?)\[\/img\]/ise',
 
 		'/\[quote\](.*?)\[\/quote\]/is',
 		'/\[quote\=(.*?)\](.*?)\[\/quote\]/is',
@@ -67,8 +66,6 @@ class bbcode
 		'<a href="mailto:$1">$1</a>',
 		'<img src="$1" alt="" />',
 		'<img height="$2" width="$1" alt="" src="$3" />',
-		'"<img " . str_replace("&#039;", "\"",str_replace("&quot;", "\"", "$1")) . " src=\"$2\" />"',   // we replace &quot; and &#039; to " in case if we got string converted to html entities
-
 		'<blockquote>$1</blockquote>',                              // you can also use: '<div class="quote">$1</div>'
 		'<blockquote><strong>$1 wrote:</strong> $2</blockquote>',   // you can also use: '<div class="quote"><strong>$1 wrote:</strong> $2</div>
 		'<pre>$1</pre>',
