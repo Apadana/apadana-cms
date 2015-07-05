@@ -359,7 +359,7 @@ function _members()
 
 function _profile()
 {
-	global $d, $member_groups;
+	global $d, $member_groups,$tpl;
 	set_title('پروفایل');
 	$username = get_param($_GET, 'c');
 	$member = is_alphabet($username)? member::info(false, $username) : false;
@@ -473,7 +473,7 @@ function _profile()
 
 function _index()
 {
-	global $d, $member_groups, $member;
+	global $d, $member_groups, $member,$tpl;
 
 	if (!member)
 		redirect(url('account/login'));
@@ -795,7 +795,7 @@ function _change_password()
 
 	($hook = get_hook('account_change_password_end'))? eval($hook) : null;
 
-	if (!isset($file[2])) set_content('تغییر پسورد', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
+	if (!isset($file[2])) set_content('تغییر پسورد', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var(),'add');	
 	unset($itpl, $message, $changePassword);
 }
 
@@ -876,7 +876,7 @@ function _change_avatar()
 
 	($hook = get_hook('account_change_avatar_end'))? eval($hook) : null;
 
-	if (!isset($file[2])) set_content('تغییر آوارتار', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
+	if (!isset($file[2])) set_content('تغییر آوارتار', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var(),'add');	
 	unset($itpl, $message, $changeAvatar);
 }
 
@@ -1079,7 +1079,7 @@ function _forget()
 
 	require_once(engine_dir.'captcha.function.php');
 
-	global $d, $page, $member;
+	global $d, $page, $member,$tpl;
 	$success = false;
 	$message = null;
 	$options_account = account_options();

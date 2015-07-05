@@ -147,7 +147,7 @@ function module_pages_search($search)
 	}
 }
 
-function module_pages_sitemap(&$sitemap)
+function module_pages_sitemap($sitemap)
 {
 	global $d, $options;
 	$query = "SELECT * FROM `#__pages` WHERE `page_approve` = '1' ORDER BY `page_time` DESC, `page_id` DESC";	
@@ -162,7 +162,7 @@ function module_pages_sitemap(&$sitemap)
 	unset($pages, $query, $p);
 }
 
-function module_pages_feed(&$feeds)
+function module_pages_feed($feeds)
 {
 	global $d, $options;
 	$query = "SELECT * FROM `#__pages` WHERE `page_approve` = '1' ORDER BY `page_time` DESC, `page_id` DESC LIMIT ".intval($options['feed-limit']);	

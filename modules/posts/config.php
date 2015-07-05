@@ -353,10 +353,12 @@ function block_last_posts($op = null, $id = null, $position = null)
 		remove_cache('module-posts-block-last-'.$id);
 		return true;
 	}
+	//we need it in hole function
+	$op['hits'] = !isset($op['hits']) || strtolower($op['hits'])!='true'? false : true;
 	if (!$rows = get_cache('module-posts-block-last-'.$id, 'short'))
 	{
 		$op['total'] = !isset($op['total']) || intval($op['total'])<=0? 10 : intval($op['total']);
-		$op['hits'] = !isset($op['hits']) || strtolower($op['hits'])!='true'? false : true;
+
 		$op['order'] = !isset($op['order'])? 'DESC' : strtoupper($op['order']);
 		$op['order'] = $op['order']!='DESC' && $op['order']!='ASC'? 'DESC' : $op['order'];
 		
@@ -563,11 +565,11 @@ function module_posts_search($search)
 	}
 }
 
-function module_posts_sitemap(&$sitemap)
+function module_posts_sitemap($sitemap)
 {
 	global $d, $options;
 
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	if (isset($categories) && is_array($categories) && count($categories))
 	{
@@ -591,7 +593,7 @@ function module_posts_sitemap(&$sitemap)
 	unset($posts, $p, $query);
 }
 
-function module_posts_feed(&$feeds)
+function module_posts_feed($feeds)
 {
 	global $d, $options;
 

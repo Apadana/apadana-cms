@@ -10,7 +10,7 @@ defined('security') or die('Direct Access to this location is not allowed.');
  * @package FeedGenerator
  *
  */
- class AtomGenerator implements generator {
+ class AtomGenerator implements RGenerator{
  	private $_dom, $_channel, $_atomNode;
  	private $channelRequired= array (
  	'title',

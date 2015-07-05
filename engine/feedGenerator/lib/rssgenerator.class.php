@@ -10,7 +10,7 @@ defined('security') or die('Direct Access to this location is not allowed.');
  * @package    FeedGenerator
  *
  */
- class RSSGenerator implements generator{
+ class RSSGenerator implements RGenerator {
 
  	private $_dom, $_channel, $_rssNode;
  	private $channelRequired=array('title', 'link', 'description'),
