@@ -66,7 +66,7 @@ if (!file_exists('apadana.lock'))
 	{
 		if (!isset($_SESSION['version']))
 		{
-			$q = $d->query("SELECT option_value FROM #__options WHERE option_name='version' LIMIT 1");
+			$q = $d->query("SELECT `option_value` FROM `#__options` WHERE `option_name`='version' LIMIT 1");
 			$data = $d->fetch($q);
 			$_SESSION['version'] = $data['option_value'];
 		}
@@ -75,7 +75,7 @@ if (!file_exists('apadana.lock'))
 		switch ($_SESSION['version'])
 		{
 			case '1.0':
-			require_once('upgrade/1.0@1.0.1.php');
+			require_once('upgrade/1.0@1.0.2.php');
 			break;
 
 			default;

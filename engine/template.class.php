@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -15,6 +15,7 @@ class template
 {
 	public $tags = array();
 	public $blocks = array();
+	public $blocks_callback = array();
 	public $foreach = array();
 	public $base_dir = null;
 	public $include = true;
@@ -66,7 +67,7 @@ class template
 				{
 					if (strpos($template, '{include file=') !== FALSE)
 					{
-						$template = preg_replace('#\\{include file=[\'"](.+?)[\'"]\\}#ies', '$this->load(\'\\1\', \'include\')', $template);
+						$template = preg_replace_callback('#\\{include file=[\'"](.+?)[\'"]\\}#s', array($this, 'load_include_callback'), $template);
 					}
 					return $template;
 				}
@@ -78,11 +79,13 @@ class template
 			return '{include file="'.$file.'}';
 		}
 		
-		$template = @file_get_contents($this->base_dir.$file);
-		if ($template == FALSE)
+		$template = is_readable($this->base_dir.$file)? file_get_contents($this->base_dir.$file) : false;
+
+		if ($template == false)
 		{
 			exit('Could not find the template file <b>'. str_replace(root_dir, null, $file) .'</b>!');
 		}
+
 		$this->template = $template;
 		unset($template);
 	}
@@ -172,6 +175,23 @@ class template
 		$this->blocks[$pattern] = $replacement;
 	}
 
+	function block_callback($pattern, $callback, $data = null)
+	{
+		if (!is_string($pattern) || empty($pattern))
+		{
+			echo 'Block pattern is not a string or is empty!';
+			return false;
+		}
+
+		if (empty($callback))
+		{
+			echo 'Block callback is a empty!';
+			return false;
+		}
+
+		$this->blocks_callback[$pattern] = array($callback, $data);
+	}
+
 	function add_for($name, $array)
 	{
 		if (!is_string($name) || empty($array))
@@ -196,42 +216,42 @@ class template
 
 		if ($this->include && strpos($this->template, '{include file=') !== FALSE)
 		{
-			$this->template = preg_replace('#\\{include file=[\'"](.+?)[\'"]\\}#es', '$this->load(\'\\1\', \'include\')', $this->template);
+			$this->template = preg_replace_callback('#\\{include file=[\'"](.+?)[\'"]\\}#s', array($this, 'load_include_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '{a href=') !== FALSE)
 		{
-			$this->template = preg_replace('#\\{a href=[\'"](.+?)[\'"]\\}#es', 'url(\'\\1\')', $this->template);
+			$this->template = preg_replace_callback('#\\{a href=[\'"](.+?)[\'"]\\}#s', create_function('$match', 'return url($match[1]);'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-module=') !== false)
 		{
-			$this->template = preg_replace('#\\[not-module=([a-zA-Z0-9-_]+)\\](.*?)\\[/not-module\\]#es', '$this->check_module(\'\\1\', \'\\2\', false)', $this->template);
+			$this->template = preg_replace_callback('#\\[not-module=([a-zA-Z0-9-_]+)\\](.*?)\\[/not-module\\]#s', array($this, 'not_module_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[module=') !== false)
 		{
-			$this->template = preg_replace('#\\[module=([a-zA-Z0-9-_]+)\\](.*?)\\[/module\\]#es', '$this->check_module(\'\\1\', \'\\2\')', $this->template);
+			$this->template = preg_replace_callback('#\\[module=([a-zA-Z0-9-_]+)\\](.*?)\\[/module\\]#s', array($this, 'module_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-group=') !== false)
 		{
-			$this->template = preg_replace('#\\[not-group=([0-9,]+)\\](.*?)\\[/not-group\\]#es', '$this->check_group(\'\\1\', \'\\2\', false)', $this->template);
+			$this->template = preg_replace_callback('#\\[not-group=([0-9,]+)\\](.*?)\\[/not-group\\]#s', array($this, 'not_group_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[group=') !== false)
 		{
-			$this->template = preg_replace('#\\[group=([0-9,]+)\\](.*?)\\[/group\\]#es', '$this->check_group(\'\\1\', \'\\2\')', $this->template);
+			$this->template = preg_replace_callback('#\\[group=([0-9,]+)\\](.*?)\\[/group\\]#s',  array($this, 'group_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[not-page=') !== false)
 		{
-			$this->template = preg_replace('#\\[not-page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/not-page\\]#es', '$this->check_page(\'\\1\', \'\\2\', false)', $this->template);
+			$this->template = preg_replace_callback('#\\[not-page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/not-page\\]#s', array($this, 'not_page_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[page=') !== false)
 		{
-			$this->template = preg_replace('#\\[page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/page\\]#es', '$this->check_page(\'\\1\', \'\\2\')', $this->template);
+			$this->template = preg_replace_callback('#\\[page=([a-zA-Z0-9-_,]+)\\](.*?)\\[/page\\]#s', array($this, 'page_callback'), $this->template);
 		}
 
 		if (strpos($this->template, '[member]') !== false)
@@ -261,7 +281,7 @@ class template
 
 		if ($this->function && strpos($this->template, '{function name=') !== FALSE)
 		{
-			$this->template = preg_replace('#\\{function name=[\'"]([a-zA-Z0-9_]+)[\'"] args=[\'"](.+?)[\'"]\\}#es', '$this->get_function("\\1", "\\2")', $this->template);
+			$this->template = preg_replace_callback('#\\{function name=[\'"]([a-zA-Z0-9_]+)[\'"]( args=[\'"](.+?)[\'"])?\\}#s', array($this, 'get_function_callback'), $this->template);
 		}
 
 		# for
@@ -283,6 +303,13 @@ class template
 							$tmp = preg_replace(array_keys($for_array['replace']), array_values($for_array['replace']), $tmp);
 							unset($for_array['replace']);
 						}
+
+						if (isset($for_array['callback']) && is_array($for_array['callback']) && count($for_array['callback']))
+						{
+							$tmp = preg_replace_callback(array_keys($for_array['callback']), array_values($for_array['callback']), $tmp);
+							unset($for_array['callback']);
+						}
+
 						if (is_array($for_array) && count($for_array))
 						{
 							$tmp = str_replace(array_keys($for_array), array_values($for_array), $tmp);
@@ -314,6 +341,17 @@ class template
 			$this->template = preg_replace(array_keys($this->blocks), array_values($this->blocks), $this->template);
 		}
 
+		# blocks callback
+		if (is_array($this->blocks_callback) && count($this->blocks_callback))
+		{
+			foreach ($this->blocks_callback as $pattern => $item)
+			{
+				$GLOBALS['template_callback_data'] = $item[1];
+				$this->template = preg_replace_callback($pattern, $item[0], $this->template);
+			}
+			unset($pattern, $item, $GLOBALS['template_callback_data']);
+		}
+
 		# tags
 		if (is_array($this->tags) && count($this->tags))
 		{
@@ -324,7 +362,7 @@ class template
 		$this->template = null;
 	}
 
-	function check_module($names, $block, $action = true)
+	function check_module($name, $block, $action = true)
 	{
 		global $modules;
 		static $mods;
@@ -333,7 +371,7 @@ class template
 		{
 			return null;
 		}
-		
+
 		if (!isset($mods))
 		{
 			$mods = array();
@@ -341,42 +379,47 @@ class template
 			foreach ($modules as $mod)
 			{
 				if ($mod['module_status'] == 0)
+				{
 					continue;
+				}
 
 				$mods[] = $mod['module_name'];
 			}
 			unset($mod);
 		}
 
-		#$names = explode(',', $names);
 		if ($action)
 		{
-			if (in_array($names, $mods) !== true) return null;
+			if (in_array($name, $mods) !== true) return null;
 		}
 		else
 		{
-			if (in_array($names, $mods) === true) return null;
+			if (in_array($name, $mods) === true) return null;
 		}
-		return str_replace('\"', '"', $block);
+
+		return $block;
 	}
 	
 	function check_group($groups, $block, $action = true)
 	{
 		$groups = explode(',', $groups);
+
 		if ($action)
 		{
-			if (!in_array(member_group, $groups)) return null;
+			if (!defined('member_group') || !in_array(member_group, $groups)) return null;
 		}
 		else
 		{
-			if (in_array(member_group, $groups)) return null;
+			if (defined('member_group') && in_array(member_group, $groups)) return null;
 		}
-		return str_replace('\"', '"', $block);
+
+		return $block;
 	}
 
 	function check_page($pages, $block, $action = true)
 	{
 		$pages = explode(',', $pages);
+
 		if ($action)
 		{
 			if (!in_array($_GET['a'], $pages)) return null;
@@ -385,7 +428,8 @@ class template
 		{
 			if (in_array($_GET['a'], $pages)) return null;
 		}
-		return str_replace('\"', '"', $block);
+
+		return $block;
 	}
 
 	function display()
@@ -412,6 +456,47 @@ class template
 		$this->parsed = null;
 		$this->tags = array();
 		$this->blocks = array();
+	}
+
+	# callbacks
+	function get_function_callback($matches)
+	{
+		return $this->get_function($matches[1], $matches[3]);
+	}
+
+	function load_include_callback($matches)
+	{
+		return $this->load($matches[1], 'include');
+	}
+
+	function not_module_callback($matches)
+	{
+		return $this->check_module($matches[1], $matches[2], false);
+	}
+
+	function module_callback($matches)
+	{
+		return $this->check_module($matches[1], $matches[2]);
+	}
+
+	function not_group_callback($matches)
+	{
+		return $this->check_group($matches[1], $matches[2], false);
+	}
+
+	function group_callback($matches)
+	{
+		return $this->check_group($matches[1], $matches[2]);
+	}
+
+	function not_page_callback($matches)
+	{
+		return $this->check_page($matches[1], $matches[2], false);
+	}
+
+	function page_callback($matches)
+	{
+		return $this->check_page($matches[1], $matches[2]);
 	}
 }
 

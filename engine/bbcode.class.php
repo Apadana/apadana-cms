@@ -23,7 +23,7 @@ class bbcode
 		'/\[center\](.*?)\[\/center\]/is',
 		'/\[font\=(.*?)\](.*?)\[\/font\]/is',
 		'/\[align\=(left|center|right)\](.*?)\[\/align\]/is',
-    
+	
 		'/\[url\](.*?)\[\/url\]/is',
 		'/\[url\=(.*?)\](.*?)\[\/url\]/is',
 		'/\[mail\=(.*?)\](.*?)\[\/mail\]/is',
@@ -34,14 +34,14 @@ class bbcode
 		'/\[quote\](.*?)\[\/quote\]/is',
 		'/\[quote\=(.*?)\](.*?)\[\/quote\]/is',
 		'/\[code\](.*?)\[\/code\]/is',
-    
+	
 		'/\[sub\](.*?)\[\/sub\]/is',
 		'/\[sup\](.*?)\[\/sup\]/is',
 		'/\[p\](.*?)\[\/p\]/is',
-    
+	
 		"/\[youtube\](.*?)\[\/youtube\]/i",
 		"/\[gvideo\](.*?)\[\/gvideo\]/i",
-    
+	
 		// "Specials", XHTML-like BBC Repository
 		'/\[bull \/\]/i',
 		'/\[copyright \/\]/i',
@@ -52,31 +52,32 @@ class bbcode
 	private static $simple_replace = array(
 		'<strong>$1</strong>',
 		'<em>$1</em>',
-		'<u>$1</u>',          // you can also use: '<span style="text-decoration: underline;">$1</span>'
-		'<del>$1</del>',      // you can also use: '<span style="text-decoration: line-through;">$1</span>'
+		'<u>$1</u>',		  // you can also use: '<span style="text-decoration: underline;">$1</span>'
+		'<del>$1</del>',	  // you can also use: '<span style="text-decoration: line-through;">$1</span>'
 		'<span style="font-size: $1;">$2</span>',
 		'<span style="color: $1;">$2</span>',
 		'<div style="text-align: center;">$1</div>',
 		'<span style="font-family: $1;">$2</span>',
 		'<div style="text-align: $1;">$2</div>',
-    
+	
 		'<a href="$1">$1</a>',
 		'<a href="$1">$2</a>',
 		'<a href="mailto:$1">$2</a>',
 		'<a href="mailto:$1">$1</a>',
 		'<img src="$1" alt="" />',
 		'<img height="$2" width="$1" alt="" src="$3" />',
-		'<blockquote>$1</blockquote>',                              // you can also use: '<div class="quote">$1</div>'
+
+		'<blockquote>$1</blockquote>',							  // you can also use: '<div class="quote">$1</div>'
 		'<blockquote><strong>$1 wrote:</strong> $2</blockquote>',   // you can also use: '<div class="quote"><strong>$1 wrote:</strong> $2</div>
 		'<pre>$1</pre>',
-    
+	
 		'<sub>$1</sub>',
 		'<sup>$1</sup>',
 		'<p>$1</p>',
-    
+	
 		"<object width=\"425\" height=\"350\"><embed src=\"http://www.youtube.com/v/$1\" type=\"application/x-shockwave-flash\" width=\"425\" height=\"350\"></embed></object>",
 		"<embed src=\"http://video.google.com/googleplayer.swf?docId=$1\" type=\"application/x-shockwave-flash\" style=\"width: 425px; height: 350px;\">",
-    
+	
 		// "Specials", XHTML-like BBC Repository
 		'&bull;',
 		'&copy;',
@@ -86,68 +87,68 @@ class bbcode
   
   private static $lineBreaks_search = array(
 		// [list]
-		//'/\<br \/\>\s*\[list(.*?)\]/i',     // uncomment to remove <br /> before the tag
+		//'/\<br \/\>\s*\[list(.*?)\]/i',	 // uncomment to remove <br /> before the tag
 		'/\[list(.*?)\](.+?)\[\/list\]/sie',
 		'/\[\/list\]\s*\<br \/\>/i',
-      
+	  
 		// [code]
-		//'/\<br \/\>\s*\[code\]/i',          // uncomment to remove <br /> before the tag
+		//'/\<br \/\>\s*\[code\]/i',		  // uncomment to remove <br /> before the tag
 		'/\[code\](.+?)\[\/code\]/sie',
 		'/\[\/code\]\s*\<br \/\>/i',
-      
+	  
 		// [quote]
-		//'/\<br \/\>\s*\[quote(.*?)\]/i',    // uncomment to remove <br /> before the tag
+		//'/\<br \/\>\s*\[quote(.*?)\]/i',	// uncomment to remove <br /> before the tag
 		'/\[\/quote\]\s*\<br \/\>/i',
-      
+	  
 		// [p]
-		//'/\<br \/\>\s*\[p\]/i',             // uncomment to remove <br /> before the tag
+		//'/\<br \/\>\s*\[p\]/i',			 // uncomment to remove <br /> before the tag
 		'/\[\/p\]\s*\<br \/\>/i',
-      
+	  
 		// [center]
-		//'/\<br \/\>\s*\[center\]/i',        // uncomment to remove <br /> before the tag
+		//'/\<br \/\>\s*\[center\]/i',		// uncomment to remove <br /> before the tag
 		'/\[\/center\]\s*\<br \/\>/i',
-      
+	  
 		// [align]
-		//'/\<br \/\>\s*\[align(.*?)\]/i',    // uncomment to remove <br /> before the tag
+		//'/\<br \/\>\s*\[align(.*?)\]/i',	// uncomment to remove <br /> before the tag
 		'/\[\/align\]\s*\<br \/\>/i',
-    );
-    
-    private static $lineBreaks_replace = array(
+	);
+	
+	private static $lineBreaks_replace = array(
 		// [list]
-		//"\n[list$1]",         // uncomment to remove <br /> before the tag
+		//"\n[list$1]",		 // uncomment to remove <br /> before the tag
 		"'[list$1]'.str_replace('<br />', '', '$2').'[/list]'",
 		"[/list]",
-      
+	  
 		// [code]
-		//"\n[code]",           // uncomment to remove <br /> before the tag
+		//"\n[code]",		   // uncomment to remove <br /> before the tag
 		"'[code]'.str_replace('<br />', '', '$1').'[/code]'",
 		"[/code]",
-      
+	  
 		// [quote]
-		//"\n[quote$1]",        // uncomment to remove <br /> before the tag
+		//"\n[quote$1]",		// uncomment to remove <br /> before the tag
 		"[/quote]",
-      
+	  
 		// [p]
-		//"\n[p]",              // uncomment to remove <br /> before the tag
+		//"\n[p]",			  // uncomment to remove <br /> before the tag
 		"[/p]",
-      
+	  
 		// [center]
-		//"\n[center]",         // uncomment to remove <br /> before the tag
+		//"\n[center]",		 // uncomment to remove <br /> before the tag
 		"[/center]",
-      
+
 		// [align]
-		//"\n[align$1]",        // uncomment to remove <br /> before the tag
+		//"\n[align$1]",		// uncomment to remove <br /> before the tag
 		"[/align]",
-    );
+	);
 
 	private static function process_list_items($list_items)
 	{
 		$result_list_items = array();
-    
+	
 		// Check for [li][/li] tags
 		preg_match_all("/\[li\](.*?)\[\/li\]/is", $list_items, $li_array);
 		$li_array = $li_array[1];
-    
+	
 		if (empty($li_array))
 		{
 			// we didn't find any [li] tags
@@ -171,29 +172,29 @@ class bbcode
 				$result_list_items[] = '<li>'.$li_text.'</li>';
 			}
 		}
-    
+	
 		$list_items = implode("\n", $result_list_items);
-    
+	
 		return $list_items;
 	}
-  
+
 	public static function parse($string)
 	{
 		$s = (string) $string;
-    
+	
 		if (empty($s))
 			return null;
-    
+	
 		// Preappend http:// to url address if not present
 		$s = preg_replace('/\[url\=([^(http)].+?)\](.*?)\[\/url\]/i', '[url=http://$1]$2[/url]', $s);
 		$s = preg_replace('/\[url\]([^(http)].+?)\[\/url\]/i', '[url=http://$1]$1[/url]', $s);
-    
+	
 		// Add line breaks
 		$s = nl2br($s);
-    
+	
 		// Remove the trash made by previous 
 		$s = preg_replace(self::$lineBreaks_search, self::$lineBreaks_replace, $s);
-    
+	
 		// Parse bbcode
 		$s = preg_replace(self::$simple_search, self::$simple_replace, $s);
 
@@ -222,7 +223,7 @@ class bbcode
 				$h = new PHP_Highlight;
 				$h->loadString($start_php.$input.$end_php);
 				$parsed = $h->toList(true, true, false);
-  
+
 				$text2 = "<div class='apadana-bbcode-php-title' style='width:400px'><strong>کد PHP</strong></div><div class='apadana-bbcode-php-content' style='width:400px;height:auto;white-space:nowrap;overflow:auto;background-color:#ffffff;direction:ltr;text-align:left'>".$parsed."</div>";
 				$s = str_replace($matches[0][$i], $text2, $s);
 				$s = str_replace("<ol>\n", "<ol>", $s);

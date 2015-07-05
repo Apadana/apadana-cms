@@ -145,7 +145,7 @@ switch ($_GET['action'])
 	if ($d->connect)
 	{
 		@set_time_limit(1200);
-		require_once('sql/upgrade-1.0@1.0.1.php');
+		require_once('sql/upgrade-1.0@1.0.2.php');
 
 		echo '<script>set_percent(500)</script>'."\n";
 		print_info('پایان بروزرسانی دیتابیس', 'اطلاعات دیتابیس سایت شما با موفقیت بروزرسانی شده است.');
@@ -188,7 +188,7 @@ switch ($_GET['action'])
 
 	file_put_contents('apadana.lock', 'Copyright © 2012-'.date('Y').' ApadanaCms.ir. All rights reserved.');
 
-	$q = $d->query("SELECT option_value FROM #__options WHERE option_name='admin' LIMIT 1");
+	$q = $d->query("SELECT `option_value` FROM `#__options` WHERE `option_name`='admin' LIMIT 1");
 	$data = $d->fetch($q);
 	unset($_SESSION['version']);
 

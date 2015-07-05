@@ -33,7 +33,7 @@ switch ($_GET['action'])
 	break;
 
 	case 'admin':
-	$q = $d->query("SELECT member_name FROM #__members WHERE member_id='1' LIMIT 1");
+	$q = $d->query("SELECT `member_name` FROM `#__members` WHERE `member_id`='1' LIMIT 1");
 	$data = $d->fetch($q);
 	
 	unset($_SESSION['APADANA']);
@@ -61,7 +61,7 @@ switch ($_GET['action'])
 	break;
 	
 	case 'admin-check':
-	$q = $d->query("SELECT member_password FROM #__members WHERE member_id='1' LIMIT 1");
+	$q = $d->query("SELECT `member_password` FROM `#__members` WHERE `member_id`='1' LIMIT 1");
 	$data = $d->fetch($q);
 
 	$_POST['password'] = html_entity_decode($_POST['password'], ENT_QUOTES, 'UTF-8');
@@ -232,7 +232,7 @@ switch ($_GET['action'])
 
 	file_put_contents('apadana.lock', 'Copyright © 2012-'.date('Y').' ApadanaCms.ir. All rights reserved.');
 
-	$q = $d->query("SELECT option_value FROM #__options WHERE option_name='admin' LIMIT 1");
+	$q = $d->query("SELECT `option_value` FROM `#__options` WHERE `option_name`='admin' LIMIT 1");
 	$data = $d->fetch($q);
 	unset($_SESSION['version']);
 

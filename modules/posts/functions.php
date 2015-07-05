@@ -694,13 +694,20 @@ function _theme($post, $single = false)
 	}
 
 	$itpl->assign($array);
-	$itpl->block('|{date format=[\'"](.+?)[\'"]}|es', 'jdate("\\1", "'.$post['post_date'].'")');
+	$itpl->block_callback('~{date format=[\'"](.+?)[\'"]}~s', '_data', $post['post_date']);
 
 	($hook = get_hook('posts_theme_end'))? eval($hook) : null;
 
 	$tpl->assign('{content}', $itpl->get_var(), 'add');
 
 	unset($categories, $tags, $post, $array, $itpl, $posts_fields);
+}
+
+function _data($match)
+{
+	($hook = get_hook('posts_theme_data'))? eval($hook) : null;
+
+	return jdate($match[1], $GLOBALS['template_callback_data']);
 }
 
 ?>

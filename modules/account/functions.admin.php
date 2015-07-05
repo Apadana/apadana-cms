@@ -13,7 +13,7 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 
 function _default()
 {
-	global $page, $tpl, $d, $member_groups;
+	global $page, $tpl, $d, $member, $member_groups;
 
 	member::check_admin_page_access('account') or warning('عدم دسترسی!', 'شما دسترسی لازم برای مشاهده این بخش را ندارید!');
 	require_once(engine_dir.'pagination.class.php');
@@ -51,6 +51,7 @@ function _default()
 				'{odd-even}' => odd_even(),
 				'{url}' => url('account/profile/'.$m['member_name']),
 				'{id}' => $m['member_id'],
+				'{token}' => member::token($member['member_key']),
 				'{name}' => $m['member_name'],
 				'{name-show}' => member::group_title($m['member_name'], $m['member_group']),
 				'{visits}' => $m['member_visits'],
@@ -191,7 +192,7 @@ function _default()
 
 function _edit()
 {
-	global $page, $tpl, $d, $member_groups;
+	global $page, $tpl, $d, $member, $member_groups;
 
 	member::check_admin_page_access('account') or warning('عدم دسترسی!', 'شما دسترسی لازم برای مشاهده این بخش را ندارید!');
 
@@ -200,17 +201,22 @@ function _edit()
 
 	if (isset($postMember) && is_array($postMember) && count($postMember) && isset($postMember['email']) && isset($postMember['newsletter']))
 	{
-		$member = member::info(intval($postMember['id']));
+		$member_info = member::info(intval($postMember['id']));
 
-		if (!is_array($member) || !count($member))
+		if (!is_array($member_info) || !count($member_info))
 			redirect(admin_page.'&module=account');
 		
 		$postMember['email'] = apadana_strtolower(nohtml($postMember['email']));
 		$postMember['id'] = intval($postMember['id']);
 		$postMember['group'] = intval($postMember['group']);
-		$postMember['pass1'] = ($postMember['pass1']);
-		$postMember['pass2'] = ($postMember['pass2']);
+		$postMember['token'] = trim($postMember['token']);
+		$postMember['pass1'] = trim($postMember['pass1']);
+		$postMember['pass2'] = trim($postMember['pass2']);
 		$options_account = account_options();
+		if ($postMember['token'] != member::token($member['member_key']))
+		{
+			$message .= 'کد مجوز معتبر نیست!<br />';
+		}
 
 		if (!empty($postMember['pass1']) && !empty($postMember['pass2']))
 		{
@@ -246,7 +252,7 @@ function _edit()
 		}
 		else
 		{
-			if ($options_account['email'] == 1 && $member['member_email'] != $postMember['email'] && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escapeString($postMember['email'])."'", true) >= 1)
+			if ($options_account['email'] == 1 && $member_info['member_email'] != $postMember['email'] && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escapeString($postMember['email'])."'", true) >= 1)
 			{
 				$message .= 'این ایمیل قبلا ثبت شده، یک ایمیل دیگر انتخاب کنید!<br />';
 			}
@@ -268,7 +274,7 @@ function _edit()
 				$message .= 'یک کاربر نمی تواند جزو گروه مهمان ها باشد!<br>';
 			}
 
-			if ($postMember['group'] != $member['member_group'] && $postMember['id'] == member_id && $postMember['id'] != 1)
+			if ($postMember['group'] != $member_info['member_group'] && $postMember['id'] == member_id && $postMember['id'] != 1)
 			{
 				$message .= 'شرمنده رفیق، نمی تونی گروه کاربری خودتو تغییر بدی!<br>';
 			}
