@@ -31,7 +31,7 @@ function antiflood()
 	if ($numrow > 7)
 	{
 		Header('HTTP/1.0 403 Forbidden');
-		exit('<title>AntiFlood<title><br><br><center><b>Sorry, too many page loads in so little time!</b></center>');
+		exit('<title>AntiFlood</title><br><br><center><b>Sorry, too many page loads in so little time!</b></center>');
 	}
 
 	unset($ip, $numrow);
