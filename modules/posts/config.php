@@ -231,7 +231,7 @@ function block_categories($op = null, $id = null, $position= null)
 	global $options;	
 
 	if ($op == 'remove-cache') return true;
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	if (isset($categories) && is_array($categories) && count($categories))
 	{

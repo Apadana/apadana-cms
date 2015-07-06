@@ -52,7 +52,7 @@ function block_counter($op = null, $id = null, $position= null)
 		return true;
 	}
 
-	$result = &counter_data();
+	$result = counter_data();
 
 	$html  = '<ul id="apadana-block-counter">'.n;
 	$html .= '<li id="counter-members-today">کاربران عضو شده امروز: <b>'.intval($result['membersToday']).'</b></li>'.n;

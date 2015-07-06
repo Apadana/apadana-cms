@@ -26,8 +26,8 @@ if (extension_loaded('mbstring') && function_exists('mb_internal_encoding'))
     mb_internal_encoding('UTF-8');
 }
 
-# Determine Magic Quotes Status (< PHP 6.0)
-if (version_compare(PHP_VERSION, '6.0', '<'))
+# Determine Magic Quotes Status (< PHP 5.4)
+if (version_compare(PHP_VERSION, '5.4', '<'))
 {
 	if (@get_magic_quotes_gpc())
 	{
@@ -262,7 +262,7 @@ switch ($_GET['action'])
 		$php  = '<?php'."\r\n";
 		$php .= '/**'."\r\n";
 		$php .= ' * @In the name of God!'."\r\n";
-		$php .= ' * @author: Iman Moodi (Iman92)'."\r\n";
+		$php .= ' * @author: Apadana Development Team'."\r\n";
 		$php .= ' * @email: info@apadanacms.ir'."\r\n";
 		$php .= ' * @link: http://www.apadanacms.ir'."\r\n";
 		$php .= ' * @license: http://www.gnu.org/licenses/'."\r\n";

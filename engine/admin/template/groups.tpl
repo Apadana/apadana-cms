@@ -16,7 +16,7 @@
 	    <td>{id}
 		<div style="display:none">
 		<input id="data-group-id-{id}" type="hidden" value="{id}" />
-		<input id="data-group-token-{id}" type="hidden" value="{token}" />
+
 		<input id="data-group-name-{id}" type="hidden" value="{name}" />
 		<input id="data-group-icon-{id}" type="hidden" value="{icon}" />
 		<input id="data-group-admin-{id}" type="hidden" value="{data-admin}" />

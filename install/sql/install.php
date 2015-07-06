@@ -510,7 +510,7 @@ $d->query("INSERT INTO `#__options` VALUES('smtp-username', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('smtp-password', '', '1');");
 $d->query("INSERT INTO `#__options` VALUES('url-correction', '1', '1');");
 $d->query("INSERT INTO `#__options` VALUES('antiflood', '0', '1');");
-$d->query("INSERT INTO `#__options` VALUES('version', '1.0.1', '1');");
+$d->query("INSERT INTO `#__options` VALUES('version', '1.0.2', '1');");
 
 
 # --------------------------------------------------------
