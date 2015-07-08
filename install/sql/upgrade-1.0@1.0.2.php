@@ -11,7 +11,7 @@
 
 defined('security') or exit('Direct Access to this location is not allowed.');
 
-$d->query("UPDATE `#__options` SET `option_value`='1.0.1' WHERE `option_name`='version' LIMIT 1");
+$d->query("UPDATE `#__options` SET `option_value`='1.0.2' WHERE `option_name`='version' LIMIT 1");
 $d->query("UPDATE `#__modules` SET `module_version`='1.0.1' WHERE `module_name`='files' LIMIT 1");
 $d->query("UPDATE `#__modules` SET `module_version`='1.0.1' WHERE `module_name`='m' LIMIT 1");
 $d->query("UPDATE `#__modules` SET `module_version`='1.0.1' WHERE `module_name`='pages' LIMIT 1");

@@ -154,7 +154,7 @@ $d->query("CREATE TABLE `#__comments` (
   PRIMARY KEY (`comment_id`),
   KEY `comment_type` (`comment_type`),
   KEY `comment_link` (`comment_link`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 
 # --------------------------------------------------------
@@ -316,9 +316,7 @@ $d->query("CREATE TABLE `#__options` (
   `option_name` varchar(100) NOT NULL,
   `option_value` longtext NOT NULL,
   `autoload` int(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`option_name`),
-  FULLTEXT KEY `option_name` (`option_name`),
-  FULLTEXT KEY `option_name_2` (`option_name`)
+  PRIMARY KEY (`option_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 
@@ -420,7 +418,7 @@ $d->query("CREATE TABLE `#__posts` (
   KEY `post_name` (`post_name`),
   KEY `post_categories` (`post_categories`(333)),
   KEY `post_tags` (`post_tags`(333))
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
 
 
 #
@@ -445,7 +443,7 @@ $d->query("CREATE TABLE `#__private_messages` (
   `msg_date` int(10) NOT NULL,
   `msg_read` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`msg_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 
 # --------------------------------------------------------
@@ -462,7 +460,7 @@ $d->query("CREATE TABLE `#__referer` (
   `ref_ip` varchar(50) NOT NULL,
   PRIMARY KEY (`ref_id`),
   KEY `ref_url` (`ref_url`(333))
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 
 # --------------------------------------------------------
@@ -486,7 +484,7 @@ $d->query("CREATE TABLE `#__search` (
   KEY `search_key` (`search_key`),
   KEY `search_module` (`search_module`),
   KEY `search_title` (`search_title`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 
 # --------------------------------------------------------

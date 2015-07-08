@@ -85,11 +85,18 @@ class database
 		$i = 0;
 		while (strlen($sql) > 0)
 		{
-			if ($sql[$i] == null) return $done.$sql;
+			if ($sql[$i] == null)
+			{
+				return $done.$sql;
+			}
 			if (($sql[$i] == "'") && $sql[$i-1] !='\\')
+			{
 				$single = !$single;
+			}
 			if (($sql[$i] == '"') && $sql[$i-1] !='\\')
+			{
 				$double = !$double;
+			}
 
 			if ($sql[$i] == $prefix[0] && !$single && !$double)
 			{
@@ -111,8 +118,14 @@ class database
 				$i = 0;
 			}
 			else
+			{
 				$i++;
-			if ($i >= strlen($sql)) return $done.$sql;
+			}
+
+			if ($i >= strlen($sql))
+			{
+				return $done.$sql;
+			}
 		}
 		return $done;
 	}	
@@ -241,7 +254,7 @@ class database
 			$array = $this->escape_string($array);
 		}
 
-		$fields = "`".implode("`,`", array_keys($array))."`";
+		$fields = '`'.implode('`,`', array_keys($array)).'`';
 		$values = implode("','", $array);
 		$this->query("
 			INSERT
@@ -275,7 +288,7 @@ class database
 
 		foreach ($array as $field => $value)
 		{
-			$query .= $comma."`".$field."`={$quote}{$value}{$quote}";
+			$query .= $comma.'`'.$field."`={$quote}{$value}{$quote}";
 			$comma = ', ';
 		}
 
@@ -471,8 +484,7 @@ class database
 			{
 				$string = mysql_real_escape_string($string, $this->connect);
 			}
-			//for PHP version < 4.3.0 use addslashes
-			else
+			else # for PHP version < 4.3.0 use addslashes
 			{
 				$string = addslashes($string);
 			}
@@ -501,8 +513,7 @@ class database
 			$time_start = $time;
 			return 0;
 		}
-		// Timer has run, return execution time
-		else
+		else # Timer has run, return execution time
 		{
 			$total = $time-$time_start;
 			$time_start = 0;

@@ -302,7 +302,7 @@ function page_delete(ID)
 <div class="content-tabs">
 <ul>
   <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 3, function(){page_ajax(1)})">صفحه جدید</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){page_ajax(2)})">لیست صفحات</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){page_ajax(2)})">فهرست صفحات</li>
   <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(3, 3, function(){page_ajax(3)})">ویرایش صفحه</li>
   <li class="tab-off" id="tab-id-4" onclick="apadana.location('{admin-page}&section=comments&type=pages')">نظرات</li>
 </ul>

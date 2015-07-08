@@ -102,7 +102,7 @@ function module_search_run()
 		}
 	}
 
-	set_title('search');
+	set_theme('search');
 	set_title('جستجو');
 	set_canonical(url('search'));
 

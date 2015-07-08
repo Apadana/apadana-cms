@@ -299,8 +299,8 @@ function _members()
 
 	($hook = get_hook('account_members'))? eval($hook) : null;
 
-	set_title('لیست کاربران');
-	set_meta('description', 'لیست کاربران', 'add');
+	set_title('فهرست کاربران');
+	set_meta('description', 'فهرست کاربران', 'add');
 	set_canonical(url('account/members'));
 
 	if ($options_account['members'] == 1)
@@ -346,12 +346,12 @@ function _members()
 
 		($hook = get_hook('account_members_end'))? eval($hook) : null;
 
-		if (!isset($file[2])) set_content('لیست کاربران', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
+		if (!isset($file[2])) set_content('فهرست کاربران', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 		$pagination->build(url('account/members/{page}'));
 	}
 	else
 	{
-		set_content('لیست کاربران', message('نمایش لیست کاربران سایت غیرفعال می باشد.', 'info'));
+		set_content('فهرست کاربران', message('نمایش فهرست کاربران سایت غیرفعال می باشد.', 'info'));
 	}
 	
 	unset($members, $m, $get_pages, $total, $pagination, $query, $options_account, $name, $itpl);

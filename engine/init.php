@@ -65,18 +65,22 @@ require_once(engine_dir.'html.class.php');
 error_reporting( debug_system ? E_ALL : 0);
 
 # Determine Magic Quotes Status (< PHP 5.4)
-if (version_compare(PHP_VERSION, '5.4', '<'))
+if (version_compare(PHP_VERSION, '6.0', '<'))
 {
-	if (@get_magic_quotes_gpc())
+	if (get_magic_quotes_gpc())
 	{
 		define('magic_quotes', true);
 		strip_slashes_array($_POST);
 		strip_slashes_array($_GET);
 		strip_slashes_array($_COOKIE);
 	}
-	@set_magic_quotes_runtime(0);
-	@ini_set('magic_quotes_gpc', 0);
-	@ini_set('magic_quotes_runtime', 0);
+	if (version_compare(PHP_VERSION, '5.3.0', '<'))
+	{
+		set_magic_quotes_runtime(0);
+	}
+
+	ini_set('magic_quotes_gpc', 0);
+	ini_set('magic_quotes_runtime', 0);
 	un_register_globals();
 }
 defined('magic_quotes') or define('magic_quotes', false);
@@ -150,7 +154,7 @@ define('template_dir', root_dir.'templates/'.$options['theme'].'/');
 antiflood();
 check_banned();
 
-if (!file_exists(root_dir.'.htaccess') || !is_readable(root_dir.'.htaccess'))
+if (!is_readable(root_dir.'.htaccess'))
 {
 	$options['rewrite'] = 0;
 }
@@ -170,7 +174,7 @@ if (!$modules = get_cache('modules'))
 
 if (!$member_groups = get_cache('member-groups'))
 {
-    $member_groups = $d->get_row("SELECT * FROM #__member_groups ORDER BY group_id ASC", 'assoc', 'group_id');
+    $member_groups = $d->get_row("SELECT * FROM `#__member_groups` ORDER BY `group_id` ASC", 'assoc', 'group_id');
 	set_cache('member-groups', $member_groups);
 }
 
@@ -266,9 +270,9 @@ else
 			set_cache('options-offline-message', $options['offline-message'], 0);
 		}
 	
-		if (file_exists(template_dir.'offline.tpl') && is_readable(template_dir.'offline.tpl'))
+		if (is_readable(engine_dir.'templates/offline.tpl'))
 		{
-			@Header('Content-type: text/html; charset='.charset);
+			@header('Content-type: text/html; charset='.charset);
 			$tpl = new template('offline.tpl', template_dir);
 			$tpl->assign(array(
 				'{message}' => $options['offline-message'],

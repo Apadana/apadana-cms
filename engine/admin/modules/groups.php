@@ -15,10 +15,11 @@ member::check_admin_page_access('groups') or warning('عدم دسترسی!', 'ش
 
 function _index()
 {
-	global $tpl, $options, $page;
+	global $tpl, $options, $member;
 
 	set_title('گروه های کاربری');
 	$itpl = new template('engine/admin/template/groups.tpl');
+	$itpl->assign('{token}', member::token($member['member_key']));
 	$itpl->assign('{select}', _select());
 	$itpl->assign('{edit-select}', _select(null, 'group-edit-rights'));
 	$itpl->assign(array(
@@ -113,16 +114,22 @@ function _list()
 
 function _new()
 {
-	global $d;
+	global $d, $member;
 
 	$msg = null;
 	$groups = get_param($_POST, 'groups', null, 1);
 
+	$groups['token'] = trim($groups['token']);
 	$groups['name'] = nohtml($groups['name']);
 	$groups['icon'] = nohtml($groups['icon']);
 	$groups['superAdmin'] = intval($groups['superAdmin'])==1? 1 : 0;
 	$groups['admin'] = intval($groups['admin'])==1 || $groups['superAdmin']==1? 1 : 0;
 	$groups['rights'] = !isset($groups['rights']) || !is_array($groups['rights'])? array() : array_map('alphabet', $groups['rights']);
+
+	if ($groups['token'] != member::token($member['member_key']))
+	{
+		$msg .= 'کد مجوز معتبر نیست!<br />';
+	}
 
 	if (empty($groups['name']))
 		$msg .= 'عنوان گروه را ننوشته اید!<br>';
@@ -166,7 +173,7 @@ function _new()
 
 function _edit()
 {
-	global $page, $d, $member_groups;
+	global $page, $d, $member, $member_groups;
 	$_GET['c'] = get_param($_GET, 'c', 0);
 
 	if (!isset($member_groups[$_GET['c']]) || !is_array($member_groups[$_GET['c']]) || !count($member_groups[$_GET['c']]))
@@ -177,11 +184,17 @@ function _edit()
 	if (is_array($groups) && count($groups))
 	{
 		$msg = null;
+		$groups['token'] = trim($groups['token']);
 		$groups['name'] = nohtml($groups['name']);
 		$groups['icon'] = nohtml($groups['icon']);
 		$groups['superAdmin'] = intval($groups['superAdmin'])==1? 1 : 0;
 		$groups['admin'] = intval($groups['admin'])==1 || $groups['superAdmin']==1? 1 : 0;
 		$groups['rights'] = !isset($groups['rights']) || !is_array($groups['rights'])? array() : array_map('alphabet', $groups['rights']);
+
+		if ($groups['token'] != member::token($member['member_key']))
+		{
+			$msg .= 'کد مجوز معتبر نیست!<br />';
+		}
 
 		if (($_GET['c']==1 || $_GET['c']==2 || $_GET['c']==3) && $groups['admin']==0)
 			$msg .= 'این گروه حتما باید دسترسی مدیر داشته باشند!<br>';
@@ -239,11 +252,12 @@ function _edit()
 
 function _delete()
 {
-	global $d;
+	global $d, $member;
 	$result = 'ERROR';
 	$_GET['c'] = get_param($_GET, 'c', 0);
+	$_GET['d'] = get_param($_GET, 'd');
 
-	if ($_GET['c'] > 5)
+	if ($_GET['c'] > 5 && $_GET['d'] == member::token($member['member_key']))
 	{
 		$d->delete('member_groups', "group_id='".$_GET['c']."'", 1);
 		if ($d->affected_rows())

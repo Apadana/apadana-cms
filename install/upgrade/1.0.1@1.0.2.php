@@ -1,11 +1,11 @@
 <?php
 /**
  * @In the name of God!
- * @author:Apadana Development Team
+ * @author: Iman Moodi (Iman92)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
- * @copyright: Copyright © 2012-2015 ApadanaCms.ir. All rights reserved.
+ * @copyright: Copyright © 2012-2013 ApadanaCms.ir. All rights reserved.
  * @Apadana CMS is a Free Software
  */
 
@@ -64,10 +64,10 @@ switch ($_GET['action'])
 	$old_password = strip_tags($old_password);
 	$old_password = trim($old_password);
 	$old_password = str_replace('\\', null, $old_password);
-	$old_password = md5('pars-'.sha1($d->escape_string($old_password)).'-nuke');
+	$old_password = md5('pars-'.sha1($d->escapeString($old_password)).'-nuke');
 
 	$password = str_replace('\\', null, trim($_POST['password']));
-	$password = md5(sha1($d->escape_string($password)));
+	$password = md5(sha1($d->escapeString($password)));
 
 	if ($data['member_password'] == $old_password || $data['member_password'] == $password)
 	{
@@ -145,7 +145,7 @@ switch ($_GET['action'])
 	if ($d->connect)
 	{
 		@set_time_limit(1200);
-		require_once('sql/upgrade-1.0@1.0.1.php');
+		require_once('sql/upgrade-1.0.1@1.0.2.php');
 
 		echo '<script>set_percent(500)</script>'."\n";
 		print_info('پایان بروزرسانی دیتابیس', 'اطلاعات دیتابیس سایت شما با موفقیت بروزرسانی شده است.');
@@ -188,7 +188,7 @@ switch ($_GET['action'])
 
 	file_put_contents('apadana.lock', 'Copyright © 2012-'.date('Y').' ApadanaCms.ir. All rights reserved.');
 
-	$q = $d->query("SELECT option_value FROM #__options WHERE option_name='admin' LIMIT 1");
+	$q = $d->query("SELECT `option_value` FROM `#__options` WHERE `option_name`='admin' LIMIT 1");
 	$data = $d->fetch($q);
 	unset($_SESSION['version']);
 

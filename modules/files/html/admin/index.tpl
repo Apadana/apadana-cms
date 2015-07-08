@@ -355,7 +355,7 @@ function file_delete(ID)
 <div class="content-tabs">
 <ul>
   <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 4, function(){file_ajax(1)})">فایل جدید</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 4, function(){file_ajax(2)})">لیست فایل ها</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 4, function(){file_ajax(2)})">فهرست فایل ها</li>
   <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(3, 4, function(){file_ajax(3)})">ویرایش فایل</li>
   <li class="tab-off" id="tab-id-4" onclick="apadana.changeTab(4, 4)">راهنما</li>
 </ul>
@@ -427,7 +427,7 @@ function file_delete(ID)
 	<td align="right"><span onmouseover="tooltip.show('ارسال شده در {past-time}')" onmouseout="tooltip.hide()">{name}</span></td>
 	<td><span onmouseover="tooltip.show('این فایل {count-downloads} بار دانلود شده است')" onmouseout="tooltip.hide()">{count-downloads}</span></td>
 	<td><a href="javascript:file_info({id})"><img src="{site-url}engine/images/icons/clipboard-list.png" width="16" height="16" onmouseover="tooltip.show('اطلاعات تکمیلی')" onmouseout="tooltip.hide()" /></a></td>
-	<td><a href="javascript:file_members({id})"><img src="{site-url}engine/images/icons/users.png" width="16" height="16" onmouseover="tooltip.show('مشاهده لیست کاربرانی که این فایل را دانلود کرده اند')" onmouseout="tooltip.hide()" /></a></td>
+	<td><a href="javascript:file_members({id})"><img src="{site-url}engine/images/icons/users.png" width="16" height="16" onmouseover="tooltip.show('مشاهده فهرست کاربرانی که این فایل را دانلود کرده اند')" onmouseout="tooltip.hide()" /></a></td>
 	<td>{author}</td>
 	<td><a href="javascript:file_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()" /></a>&nbsp;<a href="javascript:file_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()" /></a></td>
   </tr>
@@ -464,7 +464,7 @@ function file_delete(ID)
 <!-- /option-id-3 -->
 <div id="option-id-4" style="display:none">
 برای بعضی از فایل ها تمایل دارید که دسترسی دانلود آن را به گروه خاصی از کاربران محدود کنید و یا از دفعات دانلود آن آگاه شوید.<br/>
-با استفاده از این بخش می توانید فایل خود در در لیست فایل ها ثبت کنید، سپس سیستم یک آدرس مجازی از آن فایل تولید می کند که شما باید از آن آدرس
+با استفاده از این بخش می توانید فایل خود در در فهرست فایل ها ثبت کنید، سپس سیستم یک آدرس مجازی از آن فایل تولید می کند که شما باید از آن آدرس
 در مکان مورد نظر خود استفاده کنید، با این روش آدرس اصلی فایل شما مخفی خواهد ماند البته دقت کنید که فایل مذور باید روی هاست سایت شما قرار داشته باشد
 و همچنین در این روش به دلیل انجام دانلود به صورت غیر مستقیم امکان توقف دانلود برای کاربران وجود نخواهد داشت.
 </div>

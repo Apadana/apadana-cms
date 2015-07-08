@@ -62,9 +62,10 @@ function nohtml($string)
 function unhtmlentities($string)
 {
 	# Replace numeric entities
-	$match=null;
-	$string = preg_replace('~&#x([0-9a-f]+);~i',create_function($match,'return unichr(hexdec($match[1]));'), $string);
-	$string = preg_replace('~&#([0-9]+);~', create_function($match,'return unichr($match[1]);'), $string);
+	$string = preg_replace_callback('~&#x([0-9a-f]+);~i', create_function('$match', 'return unichr(hexdec($match[1]));'), $string);
+	$string = preg_replace_callback('~&#([0-9]+);~', create_function('$match', 'return unichr($match[1]);'), $string);
+	#$string = preg_replace('~&#x([0-9a-f]+);~ei', 'unichr(hexdec("\\1"))', $string);
+	#$string = preg_replace('~&#([0-9]+);~e', 'unichr("\\1")', $string);
 	# Replace literal entities
 	$trans_tbl = get_html_translation_table(HTML_ENTITIES);
 	$trans_tbl = array_flip($trans_tbl);

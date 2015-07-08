@@ -1,6 +1,6 @@
 [not-ajax]<script language="JavaScript" type="text/javascript">/*<![CDATA[*/$(document).ready(function(){apadana.shoutbox.get('ready')})/*]]>*/</script>
 <div id="module-shoutbox" class="module-shoutbox">
-<div class="shoutbox-header">آخرین پیام ها&nbsp;<a href="#refresh" onclick="apadana.shoutbox.get('refresh');return false"><img src="{site-url}engine/images/icons/clock.png" title="تازه سازی لیست پیام ها" /></a>&nbsp;<a href="{a href='shoutbox'}"><img src="{site-url}engine/images/icons/balloon.png" title="آرشیو پیام ها" /></a></div>
+<div class="shoutbox-header">آخرین پیام ها&nbsp;<a href="#refresh" onclick="apadana.shoutbox.get('refresh');return false"><img src="{site-url}engine/images/icons/clock.png" title="تازه سازی فهرست پیام ها" /></a>&nbsp;<a href="{a href='shoutbox'}"><img src="{site-url}engine/images/icons/balloon.png" title="آرشیو پیام ها" /></a></div>
 <div id="shoutbox-content" class="shoutbox-content" style="overflow-y:auto;overflow-x:hidden;height:250px">
 <center><img src="{site-url}engine/images/loading/loader-2.gif" style="margin-top:50%" /></center>[/not-ajax][ajax]
 [for message]<div class="shoutbox-row {odd-even}">

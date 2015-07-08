@@ -1,2 +1,12 @@
-AddHandler cgi-script .php .php3 .php4 .php5 .php6 .phtml .pl .py .jsp .asp .htm .html .shtml .sh .cgi
-Options -ExecCGI
+DirectoryIndex index.html
+Options -Indexes
+IndexIgnore *
+
+<FilesMatch "(.+)\.(php|php3|php4|php5|php6|tpl|phtml|pl|py|jsp|asp|htm|html|shtml|sh|cgi)$">
+	Deny from all
+</FilesMatch>
+
+php_flag engine off 
+AddType text/plain .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi
+RemoveHandler .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi
+RemoveType .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .shtml .sh .cgi

@@ -113,7 +113,7 @@ function fields_delete(name)
 <div class="content-tabs">
 <ul>
   <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 4, function(){fields_ajax(1)})">فیلد جدید</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 4, function(){fields_ajax(2)})">لیست فیلدهای اضافی</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 4, function(){fields_ajax(2)})">فهرست فیلدهای اضافی</li>
   <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(3, 4, function(){fields_ajax(3)})">ویرایش فیلد</li>
   <li class="tab-off" id="tab-id-4" onclick="apadana.changeTab(4, 4)">راهنما</li>
 </ul>

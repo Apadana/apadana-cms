@@ -388,7 +388,7 @@ function _upload()
 				}
 				else
 				{
-					$result = '<font color=green>ماژول با موفقیت آپلود شد.<br>با رفتن به تب لیست ماژول ها می توانید ماژول <b>'.str_ireplace('.zip', null, $upload['filename']).'</b> را نصب و فعال کنید!</font>';
+					$result = '<font color=green>ماژول با موفقیت آپلود شد.<br>با رفتن به تب فهرست ماژول ها می توانید ماژول <b>'.str_ireplace('.zip', null, $upload['filename']).'</b> را نصب و فعال کنید!</font>';
 				}
 
 				@unlink($upload['path'].'/'.$upload['filename']);

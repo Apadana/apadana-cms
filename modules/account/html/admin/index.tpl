@@ -1,10 +1,15 @@
 [not-ajax]
 <script language="JavaScript" type="text/javascript">
 /*<![CDATA[*/
+var is_load = true;
 function account_ajax(id)
 {
     if (id == 2)
 	{
+		if (is_load)
+		{
+			return true;
+		}
 		apadana.ajax({
             method: 'get',
             action: '{admin-page}&module=account',
@@ -16,6 +21,7 @@ function account_ajax(id)
             },
             success: function(data)
             {
+				is_load = true;
 				$('#option-id-2').slideUp('slow', function(){
 					$('#option-id-2').html(data).slideDown('slow')
 				})
@@ -66,6 +72,7 @@ function account_edit(ID)
 			data: apadana.serialize('form-edit-account'),
 			success: function(data)
 			{
+				is_load = false;
 				$('#option-ajax-3').slideUp('slow', function(){
 					$('#option-ajax-3').html(data).slideDown('slow')
 				})
@@ -76,6 +83,7 @@ function account_edit(ID)
 	{
 		apadana.changeTab(3, 3);
 		apadana.value('account-edit-id', ID);
+		apadana.value('account-edit-token', apadana.value('data-account-token-'+ID));
 		apadana.value('account-edit-name', apadana.value('data-account-name-'+ID));
 		apadana.value('account-edit-alias', apadana.value('data-account-alias-'+ID));
 		apadana.value('account-edit-email', apadana.value('data-account-email-'+ID));
@@ -160,7 +168,7 @@ function account_status(ID)
 <div class="content-tabs">
 <ul>
   <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 3)">ایجاد کاربر جدید</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){account_ajax(2)})">لیست کاربران</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){account_ajax(2)})">فهرست کاربران</li>
   <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(2, 3, function(){account_ajax(3)})">ویرایش کاربر</li>
 </ul>
 </div>
@@ -244,6 +252,7 @@ function account_status(ID)
 	<td>{id}
 	<div style="display:none">
 	<input id="data-account-id-{id}" type="hidden" value="{id}" />
+	<input id="data-account-token-{id}" type="hidden" value="{token}" />
 	<input id="data-account-name-{id}" type="hidden" value="{name}" />
 	<input id="data-account-visits-{id}" type="hidden" value="{visits}" />
 	<input id="data-account-lastvisit-{id}" type="hidden" value="{lastvisit}" />
@@ -335,7 +344,7 @@ function account_status(ID)
   </tr>
   <tr>
 	<td></td>
-	<td><input id="account-edit-id" name="member[id]" type="hidden" /><input type="submit" value="ویرایش کاربر" /></td>
+	<td><input id="account-edit-id" name="member[id]" type="hidden" /><input id="account-edit-token" name="member[token]" type="hidden" /><input type="submit" value="ویرایش کاربر" /></td>
   </tr>
 </table>
 </form>

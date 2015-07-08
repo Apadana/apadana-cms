@@ -143,7 +143,7 @@ function comment_delete(ID)
 <div class="content">
 <div class="content-tabs">
 <ul>
-  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2)">لیست نظرات</li>
+  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2)">فهرست نظرات</li>
   <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 2, function(){comment_ajax(2)})">ویرایش نظر</li>
 </ul>
 </div>

@@ -175,7 +175,7 @@ function groups_delete(ID)
     if(!confirm("آیا از حذف این گروه اطمینان دارید؟\n"+apadana.value('data-group-name-'+ID))) return;
     apadana.ajax({
         type: 'POST',
-        action: '{admin-page}&section=groups&do=delete&c='+ID,
+        action: '{admin-page}&section=groups&do=delete&c='+ID+'&d={token}',
         json: 'yes',
         success: function(data)
         {
@@ -193,7 +193,7 @@ function groups_delete(ID)
 <div class="content-tabs">
 <ul>
   <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 3, function(){groups_ajax(1)})">ساختن گروه جدید</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){groups_ajax(2)})">لیست گروه ها</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){groups_ajax(2)})">فهرست گروه ها</li>
   <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(3, 3, function(){groups_ajax(3)})">ویرایش گروه</li>
 </ul>
 </div>
@@ -230,7 +230,7 @@ function groups_delete(ID)
   </tr>
   <tr>
 	<td></td>
-	<td><input type="submit" value="ساختن گروه جدید" />&nbsp;<input type="reset" value="پاک کردن فرم" /></td>
+	<td><input name="groups[token]" type="hidden" value="{token}" /><input type="submit" value="ساختن گروه جدید" />&nbsp;<input type="reset" value="پاک کردن فرم" /></td>
   </tr>
 </table>
 </form>
@@ -267,7 +267,7 @@ function groups_delete(ID)
 	<td><label><input type="radio" name="groups[superAdmin]" value="1" id="group-edit-superAdmin-1" onclick="apadana.$('group-edit-admin-1').checked='checked';" />بله</label> <label><input type="radio" name="groups[superAdmin]" value="0" id="group-edit-superAdmin-0" checked="checked" />خیر</label>&nbsp;<font color="#AAAAAA" size="1">(در صورتی که این بخش را فعال کنید کاربرهای این گروه به همه ی بخش ها دسترسی خواهند داشت!)</font></td>
   </tr>
   <tr>
-	<td><input id="group-edit-id" type="hidden" value="0" /></td>
+	<td><input id="group-edit-id" type="hidden" value="0" /><input name="groups[token]" type="hidden" value="{token}" /></td>
 	<td><input type="submit" value="ویرایش گروه" /></td>
   </tr>
 </table>

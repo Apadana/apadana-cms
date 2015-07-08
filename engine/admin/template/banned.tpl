@@ -10,14 +10,14 @@
 [for list]
   <tr class="{odd-even}" id="banned-{id}">
     <td>{id}
-	  <div style="display:none">
-	  <input id="data-banned-ip-1-{id}" type="hidden" value="{ip-1}" />
-	  <input id="data-banned-ip-2-{id}" type="hidden" value="{ip-2}" />
-	  <input id="data-banned-ip-3-{id}" type="hidden" value="{ip-3}" />
-	  <input id="data-banned-ip-4-{id}" type="hidden" value="{ip-4}" />
-	  <textarea id="data-banned-reason-{id}">{reason}</textarea>
-	  </div>
-	</td>
+    <div style="display:none">
+    <input id="data-banned-ip-1-{id}" type="hidden" value="{ip-1}" />
+    <input id="data-banned-ip-2-{id}" type="hidden" value="{ip-2}" />
+    <input id="data-banned-ip-3-{id}" type="hidden" value="{ip-3}" />
+    <input id="data-banned-ip-4-{id}" type="hidden" value="{ip-4}" />
+    <textarea id="data-banned-reason-{id}">{reason}</textarea>
+    </div>
+  </td>
     <td dir="ltr" style="text-align:right"><span onmouseover="tooltip.show('{reason}')" onmouseout="tooltip.hide()">{ip}</span></td>
     <td>{date}</td>
     <td><a href="javascript:banned_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()"></a> <a href="javascript:banned_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()"></a></td>
@@ -30,79 +30,87 @@
 [not-show-list]
 <script language="JavaScript" type="text/javascript">
 /*<![CDATA[*/
+var list_update = true;
 function banned_ajax(id)
 {
-    if (id == 1)
+	if (id == 1)
 	{
-	    apadana.html('option-ajax-1', '');
-        apadana.showID("form-new-banned");
+		apadana.html('option-ajax-1', '');
+		apadana.showID("form-new-banned");
 		apadana.$("form-new-banned").reset();
 	}
 	else if (id == 2)
 	{
+		if (!list_update)
+		{
+			return false;
+		}
 		apadana.ajax({
-            method: 'get',
-            action: '{admin-page}&section=banned&do=list',
-            loading: 'no',
-            beforeSend: function()
-            {
+			method: 'get',
+			action: '{admin-page}&section=banned&do=list',
+			loading: 'no',
+			beforeSend: function()
+			{
 				apadana.html('option-id-2', '<p><center><img src="{site-url}engine/images/loading/loader-9.gif" width="54" height="55"></center></p>');
-            },
-            success: function(data)
-            {
-        		if (!apadana.browser.ie)
-        		apadana.fadeOut('option-id-2', function(){
+			},
+			success: function(data)
+			{
+				list_update = false;
+				if (!apadana.browser.ie)
+					apadana.fadeOut('option-id-2', function(){
 					apadana.html('option-id-2', data);
 					apadana.fadeIn('option-id-2');
 				});
 				else
-				apadana.html('option-id-2', data);
-           }
+					apadana.html('option-id-2', data);
+			}
 		})
 	}
 	else if (id == 3)
 	{
-        apadana.changeTab(2, 4, function(){banned_ajax(2)})
-        alert('ابتدا یک آی پی را برای ویرایش انتخاب کنید!');
+		apadana.changeTab(2, 4, function(){banned_ajax(2)})
+		alert('ابتدا یک آی پی را برای ویرایش انتخاب کنید!');
 	}
 }
 function banned_new()
 {
     apadana.html("option-ajax-1", '');
-	apadana.ajax({
-		method: 'post',
-		action: '{admin-page}&section=banned&do=new',
-		data: apadana.serialize('form-new-banned'),
-		success: function(data)
-		{
-		    apadana.html('option-ajax-1', data);
-		}
-	})
+  apadana.ajax({
+    method: 'post',
+    action: '{admin-page}&section=banned&do=new',
+    data: apadana.serialize('form-new-banned'),
+    success: function(data)
+    {
+		list_update = true;
+        apadana.html('option-ajax-1', data);
+    }
+  })
 }
 function banned_edit(ID)
 {
-	apadana.html("option-ajax-3", '');
+  apadana.html("option-ajax-3", '');
     if (ID=='save')
     {
-		ID = apadana.value('banned-edit-id');
-		apadana.ajax({
+    ID = apadana.value('banned-edit-id');
+    apadana.ajax({
             method: 'post',
             action: '{admin-page}&section=banned&do=edit&id='+ID,
             data: apadana.serialize('form-edit-banned'),
             success: function(data)
             {
-			    apadana.html('option-ajax-3', data);
+		list_update = true;
+          apadana.html('option-ajax-3', data);
             }
-		})
+    })
     }
     else
     {
- 		apadana.value('banned-edit-id', ID);
- 		apadana.value('banned-edit-ip-1', apadana.value('data-banned-ip-1-'+ID));
- 		apadana.value('banned-edit-ip-2', apadana.value('data-banned-ip-2-'+ID));
- 		apadana.value('banned-edit-ip-3', apadana.value('data-banned-ip-3-'+ID));
- 		apadana.value('banned-edit-ip-4', apadana.value('data-banned-ip-4-'+ID));
- 		apadana.value('banned-edit-reason', apadana.value('data-banned-reason-'+ID));
+    apadana.value('banned-edit-id', ID);
+    apadana.value('banned-edit-ip-1', apadana.value('data-banned-ip-1-'+ID));
+    apadana.value('banned-edit-ip-2', apadana.value('data-banned-ip-2-'+ID));
+    apadana.value('banned-edit-ip-3', apadana.value('data-banned-ip-3-'+ID));
+    apadana.value('banned-edit-ip-4', apadana.value('data-banned-ip-4-'+ID));
+    apadana.value('banned-edit-reason', apadana.value('data-banned-reason-'+ID));
         apadana.changeTab(3, 4)
     }
 }
@@ -137,16 +145,16 @@ function banned_delete(ID)
 <form id="form-new-banned" onsubmit="banned_new();return false">
 <table cellpadding="6" cellspacing="0">
   <tr>
-	<td width="80">آی پی</td>
-	<td dir="ltr"><input name="banned[ip][1]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][2]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][3]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][4]" type="text" style="width:25px;text-align:center"></td>
+  <td width="80">آی پی</td>
+  <td dir="ltr"><input name="banned[ip][1]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][2]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][3]" type="text" style="width:25px;text-align:center">.<input name="banned[ip][4]" type="text" style="width:25px;text-align:center"></td>
   </tr>
   <tr>
-	<td>دلیل</td>
-	<td><textarea name="banned[reason]" lang="fa" style="width:70%;height:100px"></textarea></td>
+  <td>دلیل</td>
+  <td><textarea name="banned[reason]" lang="fa" style="width:70%;height:100px"></textarea></td>
   </tr>
   <tr>
-	<td></td>
-	<td><input type="submit" value="مسدود سازی آی پی" /> &nbsp; <input type="reset" value="از نو" onclick="apadana.html('option-ajax-1', '')" /></td>
+  <td></td>
+  <td><input type="submit" value="مسدود سازی آی پی" /> &nbsp; <input type="reset" value="از نو" onclick="apadana.html('option-ajax-1', '')" /></td>
   </tr>
 </table>
 </form>
@@ -159,16 +167,16 @@ function banned_delete(ID)
 <form id="form-edit-banned" onsubmit="banned_edit('save');return false">
 <table cellpadding="6" cellspacing="0">
   <tr>
-	<td width="80">آی پی</td>
-	<td><input name="banned[ip][1]" type="text" style="width:25px;text-align:center" id="banned-edit-ip-1">.<input name="banned[ip][2]" type="text" style="width:25px;text-align:center" id="banned-edit-ip-2">.<input name="banned[ip][3]" type="text" style="width:25px;text-align:center" id="banned-edit-ip-3">.<input name="banned[ip][4]" type="text" style="width:25px;text-align:center" id="banned-edit-ip-4"></td>
+  <td width="80">آی پی</td>
+  <td><input name="banned[ip][1]" type="text" style="width:25px;text-align:center" id="banned-edit-ip-1">.<input name="banned[ip][2]" type="text" style="width:25px;text-align:center" id="banned-edit-ip-2">.<input name="banned[ip][3]" type="text" style="width:25px;text-align:center" id="banned-edit-ip-3">.<input name="banned[ip][4]" type="text" style="width:25px;text-align:center" id="banned-edit-ip-4"></td>
   </tr>
   <tr>
-	<td>دلیل</td>
-	<td><textarea name="banned[reason]" id="banned-edit-reason" lang="fa" style="width:70%;height:100px"></textarea></td>
+  <td>دلیل</td>
+  <td><textarea name="banned[reason]" id="banned-edit-reason" lang="fa" style="width:70%;height:100px"></textarea></td>
   </tr>
   <tr>
-	<td></td>
-	<td><input id="banned-edit-id" type="hidden" value="0" /><input type="submit" name="submit" value="ویرایش آی پی" /></td>
+  <td></td>
+  <td><input id="banned-edit-id" type="hidden" value="0" /><input type="submit" name="submit" value="ویرایش آی پی" /></td>
   </tr>
 </table>
 </form>

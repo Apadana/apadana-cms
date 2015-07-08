@@ -29,7 +29,7 @@ function module_pages_run()
 		set_title('صفحات');
 		set_meta('description', 'صفحات سایت', 'add');
 		set_canonical(url('pages'));
-		set_content('لیست صفحات اضافی', block_pages(array(
+		set_content('فهرست صفحات اضافی', block_pages(array(
 			'total' => 500,
 			'order' => 'rand'
 		), 'list'));

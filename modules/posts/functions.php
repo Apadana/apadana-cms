@@ -703,13 +703,20 @@ function _theme($post, $single = false)
 	}
 
 	$itpl->assign($array);
-	$itpl->block_callback('|{date format=[\'"](.+?)[\'"]}|s', create_function('$m','return jdate($m[1],'.$post['post_date'].');'));
+	$itpl->block_callback('~{date format=[\'"](.+?)[\'"]}~s', '_date', $post['post_date']);
 
 	($hook = get_hook('posts_theme_end'))? eval($hook) : null;
 
 	$tpl->assign('{content}', $itpl->get_var(), 'add');
 
 	unset($categories, $tags, $post, $array, $itpl, $posts_fields);
+}
+
+function _date($match)
+{
+	($hook = get_hook('posts_theme_data'))? eval($hook) : null;
+
+	return jdate($match[1], $GLOBALS['template_callback_data']);
 }
 
 function _archives(){

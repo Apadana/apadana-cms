@@ -18,7 +18,7 @@ class member
     static private $info;
 	
 	static function is($type = 'member')
-    {	
+	{
 		if (!isset($_COOKIE['account']) || empty($_COOKIE['account']))
 		{
 			return false;
@@ -84,7 +84,7 @@ class member
 		un_set_cookie('account');
 
 		return self::$memberSave = false;
-    }
+	}
 
 	static function check_admin_page_access($right)
 	{
@@ -148,8 +148,8 @@ class member
 		return url . $icon;
 	}
 
-    static function info($id = false, $username = false)
-    {
+	static function info($id = false, $username = false)
+	{
 		global $d;
 
 		$id = intval($id);
@@ -186,10 +186,10 @@ class member
 		{
 			return false;
 		}
-    }
+	}
 
-    static function exists($username)
-    {
+	static function exists($username)
+	{
 		global $d;
 
 		if (is_alphabet($username) && $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_name`='".$username."'", true) >= 1)
@@ -197,15 +197,22 @@ class member
 			return true;
 		}
 		return false;
-    }
+	}
 
-    static function loginKey($password)
-    {
+	static function loginKey($password)
+	{
 		return md5($_SERVER['HTTP_USER_AGENT'] . sitekey . $password . $_SERVER['SERVER_SOFTWARE']);
-    }
-	
-    static function password($password)
-    {
+	}
+
+	static function token($login_key)
+	{
+		global $d;
+
+		return sha1(substr($login_key, 8, 28).sitekey);
+	}
+
+	static function password($password)
+	{
 		global $d;
 
 		$password = str_replace('\\', null, $password);
