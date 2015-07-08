@@ -33,7 +33,7 @@ function module_simple_links_run()
 	($hook = get_hook('simple_links'))? eval($hook) : null;
 }
 
-function module_simple_links_sitemap($sitemap)
+function module_simple_links_sitemap(&$sitemap)
 {
 	$sitemap->addItem(url('simple-links'), 0, 'monthly', '0.6');
 }

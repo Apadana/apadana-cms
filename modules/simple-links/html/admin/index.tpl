@@ -214,7 +214,7 @@ function sLink_delete(ID)
 <div class="content-tabs">
 <ul>
   <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 3, function(){sLink_ajax(1)})">پیوند جدید</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){sLink_ajax(2)})">لیست پیوندها</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){sLink_ajax(2)})">فهرست پیوندها</li>
   <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(3, 3, function(){sLink_ajax(3)})">ویرایش پیوند</li>
 </ul>
 </div>

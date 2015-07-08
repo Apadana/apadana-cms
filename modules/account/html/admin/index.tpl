@@ -10,6 +10,7 @@ function account_ajax(id)
 		{
 			return true;
 		}
+
 		apadana.ajax({
             method: 'get',
             action: '{admin-page}&module=account',

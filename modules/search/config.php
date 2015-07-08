@@ -31,7 +31,7 @@ function module_search_run()
 		exit;
 	}
 
-	global $page, $d, $options, $modules, $member,$tpl;
+	global $page, $d, $options, $modules, $member;
 
 	$message = null;
 	$search = array();
@@ -316,7 +316,7 @@ function module_search_run()
 	unset($result, $pagination, $search, $itpl);
 }
 
-function module_search_sitemap($sitemap)
+function module_search_sitemap(&$sitemap)
 {
 	$sitemap->addItem(url('search'), 0, 'never', '0.8');
 }

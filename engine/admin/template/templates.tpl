@@ -1,16 +1,23 @@
 [not-ajax]
 <script type="text/javascript">
 var themeDefault = '{theme}';
+var list_update = false;
 function templates_ajax(id)
 {
     if(id == 1)
 	{
+		if (!list_update)
+		{
+			return false;
+		}
+
 		apadana.ajax({
 			type: 'GET',
 			action: '{admin-page}&section=templates',
             loading: 'no',
 			beforeSend: function()
 			{
+				list_update = false;
 				apadana.html('option-id-1', '<p><center><img src="{site-url}engine/images/loading/loader-9.gif" width="54" height="55"></center></p>');
 			},
 			success: function(data)
@@ -75,11 +82,13 @@ function templates_info(name)
 }
 function templates_startUpload()
 {
+	list_update = true;
 	apadana.html('templates-upload-process', '<p><center><img src="{site-url}engine/images/loading/loader-9.gif" width="54" height="55"></center></p>');
 	apadana.hideID('templates-upload-form');
 }
 function templates_stopUpload(result)
 {
+	list_update = true;
 	apadana.html('templates-upload-process', result+'<br><br>');
 	apadana.$('templates-upload-form').reset();
 	apadana.showID('templates-upload-form');
@@ -107,7 +116,7 @@ function templates_stopUpload(result)
 <div class="content">
 <div class="content-tabs">
 <ul>
-  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2, function(){templates_ajax(1)})">لیست تم ها</li>
+  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2, function(){templates_ajax(1)})">فهرست تم ها</li>
   <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 2, function(){templates_ajax(2)})">نصب تم</li>
 </ul>
 </div>

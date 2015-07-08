@@ -26,6 +26,7 @@
 [not-show-list]
 <script language="JavaScript" type="text/javascript">
 /*<![CDATA[*/
+var list_update = true;
 function block_ajax(id)
 {
 	if (id == 1)
@@ -38,6 +39,11 @@ function block_ajax(id)
 	}
 	else if (id == 2)
 	{
+		if (!list_update)
+		{
+			return false;
+		}
+
 		$.ajax({
 			type: 'get',
 			url: '{admin-page}&section=blocks&do=list',
@@ -47,6 +53,7 @@ function block_ajax(id)
 			},
 			success: function(data)
 			{
+				list_update = false;
 				$('#option-id-2').slideUp('slow', function(){
 					$(this).html(data).slideDown('slow');
 				});
@@ -78,6 +85,7 @@ function block_new()
 		},
 		success: function(result)
 		{
+			list_update = true;
 			$('#option-ajax-1').slideUp('slow', function(){
 				$(this).html(apadana.message(result.message, result.type)).slideDown('slow');
 			});
@@ -115,6 +123,7 @@ function block_edit(ID)
 			},
 			success: function(result)
 			{
+				list_update = true;
 				$('#option-ajax-3').slideUp('slow', function(){
 					$(this).html(apadana.message(result.message, result.type)).slideDown('slow');
 				});
@@ -442,12 +451,12 @@ function block_delete(ID)
 <span style="color:#009933">hits</span> <span style="color:#3366CC">=</span> <span style="color:#9900CC">true</span><br />
 <span style="color:#009933">order</span> <span style="color:#3366CC">=</span> <span style="color:#9900CC">desc</span>
 </div>
-درنمونه کد بالا <strong>total</strong> مشخص کننده تعداد لینک ها است و <strong>hits</strong> مشخص می کند که پست ها بر اساس دفعات نماش لیست شوند و
+درنمونه کد بالا <strong>total</strong> مشخص کننده تعداد لینک ها است و <strong>hits</strong> مشخص می کند که پست ها بر اساس دفعات نماش فهرست شوند و
 <strong>order</strong> نوع چینش لینک ها را مشخص می کند.<br /><br />
 در صورتی که اولین بار کدهای تنظیمات را در ادیتور به جای محتوا قرار می دهید به دلیل راست چین بودن ادیتور ممکن است با مشکل مواجه شود در این حالت روی دکمه <b>منبع</b> موجود در ادیتور کلیک کنید تا حالت نمایش کدها فعال شود و سپس کد خود را قرار دهید.<br />
 دقت کنید که در این حالت در پایان هر خط باید کد <strong>&lt;br&gt;</strong> را قرار دهید
 <br /><br />
-در لیست زیر توابع پیشفرض آپادانا برای استفاده در بلوک ها قرار داده شده است برای مشاهده توضیحات بیشتر در باره هر کدام روی نام آنها کلیک کنید:
+در فهرست زیر توابع پیشفرض آپادانا برای استفاده در بلوک ها قرار داده شده است برای مشاهده توضیحات بیشتر در باره هر کدام روی نام آنها کلیک کنید:
 <br /><br />
 
 <style>
@@ -486,12 +495,12 @@ function block_delete(ID)
 
 <div class="list-func" onclick="$('#show-onlines').slideToggle('slow')">onlines</div>
 <div id="show-onlines" class="content-func" style="display:none">
-این تابع لیست کاربران آنلاین را نمایش می دهد و تنظیمات اختصاصی ندارد.
+این تابع فهرست کاربران آنلاین را نمایش می دهد و تنظیمات اختصاصی ندارد.
 </div>
 
 <div class="list-func" onclick="$('#show-pages').slideToggle('slow')">pages</div>
 <div id="show-pages" class="content-func" style="display:none">
-این تابع لیست صفحات جانبی را نمایش می دهد و تنظیمات اختصاصی دارد.
+این تابع فهرست صفحات جانبی را نمایش می دهد و تنظیمات اختصاصی دارد.
 <div style="text-align:left;direction:ltr;font-weight:bold;margin:4px">
 <span style="color:#CC0000">[- options -]</span><br />
 <span style="color:#009933">total</span> <span style="color:#3366CC">=</span> <span style="color:#9900CC">15</span><br />
@@ -504,7 +513,7 @@ desc به معنای چینش نزولی است و asc صعودی.<br />
 
 <div class="list-func" onclick="$('#show-tags_cloud').slideToggle('slow')">tags_cloud</div>
 <div id="show-tags_cloud" class="content-func" style="display:none">
-این تابع لیست ابری برچسب های پست ها را نمایش می دهد و تنظیمات اختصاصی دارد.
+این تابع فهرست ابری برچسب های پست ها را نمایش می دهد و تنظیمات اختصاصی دارد.
 <div style="text-align:left;direction:ltr;font-weight:bold;margin:4px">
 <span style="color:#CC0000">[- options -]</span><br />
 <span style="color:#009933">total</span> <span style="color:#3366CC">=</span> <span style="color:#9900CC">50</span><br />
@@ -519,7 +528,7 @@ total تعداد برچسب ها را تعیین می کند و به صورت پ
 
 <div class="list-func" onclick="$('#show-last_posts').slideToggle('slow')">last_posts</div>
 <div id="show-last_posts" class="content-func" style="display:none">
-این تابع لیست پست ها را نمایش می دهد و تنظیمات اختصاصی دارد.
+این تابع فهرست پست ها را نمایش می دهد و تنظیمات اختصاصی دارد.
 <div style="text-align:left;direction:ltr;font-weight:bold;margin:4px">
 <span style="color:#CC0000">[- options -]</span><br />
 <span style="color:#009933">total</span> <span style="color:#3366CC">=</span> <span style="color:#9900CC">15</span><br />
@@ -534,7 +543,7 @@ desc به معنای چینش نزولی است و asc صعودی.<br />
 
 <div class="list-func" onclick="$('#show-posts_comments').slideToggle('slow')">posts_comments</div>
 <div id="show-posts_comments" class="content-func" style="display:none">
-این تابع لیست نظرات پست ها را نمایش می دهد و تنظیمات اختصاصی دارد.
+این تابع فهرست نظرات پست ها را نمایش می دهد و تنظیمات اختصاصی دارد.
 <div style="text-align:left;direction:ltr;font-weight:bold;margin:4px">
 <span style="color:#CC0000">[- options -]</span><br />
 <span style="color:#009933">total</span> <span style="color:#3366CC">=</span> <span style="color:#9900CC">15</span><br />
@@ -562,7 +571,7 @@ size اندازه فیلد جستجو را مشخص می کند و فقط دار
 
 <div class="list-func" onclick="$('#show-simple_links').slideToggle('slow')">simple_links</div>
 <div id="show-simple_links" class="content-func" style="display:none">
-این تابع لیست لینک ها را نمایش می دهد و تنظیمات اختصاصی ندارد.
+این تابع فهرست لینک ها را نمایش می دهد و تنظیمات اختصاصی ندارد.
 </div>		
 
 <div class="list-func" onclick="$('#show-voting').slideToggle('slow')">voting</div>

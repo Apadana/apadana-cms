@@ -26,8 +26,8 @@ if (extension_loaded('mbstring') && function_exists('mb_internal_encoding'))
     mb_internal_encoding('UTF-8');
 }
 
-# Determine Magic Quotes Status (< PHP 5.4)
-if (version_compare(PHP_VERSION, '5.4', '<'))
+# Determine Magic Quotes Status (< PHP 6.0)
+if (version_compare(PHP_VERSION, '6.0', '<'))
 {
 	if (@get_magic_quotes_gpc())
 	{
@@ -61,7 +61,6 @@ if (!file_exists('apadana.lock'))
 	if (is_dir('../modules/newsletter') && file_exists('../engine/jalaliDate.function.php'))
 	{
 		require_once('upgrade/old.php');
-		require_once('upgrade/1.0@1.0.2.php');
 	}
 	else
 	{
@@ -75,9 +74,12 @@ if (!file_exists('apadana.lock'))
 
 		switch ($_SESSION['version'])
 		{
-			case '1.0.1':
 			case '1.0':
 			require_once('upgrade/1.0@1.0.2.php');
+			break;
+
+			case '1.0.1':
+			require_once('upgrade/1.0.1@1.0.2.php');
 			break;
 
 			default;

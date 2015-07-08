@@ -16,7 +16,6 @@
 	    <td>{id}
 		<div style="display:none">
 		<input id="data-group-id-{id}" type="hidden" value="{id}" />
-
 		<input id="data-group-name-{id}" type="hidden" value="{name}" />
 		<input id="data-group-icon-{id}" type="hidden" value="{icon}" />
 		<input id="data-group-admin-{id}" type="hidden" value="{data-admin}" />
@@ -194,7 +193,7 @@ function groups_delete(ID)
 <div class="content-tabs">
 <ul>
   <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 3, function(){groups_ajax(1)})">ساختن گروه جدید</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){groups_ajax(2)})">لیست گروه ها</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){groups_ajax(2)})">فهرست گروه ها</li>
   <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(3, 3, function(){groups_ajax(3)})">ویرایش گروه</li>
 </ul>
 </div>

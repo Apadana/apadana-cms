@@ -29,7 +29,7 @@ function module_pages_run()
 		set_title('صفحات');
 		set_meta('description', 'صفحات سایت', 'add');
 		set_canonical(url('pages'));
-		set_content('لیست صفحات اضافی', block_pages(array(
+		set_content('فهرست صفحات اضافی', block_pages(array(
 			'total' => 500,
 			'order' => 'rand'
 		), 'list'));
@@ -147,7 +147,7 @@ function module_pages_search($search)
 	}
 }
 
-function module_pages_sitemap($sitemap)
+function module_pages_sitemap(&$sitemap)
 {
 	global $d, $options;
 	$query = "SELECT * FROM `#__pages` WHERE `page_approve` = '1' ORDER BY `page_time` DESC, `page_id` DESC";	
@@ -162,7 +162,7 @@ function module_pages_sitemap($sitemap)
 	unset($pages, $query, $p);
 }
 
-function module_pages_feed($feeds)
+function module_pages_feed(&$feeds)
 {
 	global $d, $options;
 	$query = "SELECT * FROM `#__pages` WHERE `page_approve` = '1' ORDER BY `page_time` DESC, `page_id` DESC LIMIT ".intval($options['feed-limit']);	

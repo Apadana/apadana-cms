@@ -166,7 +166,7 @@ function _upload()
 				}
 				else
 				{
-					$result = '<font color=green>تم با موفقیت آپلود شد.<br>با رفتن به تب لیست تم ها می توانید تم <b>'.str_ireplace('.zip', null, $upload['filename']).'</b> را فعال کنید!</font>';
+					$result = '<font color=green>تم با موفقیت آپلود شد.<br>با رفتن به تب فهرست تم ها می توانید تم <b>'.str_ireplace('.zip', null, $upload['filename']).'</b> را فعال کنید!</font>';
 				}
 
 				@unlink($upload['path'].'/'.$upload['filename']);

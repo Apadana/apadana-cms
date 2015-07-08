@@ -38,8 +38,8 @@ function saveOptions()
 	<td><label><input type="checkbox" name="options[register]" value="1"[register-checked] checked="checked"[/register-checked]  />&nbsp;امکان ثبت عضو جدید در سایت فعال باشد.</label></td>
   </tr>
   <tr>
-	<td>لیست کاربران</td>
-	<td><label><input type="checkbox" name="options[members]" value="1"[members-checked] checked="checked"[/members-checked]  />&nbsp;نمایش لیست کاربران فعال باشد.</label></td>
+	<td>فهرست کاربران</td>
+	<td><label><input type="checkbox" name="options[members]" value="1"[members-checked] checked="checked"[/members-checked]  />&nbsp;نمایش فهرست کاربران فعال باشد.</label></td>
   </tr>
   <tr>
 	<td>تعداد</td>

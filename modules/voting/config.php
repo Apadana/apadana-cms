@@ -33,7 +33,7 @@ function module_voting_run()
 	}
 }
 
-function module_voting_sitemap($sitemap)
+function module_voting_sitemap(&$sitemap)
 {
 	$sitemap->addItem(url('voting'), 0, 'monthly', '0.6');
 }

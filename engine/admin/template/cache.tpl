@@ -97,13 +97,13 @@ function cache_delete_all()
 [/for cache]
 </table>
 <center>
-<input type="button" value="تازه سازی لیست فایل ها" onclick="cache_refresh()" />
+<input type="button" value="تازه سازی فهرست فایل ها" onclick="cache_refresh()" />
 &nbsp;&nbsp;&nbsp;
 <input type="button" value="حذف فایل های کش" onclick="cache_delete_all()" />
 </center>
 [/cache]
 [not-cache]
 {function name="message" args="هیچ فایل کشی وجود ندارد!|info"}
-<br><center><input type="button" value="تازه سازی لیست فایل ها" onclick="cache_refresh()" /></center>
+<br><center><input type="button" value="تازه سازی فهرست فایل ها" onclick="cache_refresh()" /></center>
 [/not-cache]
 [not-ajax]</div>[/not-ajax]

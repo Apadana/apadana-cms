@@ -78,7 +78,7 @@ function _inbox()
 
 	($hook = get_hook('private_messages_inbox_end'))? eval($hook) : null;
 
-	if (!isset($file[2])) set_content('پیام های دریافتی', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var(),'add');	
+	if (!isset($file[2])) set_content('پیام های دریافتی', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 	$pagination->build(url('private-messages/{page}'));
 	unset($itpl, $pagination, $private_messages, $msg, $total, $query);
 }
@@ -150,7 +150,7 @@ function _outbox()
 
 	($hook = get_hook('private_messages_outbox_end'))? eval($hook) : null;
 
-	if (!isset($file[2])) set_content('پیام های ارسالی', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var(),'add');	
+	if (!isset($file[2])) set_content('پیام های ارسالی', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 	$pagination->build(url('private-messages/outbox/{page}'));
 	unset($itpl, $pagination, $private_messages, $msg, $total, $query);
 }
@@ -215,7 +215,7 @@ function _read()
 	
 	($hook = get_hook('private_messages_read_end'))? eval($hook) : null;
 
-	if (!isset($file[2])) set_content('خواندن پیام', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var(),'add');	
+	if (!isset($file[2])) set_content('خواندن پیام', $itpl->get_var()); else $tpl->assign('{content}', $itpl->get_var());	
 	unset($itpl, $private_messages, $bbcode, $query);
 }
 
@@ -366,7 +366,7 @@ function _new()
 
 	($hook = get_hook('private_messages_new_end'))? eval($hook) : null;
 
-	if (!isset($file[2])) set_content('ارسال پیام جدید', $html); else $tpl->assign('{content}', $html,'add');	
+	if (!isset($file[2])) set_content('ارسال پیام جدید', $html); else $tpl->assign('{content}', $html);	
 	unset($html, $itpl, $private_messages, $query);
 }
 
@@ -396,13 +396,12 @@ function _remove()
 	set_title('حذف پیام');
 
 	_menu();
-	set_content('حذف پیام', message('متاسفیم کاربر گیرنده این پیام را خوانده است و فقط او می تواند این پیام را حذف کند.', 'error'),'add');
+	set_content('حذف پیام', message('متاسفیم کاربر گیرنده این پیام را خوانده است و فقط او می توانید این پیام را حذف کند.', 'error'));
 	unset($private_messages, $query);
 }
 
 function _menu()
 {
-	global $tpl;
 	$num = private_messages();
 	$file = get_tpl(root_dir.'modules/private-messages/html/||menu.tpl', template_dir.'||private-messages/menu.tpl');
 	$itpl = new template($file[1], $file[0]);

@@ -37,7 +37,7 @@ function module_shoutbox_run()
 	}
 }
 
-function module_shoutbox_sitemap($sitemap)
+function module_shoutbox_sitemap(&$sitemap)
 {
 	$sitemap->addItem(url('shoutbox'), 0, 'daily', '0.2');
 }

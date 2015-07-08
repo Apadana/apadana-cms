@@ -694,7 +694,7 @@ function _theme($post, $single = false)
 	}
 
 	$itpl->assign($array);
-	$itpl->block_callback('~{date format=[\'"](.+?)[\'"]}~s', '_date', $post['post_date']);
+	$itpl->block_callback('~{date format=[\'"](.+?)[\'"]}~s', '_data', $post['post_date']);
 
 	($hook = get_hook('posts_theme_end'))? eval($hook) : null;
 
@@ -703,7 +703,7 @@ function _theme($post, $single = false)
 	unset($categories, $tags, $post, $array, $itpl, $posts_fields);
 }
 
-function _date($match)
+function _data($match)
 {
 	($hook = get_hook('posts_theme_data'))? eval($hook) : null;
 

@@ -213,6 +213,7 @@ function _edit()
 		$postMember['pass1'] = trim($postMember['pass1']);
 		$postMember['pass2'] = trim($postMember['pass2']);
 		$options_account = account_options();
+
 		if ($postMember['token'] != member::token($member['member_key']))
 		{
 			$message .= 'کد مجوز معتبر نیست!<br />';

@@ -63,8 +63,8 @@ require_once(engine_dir.'html.class.php');
 
 error_reporting(error_reporting? E_ALL : 0);
 
-# Determine Magic Quotes Status (< PHP 5.4)
-if (version_compare(PHP_VERSION, '5.4', '<'))
+# Determine Magic Quotes Status (< PHP 6.0)
+if (version_compare(PHP_VERSION, '6.0', '<'))
 {
 	if (get_magic_quotes_gpc())
 	{
@@ -73,6 +73,7 @@ if (version_compare(PHP_VERSION, '5.4', '<'))
 		strip_slashes_array($_GET);
 		strip_slashes_array($_COOKIE);
 	}
+
 	if (version_compare(PHP_VERSION, '5.3.0', '<'))
 	{
 		set_magic_quotes_runtime(0);

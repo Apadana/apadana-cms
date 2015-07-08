@@ -105,7 +105,7 @@ switch ($_GET['action'])
 	$php .= ' * @email: info@apadanacms.ir'."\r\n";
 	$php .= ' * @link: http://www.apadanacms.ir'."\r\n";
 	$php .= ' * @license: http://www.gnu.org/licenses/'."\r\n";
-	$php .= ' * @copyright: Copyright © 2012-'.date('Y').' ApadanaCms.ir. All rights reserved.'."\r\n";
+	$php .= ' * @copyright: Copyright © 2012-'.date('Y').' ApadanaCMS.ir. All rights reserved.'."\r\n";
 	$php .= ' * @Apadana CMS is a Free Software'."\r\n";
 	$php .= ' */'."\r\n\r\n";
 	$php .= 'defined(\'security\') or exit(\'Nice TRY!\');'."\r\n\r\n";

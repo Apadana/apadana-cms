@@ -212,7 +212,7 @@ function voting_delete(ID)
 <div class="content-tabs">
 <ul>
   <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 3, function(){voting_ajax(1)})">نظرسنجی جدید</li>
-  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){voting_ajax(2)})">لیست نظرسنجی ها</li>
+  <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 3, function(){voting_ajax(2)})">فهرست نظرسنجی ها</li>
   <li class="tab-off" id="tab-id-3" onclick="apadana.changeTab(3, 3, function(){voting_ajax(3)})">ویرایش نظرسنجی</li>
 </ul>
 </div>

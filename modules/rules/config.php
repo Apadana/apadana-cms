@@ -31,7 +31,7 @@ function module_rules_run()
 	($hook = get_hook('module_rules'))? eval($hook) : null;
 }
 
-function module_licence_sitemap($sitemap)
+function module_licence_sitemap(&$sitemap)
 {
 	$sitemap->addItem(url('rules'), 0, 'monthly', '0.6');
 }

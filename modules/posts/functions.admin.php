@@ -506,7 +506,7 @@ function _new()
 		exit;
 	}
 
-	$categories = &posts_categories();
+	$categories = posts_categories();
 
 	$itpl = new template('modules/posts/html/admin/posts-new.tpl');
 

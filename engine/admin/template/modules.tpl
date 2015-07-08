@@ -1,10 +1,16 @@
 [not-ajax]
 <script type="text/javascript">
 var moduleDefault = '{default-module}';
+var list_update = false;
 function modules_ajax(id)
 {
     if (id == 1)
 	{
+		if (!list_update)
+		{
+			return false;
+		}
+
 		apadana.ajax({
 			type: 'GET',
 			action: '{admin-page}&section=modules',
@@ -15,7 +21,8 @@ function modules_ajax(id)
 			},
 			success: function(data)
 			{
-        		if (apadana.$('option-id-1').style.display=='block')
+				list_update = false;
+       			if (apadana.$('option-id-1').style.display=='block')
 				{
 					if (!apadana.browser.ie)
 					apadana.fadeOut('option-id-1', function(){
@@ -113,11 +120,13 @@ function modules_info(name)
 }
 function modules_startUpload()
 {
+	list_update = true;
 	apadana.html('modules-upload-process', '<p><center><img src="{site-url}engine/images/loading/loader-9.gif" width="54" height="55"></center></p>');
 	apadana.hideID('modules-upload-form');
 }
 function modules_stopUpload(result)
 {
+	list_update = true;
 	apadana.html('modules-upload-process', result+'<br><br>');
 	apadana.$('modules-upload-form').reset();
 	apadana.showID('modules-upload-form');
@@ -141,7 +150,7 @@ function modules_stopUpload(result)
 <div class="content">
 <div class="content-tabs">
 <ul>
-  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2, function(){modules_ajax(1)})">لیست ماژول ها</li>
+  <li class="tab-on" id="tab-id-1" onclick="apadana.changeTab(1, 2, function(){modules_ajax(1)})">فهرست ماژول ها</li>
   <li class="tab-off" id="tab-id-2" onclick="apadana.changeTab(2, 2, function(){modules_ajax(2)})">نصب ماژول</li>
 </ul>
 </div>
