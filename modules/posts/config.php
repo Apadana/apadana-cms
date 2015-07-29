@@ -249,6 +249,7 @@ function block_categories($op = null, $id = null, $position= null)
 	}
 	return $html;
 }
+
 /**
 * Get Sub Categories
 *
@@ -265,16 +266,54 @@ function block_categories($op = null, $id = null, $position= null)
 function _get_sub_categories($parent , &$out ){
 	global $cache,$options;
 	$ul_open = false;
+	// We Set this var because of function uses ref call!!
+	$url = '';
+	$url = $options['rewrite'] == 1 ? ($parent == 0 ? '' : _get_sub_categories_parent_url($parent,$url)) : '' ;
 	foreach ($cache['posts_categories'] as $cat)
 	{
 		if ($cat['term_parent'] != $parent) continue;
 		if( $ul_open == false ){ $out .= ('<ul'.($parent != 0 ? ' class = "children" ' : '').'>'); $ul_open = true; }
-		$out .= '<li class="cat-item cat-item-'.$cat['term_id'].'"><a href="'.url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id'])).'">'.$cat['term_name'].'</a></li>'.n;
+		$out .= '<li class="cat-item cat-item-'.$cat['term_id'].'"><a href="'.url('posts/category/'.($options['rewrite'] == 1? $url.'/'.$cat['term_slug'] : $cat['term_id'])).'">'.$cat['term_name'].'</a></li>'.n;
 		_get_sub_categories($cat['term_id'],$out );
 	}
 	if($ul_open == true) $out .='</ul>';
 	return $out;
 }
+
+/**
+* Get Sub Categories Parent URL
+*
+* This function get sub categories parent url for using in _get_sub_categories
+*
+* @since 1.1
+*
+* @see _get_sub_categories
+* @see block_categories
+* @param string $parent category parent
+* @param string $out it saves the results
+*
+* @return string an url string 
+*/
+function _get_sub_categories_parent_url($id , &$url ){
+	global $cache,$options;
+	foreach ($cache['posts_categories'] as $cat)
+	{
+		if ($cat['term_id'] != $id) continue;
+		$url = $cat['term_slug'].'/' . $url;
+		_get_sub_categories_parent_url($cat['term_parent'],$url );
+	}
+	return trim($url,'/');
+}
+
+/**
+* Block Calendar
+*
+* This function generate calendar for using in blocks!!
+*
+* @since 1.1
+* @author Mohammad Sadegh Dehghan Niri (MSDN)
+* @return string Caldendar html string
+*/
 
 function block_posts_calendar($op = null, $id = null, $position= null)
 {

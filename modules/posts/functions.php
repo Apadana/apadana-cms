@@ -1,7 +1,7 @@
 <?php
 /**
  * @In the name of God!
- * @author: Iman Moodi (Iman92)
+ * @author: Iman Moodi (Iman92) & Mohammad Sadegh Dehghan Niri (MSDN)
  * @email: info@apadanacms.ir
  * @link: http://www.apadanacms.ir
  * @license: http://www.gnu.org/licenses/
@@ -22,13 +22,13 @@ function _default()
 	$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."'", true);
 	$pagination = new pagination($total, $posts_options['total-posts'], $page_num);
 
-	if ($page_num > $pagination->Pages && $pagination->Pages != 0)
+	if ($page_num > $pagination->pages && $pagination->pages != 0)
 	{
 		redirect(url('posts'));
 	}
-	
+
 	$posts = get_posts(array(
-		'limit' => array($pagination->Start, $pagination->End)
+		'limit' => array($pagination->start, $pagination->end)
 	));
 
 	if (!is_array($posts) || !count($posts))
@@ -41,7 +41,7 @@ function _default()
 		{
 			set_title('صفحه '.translate_number($page_num,'fa'));
 		}
-		
+
 		if ($page_num <= 1)
 		{
 			if ($options['default-module'] == 'posts')
@@ -69,7 +69,6 @@ function _default()
 	unset($pagination, $posts, $total, $page_num);
 }
 
-
 function _author()
 {
 	global $d, $options;
@@ -86,7 +85,7 @@ function _author()
 
 		$page_num = get_param($_GET, 'd', 1);
 		$posts_options = posts_options();
-		
+
 		$total  = "SELECT p.post_id, m.member_name\n";
 		$total .= "FROM #__posts AS p\n";
 		$total .= "LEFT JOIN #__members AS m ON m.member_id=p.post_author\n";
@@ -96,19 +95,19 @@ function _author()
 
 		$pagination = new pagination($total, $posts_options['total-author'], $page_num);
 
-		if ($page_num > $pagination->Pages && $pagination->Pages != 0)
+		if ($page_num > $pagination->pages && $pagination->pages != 0)
 		{
 			redirect(url('posts/author/'.$author));
 		}
-		
+
 		$posts = get_posts(array(
 			'where' => "AND m.member_name='".$d->escape_string($author)."'",
-			'limit' => array($pagination->Start, $pagination->End)
+			'limit' => array($pagination->start, $pagination->end)
 		));
 
 		set_title('پست های '.(isset($posts[0]['post_author_alias']) && !empty($posts[0]['post_author_alias'])? $posts[0]['post_author_alias'] : $posts[0]['post_author_neme']));
 
-		if ($page_num > $pagination->Pages || $page_num <= 1)
+		if ($page_num > $pagination->pages || $page_num <= 1)
 		{
 			set_canonical(url('posts/author/'.$author));
 		}
@@ -116,7 +115,7 @@ function _author()
 		{
 			set_canonical(url('posts/author/'.$author.'/'.$page_num));
 		}
-		
+
 		if (!is_array($posts) || !count($posts))
 		{
 			module_error_run('404');
@@ -155,7 +154,7 @@ function _tag()
 	else
 	{
 		require_once(engine_dir.'pagination.class.php');
-	
+
 		$term = $d->fetch($term);
 		$slug = $term['term_slug'];
 
@@ -164,20 +163,20 @@ function _tag()
 		$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."' AND FIND_IN_SET(".$term['term_id'].", `post_tags`)", true);
 		$pagination = new pagination($total, $posts_options['total-tag'], $page_num);
 
-		if ($page_num > $pagination->Pages && $pagination->Pages != 0)
+		if ($page_num > $pagination->pages && $pagination->pages != 0)
 		{
 			redirect(url('posts/tag/'.$term['term_slug']));
 		}
-		
+
 		$posts = get_posts(array(
 			'where' => 'AND FIND_IN_SET('.$term['term_id'].', p.post_tags)',
-			'limit' => array($pagination->Start, $pagination->End)
+			'limit' => array($pagination->start, $pagination->end)
 		));
 
 		set_title($term['term_name']);
 		set_meta('description', $term['term_name'], 'add');
 
-		if ($page_num > $pagination->Pages || $page_num <= 1)
+		if ($page_num > $pagination->pages || $page_num <= 1)
 		{
 			set_canonical(url('posts/tag/'.$term['term_slug']));
 		}
@@ -185,7 +184,7 @@ function _tag()
 		{
 			set_canonical(url('posts/tag/'.$term['term_slug'].'/'.$page_num));
 		}
-		
+
 		if (!is_array($posts) || !count($posts))
 		{
 			module_error_run('404');
@@ -213,93 +212,141 @@ function _category()
 {
 	global $d, $options;
 
-	$cat_id = get_param($_GET, 'c');
 	$categories = posts_categories();
 
 	if ($options['rewrite'] == 1)
 	{
-		$cat_id = urlencode($cat_id);
-		
+		$alphabet = array('c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'aa', 'ab', 'ac', 'ad', 'ae', 'af', 'ag', 'ah', 'ai', 'aj', 'ak', 'al', 'am', 'an', 'ao', 'ap', 'aq', 'ar', 'as', 'at', 'au', 'av', 'aw', 'ax', 'ay', 'az');
+		$last = false ;
+		foreach ($alphabet as $k => $v) {
+			if( isset($_GET[$v]) && !empty($_GET[$v]) ){
+				$last = $k;
+			}
+			else{
+				break;
+			}
+		}
+
+		if($last === false){ module_error_run('404'); return; };
+
+		if( $last >=2 && isnum($_GET[$alphabet[$last]]) && $_GET[$alphabet[$last-1]] == 'page'){
+			$page_num = intval($_GET[$alphabet[$last]]);
+			$last = $last - 2 ;
+		}
+		else
+		{
+			$page_num = 1;
+		}
+
+		$cat_term = urlencode($_GET[$alphabet[$last]]);
+
 		foreach ($categories as $cat)
 		{
-			if ($cat['term_slug'] == $cat_id)
+			if ($cat['term_slug'] == $cat_term)
 			{
 				$cat_id = $cat['term_id'];
 				break;
 			}
 		}
+
+		if(!isset($cat_id)){ module_error_run('404'); return; };
+
+		$parent = $categories[$cat_id]['term_parent'];
+
+		/**
+		* Check if the parents are true!! This way Wrong urls can be found!!
+		*
+		* @since 1.1
+		*/
+
+		while ($parent != 0 && $last > 0) {
+			$last--;
+			if( !isset($categories[$parent]) || $categories[$parent]['term_slug'] !=  urlencode($_GET[$alphabet[$last]]) ){
+				module_error_run('404');
+				return;
+			}
+			else{
+				$parent = $categories[$parent]['term_parent'];
+			}
+		}
+		$url = '' ;
+		$url = ( $categories[$cat_id]['term_parent'] == 0 ? '' : _get_sub_categories_parent_url($categories[$cat_id]['term_parent'],$url)) ;
+		$cat_url = 'posts/category/'. $url .'/'.$categories[$cat_id]['term_slug'];
+		unset($url,$parent,$last,$alphabet);
 	}
 	else
 	{
-		$cat_id = intval($cat_id);
+		$cat_id = intval(get_param($_GET,'c'));
+		if (!isset($categories[$cat_id]) || !is_array($categories[$cat_id]) || (isset($_GET['d']) && !isnum($_GET['d'])) )
+		{
+			module_error_run('404');
+			return;
+		}
+		$page_num = get_param($_GET, 'd', 1);
+		$cat_url = 'posts/category/'.$cat_id;
 	}
+
+	require_once(engine_dir.'pagination.class.php');
+
+	$cat = $categories[$cat_id];
+
+	// We Should Use $query_match here because we need it!!!
 	$query_match = $cat_id;
 	$query_match = _get_sub_cat_for_query($cat_id,$query_match);
 
-	if (!isset($categories[$cat_id]) || !is_array($categories[$cat_id]) || (isset($_GET['d']) && !isnum($_GET['d'])))
+	//If we dont cast $cat_id to string it will return wrong value for example "1|2" == 1 returns True!!
+	if ( $query_match == (string) $cat_id )
+		$children = 'FIND_IN_SET('.$cat['term_id'].', p.post_categories)';
+	else
+		$children = "p.post_categories regexp '[[:<:]](" . $query_match . ")[[:>:]]'";
+
+	$posts_options = posts_options();
+	$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."' AND (".str_replace('p.post_categories', 'post_categories', $children).")", true);
+	$pagination = new pagination($total, $posts_options['total-category'], $page_num);
+
+	if ($page_num > $pagination->pages && $pagination->pages != 0)
 	{
-		module_error_run('404');
+		redirect( url($cat_url) );
+	}
+
+	$posts = get_posts(array(
+		'where' => 'AND ('.$children.')',
+		'limit' => array($pagination->start, $pagination->end)
+	));
+
+	set_theme('category-post-'.$cat['term_id']);
+	set_title($cat['term_name']);
+	set_meta('description', $cat['term_description']);
+
+	if ($page_num > $pagination->pages || $page_num <= 1)
+	{
+		set_canonical(url( $cat_url ));
 	}
 	else
 	{
-		require_once(engine_dir.'pagination.class.php');
-	
-		$page_num = get_param($_GET, 'd', 1);
-		$cat = $categories[$cat_id];
-
-		if ( $query_match == $cat_id )
-			$children = 'FIND_IN_SET('.$cat['term_id'].', p.post_categories)';
-		else
-			$children = "p.post_categories regexp '[[:<:]](" . $query_match . ")[[:>:]]'";
-
-		$posts_options = posts_options();
-		$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."' AND (".str_replace('p.post_categories', 'post_categories', $children).")", true);
-		$pagination = new pagination($total, $posts_options['total-category'], $page_num);
-
-		if ($page_num > $pagination->Pages && $pagination->Pages != 0)
-		{
-			redirect(url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id'])));
-		}
-
-		$posts = get_posts(array(
-			'where' => 'AND ('.$children.')',
-			'limit' => array($pagination->Start, $pagination->End)
-		));
-
-		set_theme('category-post-'.$cat['term_id']);
-		set_title($cat['term_name']);
-		set_meta('description', $cat['term_description'], 'add');
-
-		if ($page_num > $pagination->Pages || $page_num <= 1)
-		{
-			set_canonical(url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id'])));
-		}
-		else
-		{
-			set_canonical(url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id']).'/'.$page_num));
-		}
-		
-		if (!is_array($posts) || !count($posts))
-		{
-			set_content('بدون پست!', message('هیچ پستی برای موضوع <u>'.$cat['term_name'].'</u> در سایت یافت نشد!', 'error'));
-		}
-		else
-		{
-			if ($page_num > 1)
-			{
-				set_title('صفحه '.translate_number($page_num,'fa'));
-			}
-
-			foreach ($posts as $post)
-			{
-				_theme($post);
-			}
-
-			$pagination->build(url('posts/category/'.($options['rewrite'] == 1? $cat['term_slug'] : $cat['term_id']).'/{page}'));
-		}
-
-		unset($pagination, $posts, $total, $page_num, $cat, $children, $posts_options);
+		set_canonical(url( $cat_url . ($options['rewrite'] == 1 ? '/page/'.$page_num : '/'.$page_num ) ));
 	}
+
+	if (!is_array($posts) || !count($posts))
+	{
+		set_content('بدون پست!', message('هیچ پستی برای موضوع <u>'.$cat['term_name'].'</u> در سایت یافت نشد!', 'error'));
+	}
+	else
+	{
+		if ($page_num > 1)
+		{
+			set_title('صفحه '.translate_number($page_num,'fa'));
+		}
+
+		foreach ($posts as $post)
+		{
+			_theme($post);
+		}
+
+		$pagination->build( url( $cat_url . ($options['rewrite'] == 1 ? '/page/{page}' : '/{page}' ) ) );
+	}
+
+	unset($pagination, $posts, $total, $page_num, $cat, $children, $posts_options);
 }
 
 /**
@@ -321,7 +368,6 @@ function _get_sub_cat_for_query($id,&$txt){
 
 	return $txt;
 }
-
 
 function _single()
 {
@@ -387,14 +433,14 @@ function _single()
 
 				$pagination = new pagination($total, $comments->options['per-page'] , $page);
 
-				if ($page > $pagination->Pages && $pagination->Pages != 0)
+				if ($page > $pagination->pages && $pagination->pages != 0)
 				{
 					redirect( $url );
 				}
 
-				$pagination->Pages != 1 && $comments->action = url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id']) ."/comments-page/".$pagination->Pages );
+				$pagination->pages != 1 && $comments->action = url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id']) ."/comments-page/".$pagination->pages );
 
-				$comments->set_limits( $pagination->Start , $pagination->End );
+				$comments->set_limits( $pagination->start , $pagination->end );
 
 				$pagination->build( url( ('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id'])."/comments-page/{page}")  ) ) ;
 			}
@@ -406,12 +452,12 @@ function _single()
 				if (group_super_admin || member::check_admin_page_access("comments") || $comments->options['approve'] == 0){
 					$d->query("UPDATE `#__posts` SET `post_comment_count`= `post_comment_count` + 1  WHERE `post_id`='".intval($post['post_id'])."' LIMIT 1");
 				}
-				
+
 				if( ($total%$comments->options['per-page']) + 1 == 1){
-					$page = $pagination->Pages + 1;
+					$page = $pagination->pages + 1;
 					redirect(url('posts/'.($options['rewrite'] == 1? $post['post_name'] : $post['post_id']) ."/comments-page/".$page ));
 				}
-							
+
 			}
 
 		}
@@ -425,12 +471,12 @@ function _print()
 	global $d, $options;
 
 	$id = get_param($_GET, 'c', 0);
-	
+
 	$post = get_posts(array(
 		'where' => "AND p.post_id='".intval($id)."'",
 		'limit' => array(1)
 	));
-	
+
 	if (!isset($post[0]) || !is_array($post[0]) || !count($post[0]))
 	{
 		module_error_run('404');
@@ -537,7 +583,7 @@ function _theme($post, $single = false)
 		'{comment-count}' => $post['post_comment_count'],
 		'{language}' => $post['post_language'],
 	);
-	
+
 	if ($post['post_image'])
 	{
 		$itpl->assign(array(
@@ -554,7 +600,7 @@ function _theme($post, $single = false)
 		));
 		$itpl->block('#\\[image\\](.*?)\\[/image\\]#s', '');
 	}
-	
+
 	if ($post['post_fixed'] == 1)
 	{
 		$itpl->assign(array(
@@ -571,7 +617,7 @@ function _theme($post, $single = false)
 		));
 		$itpl->block('#\\[fixed\\](.*?)\\[/fixed\\]#s', '');
 	}
-	
+
 	if (!empty($categories))
 	{
 		$itpl->assign(array(
@@ -583,7 +629,7 @@ function _theme($post, $single = false)
 	{
 		$itpl->block('#\\[categories\\](.*?)\\[/categories\\]#s', '');
 	}
-	
+
 	if (!empty($tags))
 	{
 		$itpl->assign(array(
@@ -595,7 +641,7 @@ function _theme($post, $single = false)
 	{
 		$itpl->block('#\\[tags\\](.*?)\\[/tags\\]#s', '');
 	}
-	
+
 	if ($post['post_comment'] == 1)
 	{
 		$itpl->assign(array(
@@ -607,7 +653,7 @@ function _theme($post, $single = false)
 	{
 		$itpl->block('#\\[comment\\](.*?)\\[/comment\\]#s', '');
 	}
-	
+
 	if (($post['post_view'] == 2 && !member) || ($post['post_view'] == 3 && member) || ($post['post_view'] == 4 && !group_admin) || ($post['post_view'] == 5 && !group_super_admin))
 	{
 		$itpl->assign(array(
@@ -624,7 +670,7 @@ function _theme($post, $single = false)
 		));
 		$itpl->block('#\\[not-view\\](.*?)\\[/not-view\\]#s', '');
 	}
-	
+
 	if ($single)
 	{
 		$itpl->assign(array(
@@ -632,7 +678,7 @@ function _theme($post, $single = false)
 			'[/single]' => null,
 		));
 		$itpl->block('#\\[not-single\\](.*?)\\[/not-single\\]#s', '');
-		
+
 		if ($post['post_view'] == 2 && !member) $array['{text2}'] = message('این بخش فقط برای اعضا نمایش داده می شود!', 'error');
 		elseif ($post['post_view'] == 3 && member) $array['{text2}'] = message('این بخش فقط برای کاربران مهمان نمایش داده می شود!', 'error');
 		elseif ($post['post_view'] == 4 && !group_admin) $array['{text2}'] = message('این بخش فقط برای مدیران سایت نمایش داده می شود!', 'error');
@@ -641,7 +687,7 @@ function _theme($post, $single = false)
 		{
 			$array['{text2}'] = replace_links($post['post_more']);
 		}
-		
+
 		$itpl->assign(array(
 			'[text2]' => null,
 			'[/text2]' => null,
@@ -661,12 +707,12 @@ function _theme($post, $single = false)
 		{
 			$itpl->block('#\\[more\\](.*?)\\[/more\\]#s', '');
 		}
-		
+
 		$itpl->assign(array(
 			'[not-single]' => null,
 			'[/not-single]' => null,
 		));
-		
+
 		$itpl->block('#\\[single\\](.*?)\\[/single\\]#s', '');
 		$itpl->block('#\\[text2\\](.*?)\\[/text2\\]#s', '');
 	}
@@ -679,7 +725,7 @@ function _theme($post, $single = false)
 		foreach ($posts_fields as $fname => $fvalue)
 		{
 			if (!is_alphabet($fname)) continue;
-	
+
 			$array['{field-'.$fname.'}'] = isset($post['post_fields'][$fname])? $post['post_fields'][$fname] : false;
 
 			if (!empty($array['{field-'.$fname.'}']))
@@ -818,7 +864,7 @@ function _archives_show_posts()
 			$day = $e;
 		}
 		elseif ( ! $page && ! empty($e) && $e == "page" ) {
-			
+
 			$page = get_param( $_GET , 'f' , 1 );
 			if( !is_numeric($page) ){
 				module_error_run();
@@ -875,14 +921,14 @@ function _archives_show_posts()
 		$full_url = $url . ($page ? ('/page/'.$page) : '');
 
 		$page = !$page ? 1 : $page ;
-		if ($page > $pagination->Pages && $pagination->Pages != 0)
+		if ($page > $pagination->pages && $pagination->pages != 0)
 		{
 			redirect(url($url));
 		}
-		
+
 		// dump(array($start_time,$end_time));
 		$posts = get_posts(array(
-			'limit' => array($pagination->Start, $pagination->End),
+			'limit' => array($pagination->start, $pagination->end),
 			'date' => array($start_time, ( $end_time > time_now ? time_now : $end_time ) )
 		));
 
@@ -898,7 +944,6 @@ function _archives_show_posts()
 		{
 			set_title('صفحه '.translate_number($page,'fa'));
 		}
-		
 
 		set_canonical(url($full_url));
 

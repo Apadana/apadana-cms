@@ -35,7 +35,7 @@ function _default()
 
 	$itpl = new template('modules/posts/html/admin/posts.tpl');
 
-	$d->query("SELECT * FROM #__posts ORDER BY post_fixed {$order}, post_date {$order}, post_id {$order} LIMIT $pagination->Start, $pagination->End");
+	$d->query("SELECT * FROM #__posts ORDER BY post_fixed {$order}, post_date {$order}, post_id {$order} LIMIT $pagination->start, $pagination->end");
 	if ($d->num_rows() >= 1)
 	{
 		while ($data = $d->fetch()) 
