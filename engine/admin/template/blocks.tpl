@@ -43,7 +43,6 @@ function block_ajax(id)
 		{
 			return false;
 		}
-
 		$.ajax({
 			type: 'get',
 			url: '{admin-page}&section=blocks&do=list',

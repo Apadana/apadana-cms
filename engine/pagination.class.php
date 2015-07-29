@@ -13,100 +13,144 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 
 class pagination 
 {
-    public $Start; // start of selection 
-    public $End; // end of selection 
-    private $total; // number of totall content
-    public $Pages; // number of page after set category process
-    private $N_p_p; // number of content per page
-    private $Page_number; // number of current page
-    private	$Buttons; // number of max buttons
-    public $data;
+	public $start; // start of selection 
+	public $end; // end of selection 
+	private $total; // number of totall content
+	public $pages; // number of page after set category process
+	private $per_page; // number of content per page
+	private $page_number; // number of current page
+	private	$buttons; // number of max buttons
+	public $data;
 
-    function __construct($total, $n_p_p = 10, $page_number = 1, $buttons = 9)
+	function __construct($total, $per_page = 10, $page_number = 1, $buttons = 9)
 	{
-        // page start from 1
-        $page_number = ($page_number<1)? 1 : $page_number;
-       	$this->total = $total;
-	    $this->N_p_p = $n_p_p;
-	    $this->Pages = ceil($this->total/$this->N_p_p);
-       	$this->Buttons = $buttons;
-	    $page_number = ($page_number>$this->Pages)?	$this->Pages : $page_number;
-	    $this->Page_number = $page_number;
-	    $this->Ret();
+		$this->total = $total;
+		$this->per_page = $per_page;
+		$this->pages = ceil($this->total/$this->per_page);
+		$this->buttons = $buttons;
+		$this->page_number = ($page_number < 1)? 1 : $page_number;
+		$this->page_number = ($this->page_number > $this->pages)? $this->pages : $this->page_number;
+
+		// give the page number and return start and end of selection
+		$this->start = ($this->page_number-1)*$this->per_page;
+		$this->start = $this->start <= 0? 0 : $this->start;
+		$this->end = $this->per_page;
 	}
 
-    public function build($link, $return = false)
+	/**
+	* Backward campatibility!!
+	*
+	* @since 1.1
+	*/
+	public function __get($name) {
+		$name =strtolower($name);
+		return $this->$name;
+	}
+
+	public function build($link, $return = false)
 	{
-    	// if pages == 1 , no need to print pagination
-    	if ($this->Pages <= 1 || $this->total <= 0) return null;
+		// if pages == 1 , no need to print pagination
+		if ($this->pages <= 1 || $this->total <= 0)
+		{
+			return null;
+		}
+
 		$this->data = array();
 
-    	if ($this->Pages > $this->Buttons)
+		if ($this->pages > $this->buttons)
 		{
-			if ($this->Page_number > 1) 
-				$this->data[] = array('url'=>str_replace('{page}', 1, $link),'first'=>1,'off'=>0);
-			else 
-				$this->data[] = array('url'=>null,'first'=>1,'off'=>1);
+			if ($this->page_number > 1) 
+			{
+				$this->data[] = array('url' => str_replace('{page}', 1, $link),'first' => 1,'off' => 0);
+			}
+			else
+			{
+				$this->data[] = array('url' => null,'first' => 1,'off' => 1);
+			}
 		}
 
-    	// pre button
-    	if ($this->Page_number>1) 
-			$this->data[] = array('url'=>str_replace('{page}', ($this->Page_number -1), $link),'previous'=>1,'off'=>0);
-    	else 
-			$this->data[] = array('url'=>null,'previous'=>1,'off'=>1);
-			
-    	// print button
-    	$this->Buttons = (int) $this->Buttons;
-    	$start_counter = $this->Page_number - floor($this->Buttons/2); // for normal mode
-    	$end_conter	= $this->Page_number + floor($this->Buttons/2); // for normal mode
-    	// try to buttons exactly equal to $Buttons
-    	if ($start_counter<1) 
-		$end_conter = $end_conter + abs($start_counter);
-		
-    	if ($end_conter>$this->Pages) 
-		$start_counter = $start_counter - ($end_conter - $this->Pages);
-		
-    	if (($this->Page_number - floor($this->Buttons/2)) < 1)
-		$end_conter ++;
-	
-        for ($i=$start_counter; $i<=$end_conter; $i++)
+		// pre button
+		if ($this->page_number>1)
 		{
-			if ($i>$this->Pages || $i<1) 
-			    continue; // no print less than 1 value or grater than totall page
+			$this->data[] = array('url' => str_replace('{page}', ($this->page_number -1), $link), 'previous' => 1, 'off' => 0);
+		}
+		else 
+		{
+			$this->data[] = array('url' => null, 'previous' => 1, 'off' => 1);
+		}
+
+		// print button
+		$this->buttons = (int) $this->buttons;
+		$start_counter = $this->page_number - floor($this->buttons/2); // for normal mode
+		$end_conter = $this->page_number + floor($this->buttons/2); // for normal mode
+
+		// try to buttons exactly equal to $buttons
+		if ($start_counter < 1)
+		{
+			$end_conter = $end_conter + abs($start_counter);
+		}
+		
+		if ($end_conter > $this->pages)
+		{
+			$start_counter = $start_counter - ($end_conter - $this->pages);
+		}
+		
+		if (($this->page_number - floor($this->buttons/2)) < 1)
+		{
+			$end_conter ++;
+		}
+
+		for ($i = $start_counter; $i <= $end_conter; $i++)
+		{
+			if ($i > $this->pages || $i < 1)
+			{
+				continue; // no print less than 1 value or grater than totall page
+			}
 				
-			if ($i==$this->Page_number) 
-				$this->data[] = array('url'=>null,'page'=>1,'active'=>1,'number'=>$i); // change current page' class
-			else 
-				$this->data[] = array('url'=>str_replace('{page}', $i, $link),'page'=>1,'active'=>0,'number'=>$i); // normal pages
+			if ($i == $this->page_number)
+			{
+				$this->data[] = array('url' => null, 'page' => 1, 'active' => 1, 'number' => $i); // change current page' class
+			}
+			else
+			{
+				$this->data[] = array('url' => str_replace('{page}', $i, $link), 'page' => 1, 'active' => 0, 'number' => $i); // normal pages
+			}
 		}
 
-    	// next button
-    	if ($this->Page_number<$this->Pages) 
-			$this->data[] = array('url'=>str_replace('{page}', ($this->Page_number+1), $link),'next'=>1,'off'=>0);
-    	else 
-			$this->data[] = array('url'=>null,'next'=>1,'off'=>1);
-
-    	if ($this->Pages > $this->Buttons)
+		// next button
+		if ($this->page_number < $this->pages)
 		{
-			if ($this->Pages > $this->Page_number) 
-				$this->data[] = array('url'=>str_replace('{page}', $this->Pages, $link),'last'=>1,'off'=>0);
-			else 
-				$this->data[] = array('url'=>null,'last'=>1,'off'=>1);
+			$this->data[] = array('url' => str_replace('{page}', ($this->page_number+1), $link),'next' => 1,'off' => 0);
+		}
+		else
+		{
+			$this->data[] = array('url' => null,'next' => 1,'off' => 1);
+		}
+
+		if ($this->pages > $this->buttons)
+		{
+			if ($this->pages > $this->page_number)
+			{
+				$this->data[] = array('url' => str_replace('{page}', $this->pages, $link),'last' => 1,'off' => 0);
+			}
+			else
+			{
+				$this->data[] = array('url' => null, 'last' => 1, 'off' => 1);
+			}
 		}
 
 		if ($return)
 		{
 			return $this->data;
 		}
-		
+
 		global $tpl, $options;
-		
-		global $tpl;
+
 		foreach ($this->data as $i)
 		{
 			if (isset($i['first']))
 			{
-				if ($i['off']==0)
+				if ($i['off'] == 0)
 				{
 					$tpl->add_for('pagination', array(
 						'{url}' => $i['url'],
@@ -135,7 +179,7 @@ class pagination
 			}
 			elseif (isset($i['previous']))
 			{
-				if ($i['off']==0) 
+				if ($i['off'] == 0)
 				{
 					$tpl->add_for('pagination', array(
 						'{url}' => $i['url'],
@@ -164,7 +208,7 @@ class pagination
 			}
 			elseif (isset($i['page']))
 			{
-				if ($i['active']==0) 
+				if ($i['active'] == 0)
 				{
 					$tpl->add_for('pagination', array(
 						'{url}' => $i['url'],
@@ -195,7 +239,7 @@ class pagination
 			}
 			elseif (isset($i['next']))
 			{
-				if ($i['off']==0) 
+				if ($i['off'] == 0)
 				{
 					$tpl->add_for('pagination', array(
 						'{url}' => $i['url'],
@@ -224,7 +268,7 @@ class pagination
 			}
 			elseif (isset($i['last']))
 			{
-				if ($i['off']==0) 
+				if ($i['off'] == 0)
 				{
 					$tpl->add_for('pagination', array(
 						'{url}' => $i['url'],
@@ -253,14 +297,4 @@ class pagination
 			}
 		}
 	}
-
-	// give the page number and return start and end of selection
-    private function Ret()
-	{
-    	$this->Start = (($this->Page_number-1)*$this->N_p_p);
-    	$this->Start = $this->Start <= 0? 0 : $this->Start;
-    	$this->End = $this->N_p_p ;
-	}
 }
-
-?>

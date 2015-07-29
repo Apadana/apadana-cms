@@ -46,57 +46,17 @@ function alphabet($string)
 
 function htmlencode($string)
 {
-	return trim(htmlentities(unhtmlentities($string), ENT_QUOTES, 'UTF-8'));
+	return trim(htmlentities(html_entity_decode( $string, ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8'));
 }
 
 function htmldecode($string)
 {
-	return trim(html_entity_decode(unhtmlentities($string), ENT_QUOTES, 'UTF-8'));
+	return trim(html_entity_decode( $string, ENT_QUOTES, 'UTF-8'));
 }
 
 function nohtml($string)
 {
 	return trim(strip_tags(htmldecode($string)));
-}
-
-function unhtmlentities($string)
-{
-	# Replace numeric entities
-	$string = preg_replace_callback('~&#x([0-9a-f]+);~i', create_function('$match', 'return unichr(hexdec($match[1]));'), $string);
-	$string = preg_replace_callback('~&#([0-9]+);~', create_function('$match', 'return unichr($match[1]);'), $string);
-	#$string = preg_replace('~&#x([0-9a-f]+);~ei', 'unichr(hexdec("\\1"))', $string);
-	#$string = preg_replace('~&#([0-9]+);~e', 'unichr("\\1")', $string);
-	# Replace literal entities
-	$trans_tbl = get_html_translation_table(HTML_ENTITIES);
-	$trans_tbl = array_flip($trans_tbl);
-	return strtr($string, $trans_tbl);
-}
-
-function unichr($c)
-{
-    if ($c <= 0x7F)
-	{
-        return chr($c);
-    }
-	else if ($c <= 0x7FF)
-	{
-        return chr(0xC0 | $c >> 6) . chr(0x80 | $c & 0x3F);
-    }
-	else if ($c <= 0xFFFF)
-	{
-        return chr(0xE0 | $c >> 12) . chr(0x80 | $c >> 6 & 0x3F)
-									. chr(0x80 | $c & 0x3F);
-    }
-	else if ($c <= 0x10FFFF)
-	{
-        return chr(0xF0 | $c >> 18) . chr(0x80 | $c >> 12 & 0x3F)
-									. chr(0x80 | $c >> 6 & 0x3F)
-									. chr(0x80 | $c & 0x3F);
-    }
-	else
-	{
-		return false;
-    }
 }
 
 function slug($text, $urlencode = true)

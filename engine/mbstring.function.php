@@ -30,7 +30,7 @@ function apadana_substr($string, $start, $length = '', $handle_entities = false)
 {
 	if ($handle_entities)
 	{
-		$string = unhtmlentities($string);
+		$string = trim(html_entity_decode($string) );
 	}
 	if (function_exists('mb_substr'))
 	{

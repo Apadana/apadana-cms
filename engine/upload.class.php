@@ -15,13 +15,13 @@ class upload
 {
 	static function file($file, $path, $filename = null)
     {
-		if(empty($file['name']) || $file['name'] == 'none' || $file['size'] < 1)
+		if (empty($file['name']) || $file['name'] == 'none' || $file['size'] < 1)
 		{
 			$upload['error'] = 1;
 			return $upload;
 		}
 
-		if(!$filename)
+		if (!$filename)
 		{
 			$filename = $file['name'];
 		}
@@ -30,7 +30,7 @@ class upload
 		$filename = self::safe($filename);
 		$moved = @move_uploaded_file($file['tmp_name'], $path.'/'.$filename);
 		
-		if(!$moved)
+		if (!$moved)
 		{
 			$upload['error'] = 2;
 			return $upload;
@@ -50,5 +50,3 @@ class upload
 		return preg_replace('#/$#', null, $file); // Make the filename safe
     }
 }
-
-?>

@@ -499,5 +499,3 @@ class template
 		return $this->check_page($matches[1], $matches[2]);
 	}
 }
-
-?>

@@ -10,7 +10,6 @@ function modules_ajax(id)
 		{
 			return false;
 		}
-
 		apadana.ajax({
 			type: 'GET',
 			action: '{admin-page}&section=modules',

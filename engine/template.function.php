@@ -265,7 +265,7 @@ function warning($title, $message)
 {
 	global $options;
 
-    @Header('Content-type: text/html; charset='.charset);
+	header('Content-type: text/html; charset='.charset);
 	$tpl = get_tpl(engine_dir.'templates/||warning.tpl', template_dir.'||warning.tpl');
 	$tpl = new template($tpl[1], $tpl[0]);
 	$tpl->assign(array(
@@ -451,5 +451,3 @@ function set_theme($file)
 
 	$page['theme'] = $file;
 }
-
-?>

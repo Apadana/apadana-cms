@@ -42,5 +42,3 @@ function is_module($name, $active = true)
 	}
 	return false; 
 }
-
-?>

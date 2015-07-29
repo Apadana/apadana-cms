@@ -65,7 +65,7 @@ require_once(engine_dir.'html.class.php');
 error_reporting( debug_system ? E_ALL : 0);
 
 # Determine Magic Quotes Status (< PHP 5.4)
-if (version_compare(PHP_VERSION, '6.0', '<'))
+if (version_compare(PHP_VERSION, '5.4', '<'))
 {
 	if (get_magic_quotes_gpc())
 	{
@@ -323,5 +323,3 @@ if (file_exists(root_dir.'templates/'.$options['theme'].'/functions.php'))
 }
 
 ($hook = get_hook('init'))? eval($hook) : null;
-
-?>

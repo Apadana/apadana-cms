@@ -7,7 +7,6 @@
  * @copyright: Copyright © 2012-2015 ApadanaCMS.ir. All rights reserved.
  * @Apadana CMS is a Free Software
 **/
-
 apadana.slug = function(text)
 {
 	text = text.replace(/ {2,}/g, '-');

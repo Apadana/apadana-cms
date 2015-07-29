@@ -34,7 +34,7 @@ function referer_index()
 
 	$itpl = new template('engine/admin/template/referer.tpl');
 	
-	$d->query("SELECT * FROM #__referer ORDER BY ref_id {$order} LIMIT $pagination->Start, $pagination->End");
+	$d->query("SELECT * FROM #__referer ORDER BY ref_id {$order} LIMIT $pagination->start, $pagination->end");
 	if ($d->num_rows() >= 1)
 	{
 		while ($data = $d->fetch()) 
