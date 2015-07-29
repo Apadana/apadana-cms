@@ -13,16 +13,15 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 
 function _error_handler($severity, $message, $filepath, $line)
 {
-	$is_error = (((E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
+	$is_fatal = (((E_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_USER_ERROR) & $severity) === $severity);
 
 	// When a fatal error occurred, set the status header to '500 Internal Server Error'
-	if ($is_error)
+	if ($is_fatal)
 	{
 		header('Status: 500 Internal Server Error',true);
 	}
 
-	// Should we ignore the error? We'll get the current error_reporting
-	// level and add its bits with the severity bits to find out.
+	//ignore errors by error reporting level
 	if (($severity & error_reporting()) !== $severity)
 	{
 		return;
@@ -31,23 +30,19 @@ function _error_handler($severity, $message, $filepath, $line)
 	//apadana_log($severity, $message, $filepath, $line);
 
 	// Should we display the error?
-	if (ini_get('display_errors'))
+	if (str_ireplace(array('off', 'none', 'no', 'false', 'null'), '', ini_get('display_errors')))
 	{
 		show_php_error($severity, $message, $filepath, $line);
 	}
 
-	// If the error is fatal, the execution of the script should be stopped because
-	// errors can't be recovered from. Halting the script conforms with PHP's
-	// default error handling. See http://www.php.net/manual/en/errorfunc.constants.php
-	if ($is_error)
+	if ($is_fatal)
 	{
-		exit(); // EXIT_ERROR
+		exit();
 	}
 }
 
 function show_php_error($severity, $message, $filepath, $line)
 {
-	global $ob_level;
 
 	static $have_error;
 
@@ -103,8 +98,7 @@ function show_php_error($severity, $message, $filepath, $line)
 	}else{
 		$itpl->block('#\\[backtrace\\](.*?)\\[/backtrace\\]#s', '');
 	}
-	$data = $itpl->get_var();
-	echo $data;
+	$itpl->display();
 
 	unset($itpl);
 }

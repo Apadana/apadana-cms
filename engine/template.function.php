@@ -108,7 +108,7 @@ function template_info($theme)
 
 	if (file_exists(root_dir.'templates/'.$theme.'/styles/engine.css'))
 	{
-		$file = file_get_contents(root_dir.'templates/'.$theme.'/styles/engine.css');	
+		$file = file_get_contents(root_dir.'templates/'.$theme.'/styles/engine.css');
 		if (!empty($file))
 		{
 			preg_match_all('|/\*\*(.*)\*/|is', $file, $a);

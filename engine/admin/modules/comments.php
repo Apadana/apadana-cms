@@ -78,7 +78,7 @@ function _default()
 		".($type != ''? "WHERE c.comment_type='".$d->escape_string($type)."'" : null)."
 		GROUP BY c.comment_id
 		ORDER BY c.comment_id $order
-		LIMIT $pagination->Start, $pagination->End
+		LIMIT $pagination->start, $pagination->end
 	");
 	
 	if ($d->num_rows($query) >= 1)
