@@ -94,7 +94,7 @@ function module_search_run()
 			$total = $d->num_rows("SELECT * FROM `#__search` WHERE `search_key`='".$d->escape_string($search['key'])."'", true);
 			$pagination = new pagination($total, $search['result-in-page'], $pages);
 			$sortby = $search['sortby']=='date'? 'search_date' : ($search['sortby']=='title'? 'search_title' : ($search['sortby']=='author'? 'search_author' : ('search_id')));
-			$result = $d->get_row("SELECT * FROM `#__search` WHERE `search_key`='".$d->escape_string($search['key'])."' ORDER BY ".$sortby." ".$search['sort-type']." LIMIT ".$pagination->Start.', '.$pagination->End);
+			$result = $d->get_row("SELECT * FROM `#__search` WHERE `search_key`='".$d->escape_string($search['key'])."' ORDER BY ".$sortby." ".$search['sort-type']." LIMIT ".$pagination->start.', '.$pagination->end);
 		}
 		else
 		{

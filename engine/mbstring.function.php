@@ -14,7 +14,7 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 function apadana_strlen($string)
 {
     $string = preg_replace('#&\#([0-9]+);#', '-', $string);
-    if (apadana_strtolower(charset) == 'utf-8')
+    if (strtolower(charset) == 'utf-8')
     {
         # Get rid of any excess RTL and LTR override for they are the workings of the devil
         $string = str_replace(dec_to_utf8(8238), '', $string);

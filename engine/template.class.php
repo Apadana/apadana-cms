@@ -145,7 +145,6 @@ class template
 		{
 			if (empty($input))
 			{
-				echo 'Tag name ist empty!';
 				return FALSE;
 			}
 			else

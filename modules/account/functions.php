@@ -311,15 +311,15 @@ function _members()
 		$total = $d->num_rows("SELECT * FROM `#__members`", true);
 		$pagination = new pagination($total, intval($options_account['members-total']), $get_pages);
 
-		if ($get_pages > $pagination->Pages)
+		if ($get_pages > $pagination->pages)
 		{
 			redirect(url('account/members'));
 		}
 		
-		$query = sprintf("SELECT * FROM #__members ORDER BY member_id DESC LIMIT %d, %d", $pagination->Start, $pagination->End);
+		$query = sprintf("SELECT * FROM #__members ORDER BY member_id DESC LIMIT %d, %d", $pagination->start, $pagination->end);
 		$members = $d->get_row($query);
 
-		if ($get_pages > 1 && $get_pages <= $pagination->Pages)
+		if ($get_pages > 1 && $get_pages <= $pagination->pages)
 		{
 			set_title('صفحه '.translate_number($get_pages,'fa'));
 			set_canonical(url('account/members/'.$get_pages));

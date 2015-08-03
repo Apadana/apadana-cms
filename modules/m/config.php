@@ -34,10 +34,10 @@ function module_m_run()
 		$total = $d->num_rows("SELECT `post_id` FROM `#__posts` WHERE `post_approve` = '1' AND `post_date` <= '".time_now."'", true);
 		$pagination = new pagination($total, 40, $page_num);
 		$posts = get_posts(array(
-			'limit' => array($pagination->Start, $pagination->End)
+			'limit' => array($pagination->start, $pagination->end)
 		));
 
-		if ($page_num > $pagination->Pages && $pagination->Pages != 0)
+		if ($page_num > $pagination->pages && $pagination->pages != 0)
 		{
 			redirect(url('m'));
 		}
@@ -49,7 +49,7 @@ function module_m_run()
 				set_title('صفحه '.translate_number($page_num,'fa'));
 			}
 			
-			if ($pagination->Pages < $page_num || $page_num <= 1)
+			if ($pagination->pages < $page_num || $page_num <= 1)
 			{
 				set_canonical(url('m'));
 			}

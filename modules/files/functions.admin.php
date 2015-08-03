@@ -46,7 +46,7 @@ function _index()
 			".(empty($search)? null : "WHERE f.file_slug LIKE '%".$d->escape_string($search)."%' OR f.file_url LIKE '%".$d->escape_string($search)."%'")."
 			GROUP BY f.file_id
 			ORDER BY f.file_id {$order}
-			LIMIT $pagination->Start, $pagination->End
+			LIMIT $pagination->start, $pagination->end
 		");
 		if ($d->num_rows() >= 1)
 		{

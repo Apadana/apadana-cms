@@ -42,7 +42,7 @@ function _default()
 
 	$itpl = new template('modules/account/html/admin/index.tpl');
 
-	$d->query("SELECT * FROM #__members ".(empty($search)? null : "WHERE member_name LIKE '%".$search."%'")." ORDER BY $sort $order LIMIT $pagination->Start, $pagination->End");
+	$d->query("SELECT * FROM #__members ".(empty($search)? null : "WHERE member_name LIKE '%".$search."%'")." ORDER BY $sort $order LIMIT $pagination->start, $pagination->end");
 	if ($d->num_rows() >= 1)
 	{
 		while($m = $d->fetch()) 
@@ -252,7 +252,7 @@ function _edit()
 		}
 		else
 		{
-			if ($options_account['email'] == 1 && $member_info['member_email'] != $postMember['email'] && $d->numRows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escapeString($postMember['email'])."'", true) >= 1)
+			if ($options_account['email'] == 1 && $member_info['member_email'] != $postMember['email'] && $d->num_rows("SELECT `member_id` FROM `#__members` WHERE `member_email`='".$d->escape_string($postMember['email'])."'", true) >= 1)
 			{
 				$message .= 'این ایمیل قبلا ثبت شده، یک ایمیل دیگر انتخاب کنید!<br />';
 			}

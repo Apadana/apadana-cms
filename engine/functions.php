@@ -71,9 +71,9 @@ function replace_links($text)
 
 function apadana_memory_get_usage()
 {
-	if (function_exists('memory_get_usage'))
+	if (function_exists('memory_get_peak_usage'))
     {
-	    $memory_size = memory_get_usage(); // 36640
+	    $memory_size = memory_get_peak_usage();
 		$unit = array('بایت', 'کیلوبایت', 'مگابایت', 'گیگابایت');
 		return @round($memory_size/pow(1024,($i=floor(log($memory_size,1024)))),2).' '.$unit[$i];
 	}

@@ -167,7 +167,7 @@ class shoutbox
 
 		($hook = get_hook('shoutbox_archive_start'))? eval($hook) : null;
 
-		$d->query("SELECT * FROM `#__shoutbox` ORDER BY `shout_id` {$order} LIMIT $pagination->Start, $pagination->End");
+		$d->query("SELECT * FROM `#__shoutbox` ORDER BY `shout_id` {$order} LIMIT $pagination->start, $pagination->end");
 		if ($d->num_rows() >= 1)
 		{
 			while ($row = $d->fetch()) 

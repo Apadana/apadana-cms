@@ -75,7 +75,7 @@ function _index()
 			LEFT JOIN #__members AS members ON members.member_id=pages.page_author
 			GROUP BY pages.page_id
 			ORDER BY pages.page_id {$order}
-			LIMIT $pagination->Start, $pagination->End
+			LIMIT $pagination->start, $pagination->end
 		");
 		if ($d->num_rows() >= 1)
 		{

@@ -24,12 +24,12 @@ function _inbox()
 	
 	$pagination = new pagination($total, 20, $get_pages);
 	
-	if ($get_pages > $pagination->Pages && $pagination->Pages != 0)
+	if ($get_pages > $pagination->pages && $pagination->pages != 0)
 	{
 		redirect(url('private-messages'));
 	}
 	
-	$query = sprintf("SELECT * FROM #__private_messages WHERE `msg_receiver`='%s' ORDER BY msg_date DESC, msg_id DESC LIMIT %d, %d", member_name, $pagination->Start, $pagination->End);
+	$query = sprintf("SELECT * FROM #__private_messages WHERE `msg_receiver`='%s' ORDER BY msg_date DESC, msg_id DESC LIMIT %d, %d", member_name, $pagination->start, $pagination->end);
 	$private_messages = $d->get_row($query, 'assoc', 'msg_id');
 
 	set_title('پیام خصوصی');
@@ -96,12 +96,12 @@ function _outbox()
 	
 	$pagination = new pagination($total, 20, $get_pages);
 	
-	if ($get_pages > $pagination->Pages && $pagination->Pages != 0)
+	if ($get_pages > $pagination->pages && $pagination->pages != 0)
 	{
 		redirect(url('private-messages/outbox'));
 	}
 	
-	$query = sprintf("SELECT * FROM #__private_messages WHERE `msg_sender`='%s' ORDER BY msg_date DESC, msg_id DESC LIMIT %d, %d", member_name, $pagination->Start, $pagination->End);
+	$query = sprintf("SELECT * FROM #__private_messages WHERE `msg_sender`='%s' ORDER BY msg_date DESC, msg_id DESC LIMIT %d, %d", member_name, $pagination->start, $pagination->end);
 	$private_messages = $d->get_row($query, 'assoc', 'msg_id');
 
 	set_title('پیام های ارسالی');
