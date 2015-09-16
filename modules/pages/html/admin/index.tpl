@@ -384,12 +384,12 @@ function page_delete(ID)
 [for list]
   <tr class="{odd-even}">
 	<td>{id}</td>
-	<td align="right"><span onmouseover="tooltip.show('ارسال شده در {past-time}')" onmouseout="tooltip.hide()">{title}</span></td>
-	<td><span onmouseover="tooltip.show('{comment-count} نظر تایید شده برای این صفحه')" onmouseout="tooltip.hide()">{comment-count}</span></td>
-	<td><a href="{page-url}" target="_blank"><img src="{site-url}engine/images/icons/cursor.png" width="16" height="16" onmouseover="tooltip.show('مشاهده صفحه')" onmouseout="tooltip.hide()" /></a></td>
-	<td><a href="javascript:page_approve({id})"><img src="{site-url}engine/images/icons/[approve]tick-button[/approve][not-approve]minus-button[/not-approve].png" width="16" height="16" onmouseover="tooltip.show('[approve]منتشر شده[/approve][not-approve]چرکنویس[/not-approve]')" onmouseout="tooltip.hide()" id="page-approve-{id}" /></a></td>
+	<td align="right"><span data-tooltip="ارسال شده در {past-time}" >{title}</span></td>
+	<td><span data-tooltip="{comment-count} نظر تایید شده برای این صفحه" >{comment-count}</span></td>
+	<td><a href="{page-url}" target="_blank"><img src="{site-url}engine/images/icons/cursor.png" width="16" height="16" data-tooltip="مشاهده صفحه"  /></a></td>
+	<td><a href="javascript:page_approve({id})"><img src="{site-url}engine/images/icons/[approve]tick-button[/approve][not-approve]minus-button[/not-approve].png" width="16" height="16" data-tooltip="[approve]منتشر شده[/approve][not-approve]چرکنویس[/not-approve]"  id="page-approve-{id}" /></a></td>
 	<td>{author}</td>
-	<td><a href="javascript:page_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()" /></a>&nbsp;<a href="javascript:page_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()" /></a></td>
+	<td><a href="javascript:page_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش"  /></a>&nbsp;<a href="javascript:page_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف"  /></a></td>
   </tr>
 [/for list]
 </tbody>

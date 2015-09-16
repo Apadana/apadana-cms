@@ -424,12 +424,12 @@ function file_delete(ID)
 [for list]
   <tr class="{odd-even}">
 	<td>{id}</td>
-	<td align="right"><span onmouseover="tooltip.show('ارسال شده در {past-time}')" onmouseout="tooltip.hide()">{name}</span></td>
-	<td><span onmouseover="tooltip.show('این فایل {count-downloads} بار دانلود شده است')" onmouseout="tooltip.hide()">{count-downloads}</span></td>
-	<td><a href="javascript:file_info({id})"><img src="{site-url}engine/images/icons/clipboard-list.png" width="16" height="16" onmouseover="tooltip.show('اطلاعات تکمیلی')" onmouseout="tooltip.hide()" /></a></td>
-	<td><a href="javascript:file_members({id})"><img src="{site-url}engine/images/icons/users.png" width="16" height="16" onmouseover="tooltip.show('مشاهده فهرست کاربرانی که این فایل را دانلود کرده اند')" onmouseout="tooltip.hide()" /></a></td>
+	<td align="right"><span data-tooltip="ارسال شده در {past-time}" >{name}</span></td>
+	<td><span data-tooltip="این فایل {count-downloads} بار دانلود شده است" >{count-downloads}</span></td>
+	<td><a href="javascript:file_info({id})"><img src="{site-url}engine/images/icons/clipboard-list.png" width="16" height="16" data-tooltip="اطلاعات تکمیلی"  /></a></td>
+	<td><a href="javascript:file_members({id})"><img src="{site-url}engine/images/icons/users.png" width="16" height="16" data-tooltip="مشاهده فهرست کاربرانی که این فایل را دانلود کرده اند"  /></a></td>
 	<td>{author}</td>
-	<td><a href="javascript:file_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()" /></a>&nbsp;<a href="javascript:file_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()" /></a></td>
+	<td><a href="javascript:file_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش"  /></a>&nbsp;<a href="javascript:file_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف"  /></a></td>
   </tr>
 [/for list]
 </tbody>

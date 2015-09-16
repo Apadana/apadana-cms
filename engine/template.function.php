@@ -96,12 +96,12 @@ function get_templates($form)
 
 function template_info($theme)
 {
-	static $save;
+	static $ap_template_info;
 	$array = array();
 	$theme = alphabet($theme);
 
-	if (isset($save[$theme]) && is_array($save[$theme]) && count($save[$theme]))
-		return $save[$theme];
+	if (isset($ap_template_info[$theme]) && is_array($ap_template_info[$theme]) && count($ap_template_info[$theme]))
+		return $ap_template_info[$theme];
 
 	if (!template_exists($theme))
 		return false;
@@ -129,12 +129,13 @@ function template_info($theme)
 
 	$array['name'] = !isset($array['name']) || empty($array['name'])? $theme : $array['name'];
 	$array['version'] = !isset($array['version']) || empty($array['version'])? '1.0' : nohtml($array['version']);
-	$array['creationDate'] = !isset($array['creationDate']) || empty($array['creationDate'])? date('Y-m-d H:i:s') : nohtml($array['creationDate']);
+	$array['compatibility'] = !isset($array['compatibility']) || empty($array['compatibility'])? '*' : trim($array['compatibility']);
+	$array['creation-date'] = !isset($array['creation-date']) || empty($array['creation-date'])? date('Y-m-d H:i:s') : nohtml($array['creation-date']);
 	$array['description'] = !isset($array['description']) || empty($array['description'])? null : $array['description'];
 	$array['screenshot'] = !isset($array['screenshot']) || empty($array['screenshot'])? null : nohtml($array['screenshot']);
 	$array['author'] = !isset($array['author']) || empty($array['author'])? null : $array['author'];
-	$array['authorEmail'] = !isset($array['authorEmail']) || !validate_email($array['authorEmail'])? null : $array['authorEmail'];
-	$array['authorUrl'] = !isset($array['authorUrl']) || !validate_url($array['authorUrl'])? null : $array['authorUrl'];
+	$array['author-email'] = !isset($array['author-email']) || !validate_email($array['author-email'])? null : $array['author-email'];
+	$array['author-url'] = !isset($array['author-url']) || !validate_url($array['author-url'])? null : $array['author-url'];
 	$array['positions'] = !isset($array['positions']) || empty($array['positions'])? null : nohtml($array['positions']);
 	$array['pages'] = !isset($array['pages']) || empty($array['pages'])? null : nohtml($array['pages']);
 	$array['html-compression'] = !isset($array['html-compression']) || empty($array['html-compression'])? false : ($array['html-compression'] == 'true'? true : false);
@@ -148,7 +149,7 @@ function template_info($theme)
 	$array['pages'] = array_map('trim', $array['pages']);
 	$array['pages'] = implode(',', $array['pages']);
 
-	return $save[$theme] = $array;
+	return $ap_template_info[$theme] = $array;
 }
 
 function head()

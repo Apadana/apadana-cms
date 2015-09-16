@@ -99,10 +99,10 @@ function backup_delete(file)
     <td dir="ltr">{file}</td>
     <td>{time}</td>
     <td>{size}</td>
-    <td><a href="javascript:backup_restore('{file}')"><img src="{site-url}engine/images/icons/lightning.png" width="16" height="16" onmouseover="tooltip.show('بازگردانی اطلاعات فایل پشتیبان')" onmouseout="tooltip.hide()"></a></td>
-    <td><a href="{admin-page}&section=backup&do=download&file={file}&type=gz"><img src="{site-url}engine/images/icons/category.png" width="16" height="16" onmouseover="tooltip.show('دانلود فایل پشتیبان به صورت فشرده')" onmouseout="tooltip.hide()"></a></td>
-    <td><a href="{admin-page}&section=backup&do=download&file={file}&type=php"><img src="{site-url}engine/images/icons/page_white_php.png" width="16" height="16" onmouseover="tooltip.show('دانلود فایل پشتیبان با فرمت PHP')" onmouseout="tooltip.hide()"></a></td>
-    <td><a href="javascript:backup_delete('{file}')"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف فایل پشتیبان')" onmouseout="tooltip.hide()"></a></td>
+    <td><a href="javascript:backup_restore('{file}')"><img src="{site-url}engine/images/icons/lightning.png" width="16" height="16" data-tooltip="بازگردانی اطلاعات فایل پشتیبان" ></a></td>
+    <td><a href="{admin-page}&section=backup&do=download&file={file}&type=gz"><img src="{site-url}engine/images/icons/category.png" width="16" height="16" data-tooltip="دانلود فایل پشتیبان به صورت فشرده" ></a></td>
+    <td><a href="{admin-page}&section=backup&do=download&file={file}&type=php"><img src="{site-url}engine/images/icons/page_white_php.png" width="16" height="16" data-tooltip="دانلود فایل پشتیبان با فرمت PHP" ></a></td>
+    <td><a href="javascript:backup_delete('{file}')"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف فایل پشتیبان" ></a></td>
   </tr>
 [/for backup]
 </table>

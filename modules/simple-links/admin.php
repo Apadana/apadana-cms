@@ -14,13 +14,14 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 function module_simple_links_info()
 {
 	return array(
-		'name' => 'simple_links',
+		'name' => 'پیوند ها',
 		'version' => '1.0',
-		'creationDate' => '2012-07-21 18:00:03',
+		'compatibility' => '1.1,1.1-*',
+		'creation-date' => '2012-07-21 18:00:03',
 		'description' => 'ماژول پیوندهای آپادانا.',
 		'author' => 'iman moodi',
-		'authorEmail' => 'imanmoodi@yahoo.com',
-		'authorUrl' => 'http://www.apadanacms.ir',
+		'author-email' => 'imanmoodi@yahoo.com',
+		'author-url' => 'http://www.apadanacms.ir',
 		'license' => 'GNU/GPL',
 	);
 }

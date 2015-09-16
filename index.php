@@ -125,5 +125,3 @@ if (!defined('no_template') || no_template !== true)
 }
 
 gzip_out();
-
-?>

@@ -134,23 +134,21 @@ class template
 
 	function assign($input, $value = null, $type = 'new')
 	{
+		if (empty($input))
+		{
+			return FALSE;
+		}
+
 		if (is_array($input))
 		{
 			foreach($input as $tag => $value)
 			{
-				$this->assign($tag, $value, $type);
+				$this->tags[$tag] = isset($this->tags[$tag]) && $type=='add'? $this->tags[$tag].$value : $value;
 			}
 		}
 		elseif (is_string($input))
 		{
-			if (empty($input))
-			{
-				return FALSE;
-			}
-			else
-			{
-				$this->tags[$input] = isset($this->tags[$input]) && $type=='add'? $this->tags[$input].$value : $value;
-			}
+			$this->tags[$input] = isset($this->tags[$input]) && $type=='add'? $this->tags[$input].$value : $value;
 		}
 		else
 		{

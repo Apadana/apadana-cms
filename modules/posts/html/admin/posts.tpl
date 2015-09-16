@@ -180,10 +180,10 @@ function post_delete(ID)
   <tr class="{odd-even}"[next] style="background:#FFFFCC"[/next]>
 	<td>{id}</td>
 	<td align="right" id="post-title-{id}"><a href="javascript:post_title({id})" id="post-title-t-{id}">{title}</a></td>
-	<td><a href="javascript:post_fixed({id})"><img src="{site-url}engine/images/icons/[fixed]star[/fixed][not-fixed]star-empty[/not-fixed].png" width="16" height="16" onmouseover="tooltip.show('[fixed]پست ثابت[/fixed][not-fixed]پست معمولی[/not-fixed]')" onmouseout="tooltip.hide()" id="post-fixed-{id}" /></a></td>
-	<td>[next]<img src="{site-url}engine/images/icons/light-bulb.png" width="16" height="16" onmouseover="tooltip.show('انتشار برای آینده!<br/>زمان انتشار: {data}')" onmouseout="tooltip.hide()">[/next][not-next]<a href="javascript:post_approve({id})"><img src="{site-url}engine/images/icons/[approve]plus-button[/approve][not-approve]minus-button[/not-approve].png" width="16" height="16" onmouseover="tooltip.show('[approve]منتشر شده[/approve][not-approve]چرکنویس[/not-approve]')" onmouseout="tooltip.hide()" id="post-approve-{id}" /></a>[/not-next]</td>
+	<td><a href="javascript:post_fixed({id})"><img src="{site-url}engine/images/icons/[fixed]star[/fixed][not-fixed]star-empty[/not-fixed].png" width="16" height="16" data-tooltip="[fixed]پست ثابت[/fixed][not-fixed]پست معمولی[/not-fixed]"  id="post-fixed-{id}" /></a></td>
+	<td>[next]<img src="{site-url}engine/images/icons/light-bulb.png" width="16" height="16" data-tooltip="انتشار برای آینده!<br/>زمان انتشار: {data}" >[/next][not-next]<a href="javascript:post_approve({id})"><img src="{site-url}engine/images/icons/[approve]plus-button[/approve][not-approve]minus-button[/not-approve].png" width="16" height="16" data-tooltip="[approve]منتشر شده[/approve][not-approve]چرکنویس[/not-approve]"  id="post-approve-{id}" /></a>[/not-next]</td>
 	<td>{hits}</td>
-	<td><a href="{admin-page}&module=posts&do=posts-edit&id={id}"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()" /></a> <a href="javascript:post_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()" /></a></td>
+	<td><a href="{admin-page}&module=posts&do=posts-edit&id={id}"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش"  /></a> <a href="javascript:post_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف"  /></a></td>
   </tr>
   [/for posts]
 </table>

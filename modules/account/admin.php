@@ -14,13 +14,13 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 function module_account_info()
 {
 	return array(
-		'name' => 'account',
+		'name' => 'سامانه ی کاربری',
 		'version' => '1.0',
-		'creationDate' => '2012-07-21 18:00:03',
+		'creation-date' => '2012-07-21 18:00:03',
 		'description' => 'ماژول سامانه کاربری آپادانا',
 		'author' => 'Apadana Development Team',
-		'authorEmail' => 'imanmoodi@yahoo.com',
-		'authorUrl' => 'http://www.apadanacms.ir',
+		'author-email' => 'imanmoodi@yahoo.com',
+		'author-url' => 'http://www.apadanacms.ir',
 		'license' => 'GNU/GPL',
 	);
 }

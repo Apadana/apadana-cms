@@ -11,18 +11,20 @@
 
 defined('security') or exit('Direct Access to this location is not allowed.');
 
-function apadana_strlen($string)
+function apadana_strlen($string , $advanced = false )
 {
-    $string = preg_replace('#&\#([0-9]+);#', '-', $string);
-    if (strtolower(charset) == 'utf-8')
-    {
-        # Get rid of any excess RTL and LTR override for they are the workings of the devil
-        $string = str_replace(dec_to_utf8(8238), '', $string);
-        $string = str_replace(dec_to_utf8(8237), '', $string);
-        # Remove dodgy whitespaces
-        $string = str_replace(chr(0xCA), '', $string);
-    }
-	$string = trim($string);
+	if($advanced){
+	    $string = preg_replace('#&\#([0-9]+);#', '-', $string);
+	    if (strtolower(charset) == 'utf-8')
+	    {
+	        # Get rid of any excess RTL and LTR override for they are the workings of the devil
+	        $string = str_replace(dec_to_utf8(8238), '', $string);
+	        $string = str_replace(dec_to_utf8(8237), '', $string);
+	        # Remove dodgy whitespaces
+	        $string = str_replace(chr(0xCA), '', $string);
+	    }
+		$string = trim($string);
+	}
 	return function_exists('mb_strlen')? mb_strlen($string) : strlen($string);
 }
 

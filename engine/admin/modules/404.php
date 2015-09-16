@@ -11,4 +11,4 @@
 
 defined('security') or exit('Direct Access to this location is not allowed.');
 
-set_content('یافت نشد', 'این بخش وجود ندارد!');
+$tpl->assign('{content}', message('بخش مورد نظر شما وجود ندارد ...', 'error'));

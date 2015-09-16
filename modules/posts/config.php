@@ -550,7 +550,7 @@ function block_posts_comments($op = null, $id = null, $position = null)
 		remove_cache('module-posts-comments-block-'.$id);
 		return true;
 	}
-	if (!$rows = get_cache('module-posts-comments-block-'.$id, 'short'))
+	if ($rows = get_cache('module-posts-comments-block-'.$id, 'short') && !empty($rows))
 	{
 		$op['total'] = !isset($op['total']) || intval($op['total'])<=0? 10 : intval($op['total']);
 		$op['order'] = !isset($op['order'])? 'DESC' : strtoupper($op['order']);

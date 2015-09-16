@@ -61,8 +61,8 @@ function referer_delete()
   <li>آی دی ارجاع: <strong id="referer-infoBox-id"></strong></li>
   <li>آی پی کاربر: <strong dir="ltr" id="referer-infoBox-ip"></strong></li>
   <li>تاریخ ارجاع: <strong id="referer-infoBox-time"></strong></li>
-  <li>دامین ارجاع دهنده: <strong dir="ltr"><a href="" target="_blank" onmouseover="tooltip.show('مشاهده دامنه')" onmouseout="tooltip.hide()" id="referer-infoBox-domain"></a></strong></li>
-  <li>آدرس کامل: <strong dir="ltr"><a href="" target="_blank" onmouseover="tooltip.show('مشاهده صفحه')" onmouseout="tooltip.hide()" id="referer-infoBox-url"></a></strong></li>
+  <li>دامین ارجاع دهنده: <strong dir="ltr"><a href="" target="_blank" data-tooltip="مشاهده دامنه"  id="referer-infoBox-domain"></a></strong></li>
+  <li>آدرس کامل: <strong dir="ltr"><a href="" target="_blank" data-tooltip="مشاهده صفحه"  id="referer-infoBox-url"></a></strong></li>
 </ul>
 </div>
 
@@ -111,8 +111,8 @@ function referer_delete()
 	</td>
     <td dir="ltr">{ip}</td>
     <td dir="ltr">{domain}</td>
-    <td><span onmouseover="tooltip.show('{time}')" onmouseout="tooltip.hide()">{past-time}</span></td>
-    <td><a href="javascript:referer_info({id})"><img src="{site-url}engine/images/icons/external.png" width="16" height="16" onmouseover="tooltip.show('اطلاعات لینک')" onmouseout="tooltip.hide()"></a></td>
+    <td><span data-tooltip="{time}" >{past-time}</span></td>
+    <td><a href="javascript:referer_info({id})"><img src="{site-url}engine/images/icons/external.png" width="16" height="16" data-tooltip="اطلاعات لینک" ></a></td>
   </tr>
 [/for referers]
 </table>

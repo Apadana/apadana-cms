@@ -24,9 +24,9 @@
 	</td>
     <td align="right">{title}</td>
     <td>{total}</td>
-    <td><img src="{site-url}engine/images/icons/clock.png" width="16" height="16" onmouseover="tooltip.show('{date}')" onmouseout="tooltip.hide()"></td>
-    <td><a href="javascript:voting_status({id})"><img src="{site-url}engine/images/icons/[status]plus-button[/status][not-status]minus-button[/not-status].png" width="16" height="16" onmouseover="tooltip.show('[status]فعال[/status][not-status]غیرفعال[/not-status]')" onmouseout="tooltip.hide()" id="voting-status-{id}"></a></td>
-    <td><a href="javascript:voting_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()"></a> <a href="javascript:voting_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()"></a></td>
+    <td><img src="{site-url}engine/images/icons/clock.png" width="16" height="16" data-tooltip="{date}" ></td>
+    <td><a href="javascript:voting_status({id})"><img src="{site-url}engine/images/icons/[status]plus-button[/status][not-status]minus-button[/not-status].png" width="16" height="16" data-tooltip="[status]فعال[/status][not-status]غیرفعال[/not-status]"  id="voting-status-{id}"></a></td>
+    <td><a href="javascript:voting_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش" ></a> <a href="javascript:voting_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف" ></a></td>
   </tr>
 [/for list]
 </table>

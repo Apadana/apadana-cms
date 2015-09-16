@@ -46,6 +46,14 @@ tooltip.hide = function() {
 	this.tip.innerHTML = '';
 	this.tip.style.display = 'none';
 }
-// window.onload = function() {
-	// tooltip.init();
-// }
+
+$(document).ready(function(){
+	$('*[data-tooltip]').on({
+		mouseenter: function(e) {
+			tooltip.show($(this).attr('data-tooltip'));
+		},
+		mouseleave: function(e) {
+			tooltip.hide();
+		}
+	});
+})

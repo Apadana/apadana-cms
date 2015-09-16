@@ -18,9 +18,9 @@
     <textarea id="data-banned-reason-{id}">{reason}</textarea>
     </div>
   </td>
-    <td dir="ltr" style="text-align:right"><span onmouseover="tooltip.show('{reason}')" onmouseout="tooltip.hide()">{ip}</span></td>
+    <td dir="ltr" style="text-align:right"><span data-tooltip="{reason}" >{ip}</span></td>
     <td>{date}</td>
-    <td><a href="javascript:banned_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()"></a> <a href="javascript:banned_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()"></a></td>
+    <td><a href="javascript:banned_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش" ></a> <a href="javascript:banned_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف" ></a></td>
   </tr>
 [/for list]
 </table>

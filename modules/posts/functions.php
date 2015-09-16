@@ -253,6 +253,10 @@ function _category()
 
 		$parent = $categories[$cat_id]['term_parent'];
 
+		$url = '' ;
+		$url = ( $categories[$cat_id]['term_parent'] == 0 ? '' : _get_sub_categories_parent_url($categories[$cat_id]['term_parent'],$url)) ;
+		$cat_url = 'posts/category/'. $url .'/'.$categories[$cat_id]['term_slug'];
+
 		/**
 		* Check if the parents are true!! This way Wrong urls can be found!!
 		*
@@ -262,16 +266,16 @@ function _category()
 		while ($parent != 0 && $last > 0) {
 			$last--;
 			if( !isset($categories[$parent]) || $categories[$parent]['term_slug'] !=  urlencode($_GET[$alphabet[$last]]) ){
-				module_error_run('404');
-				return;
+				$url = url( $cat_url );
+				header("HTTP/1.0 301 Moved Permanently");
+				header("Location: {$url}");
+				exit("Redirect");
 			}
 			else{
 				$parent = $categories[$parent]['term_parent'];
 			}
 		}
-		$url = '' ;
-		$url = ( $categories[$cat_id]['term_parent'] == 0 ? '' : _get_sub_categories_parent_url($categories[$cat_id]['term_parent'],$url)) ;
-		$cat_url = 'posts/category/'. $url .'/'.$categories[$cat_id]['term_slug'];
+		
 		unset($url,$parent,$last,$alphabet);
 	}
 	else

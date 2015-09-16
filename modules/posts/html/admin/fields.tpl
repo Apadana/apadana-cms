@@ -182,8 +182,8 @@ function fields_delete(name)
 	</td>
 	<td align="right">{title}</td>
 	<td>[text]فیلد کوچک[/text][textarea]جعبه متن[/textarea][editor]ادیتور[/editor][select]فهرست[/select]</td>
-	<td><img src="{site-url}engine/images/icons/[require]status-busy[/require][not-require]status[/not-require].png" width="16" height="16" onmouseover="tooltip.show('[require]فیلد اجباری[/require][not-require]فیلد غیر اجباری[/not-require]')" onmouseout="tooltip.hide()"></td>
-	<td><a href="javascript:fields_edit('{name}')"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()"></a>&nbsp;<a href="javascript:fields_delete('{name}')"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()"></a></td>
+	<td><img src="{site-url}engine/images/icons/[require]status-busy[/require][not-require]status[/not-require].png" width="16" height="16" data-tooltip="[require]فیلد اجباری[/require][not-require]فیلد غیر اجباری[/not-require]" ></td>
+	<td><a href="javascript:fields_edit('{name}')"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش" ></a>&nbsp;<a href="javascript:fields_delete('{name}')"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف" ></a></td>
   </tr>
 [/for fields]
 </tbody>

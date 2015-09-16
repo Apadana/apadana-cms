@@ -61,7 +61,7 @@
 <!-- /main -->
 <div id="footer">
 <span id="left">{copyright}</span>
-<span id="right">تعداد ارتباط با دیتابیس: {num-queries} / زمان ایجاد صفحه {creation-time} ثانیه</span>
+<span id="right">تعداد ارتباط با دیتابیس: {num-queries} /{memory-get-usage}/ زمان ایجاد صفحه {creation-time} ثانیه</span>
 </div><!-- /footer -->
 </div>
 <!-- /content -->

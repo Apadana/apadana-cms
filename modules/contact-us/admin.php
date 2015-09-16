@@ -14,13 +14,13 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 function module_contact_us_info()
 {
 	return array(
-		'name' => 'contact-us',
+		'name' => 'تماس با ما',
 		'version' => '1.0',
-		'creationDate' => '2013-04-12 03:25:00',
+		'creation-date' => '2013-04-12 03:25:00',
 		'description' => 'ماژول تماس با ما برای آپادانا.',
 		'author' => 'iman moodi',
-		'authorEmail' => 'imanmoodi@yahoo.com',
-		'authorUrl' => 'http://www.apadanacms.ir',
+		'author-email' => 'imanmoodi@yahoo.com',
+		'author-url' => 'http://www.apadanacms.ir',
 		'license' => 'GNU/GPL',
 	);
 }

@@ -92,7 +92,7 @@ function cache_delete_all()
   <tr class="{odd-even}">
     <td dir="ltr" align=right>{name}</td>
     <td>{time}</td>
-    <td><a href="javascript:cache_delete('{name}')"><img src="{site-url}engine/images/icons/cross-script.png" onmouseover="tooltip.show('حذف کش')" onmouseout="tooltip.hide()"></a></td>
+    <td><a href="javascript:cache_delete('{name}')"><img src="{site-url}engine/images/icons/cross-script.png" data-tooltip="حذف کش" ></a></td>
  </tr>
 [/for cache]
 </table>

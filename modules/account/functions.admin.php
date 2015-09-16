@@ -435,7 +435,7 @@ function _new()
 			if ($d->affected_rows())
 			{
 				$msg = message("کاربر {$member['name']} با موفقیت اضافه شد!", 'success');
-				if($member['send_mail']){
+				if($member['send_email']){
 					require_once(engine_dir.'mail.function.php');
 					global $options;
 					$Body  = 'عضویت شما با موفقیت انجام شد.<br />';				

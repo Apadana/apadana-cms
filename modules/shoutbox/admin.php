@@ -14,13 +14,13 @@ defined('security') or exit('Direct Access to this location is not allowed.');
 function module_shoutbox_info()
 {
 	return array(
-		'name' => 'shoutbox',
+		'name' => 'جعبه پیام',
 		'version' => '1.0.1',
-		'creationDate' => '2012-07-21 18:00:03',
-		'description' => 'ماژول جعبه پیام برای آپادانا.',
+		'creation-date' => '2012-07-21 18:00:03',
+		'description' => 'ماژول جعبه پیام پیام برای آپادانا.',
 		'author' => 'iman moodi',
-		'authorEmail' => 'imanmoodi@yahoo.com',
-		'authorUrl' => 'http://www.apadanacms.ir',
+		'author-email' => 'imanmoodi@yahoo.com',
+		'author-url' => 'http://www.apadanacms.ir',
 		'license' => 'GNU/GPL',
 	);
 }

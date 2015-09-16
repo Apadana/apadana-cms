@@ -53,10 +53,10 @@ function templates_default(name)
             else if(data.result == 'success')
 			{
     			apadana.changeSrc('templates-default-'+name, 'engine/images/icons/burn.png');
-				apadana.attr('templates-default-'+name, 'onmouseover','tooltip.show(\'تم سایت\')');
+				apadana.attr('templates-default-'+name, 'data-tooltip','tooltip.show(\'تم سایت\')');
 				
     			apadana.changeSrc('templates-default-'+themeDefault, 'engine/images/icons/brightness-low.png');
-				apadana.attr('templates-default-'+themeDefault, 'onmouseover','tooltip.show(\'انتخاب برای تم سایت\')');
+				apadana.attr('templates-default-'+themeDefault, 'data-tooltip','tooltip.show(\'انتخاب برای تم سایت\')');
 				themeDefault = name;
 			}
         }
@@ -64,20 +64,23 @@ function templates_default(name)
 }
 function templates_info(name)
 {
-    apadana.changeSrc('templates-infoBox-screenshot', apadana.value('data-templates-screenshot-'+name));
-    apadana.html('templates-infoBox-name', name);
-    apadana.html('templates-infoBox-version', apadana.value('data-templates-version-'+name));
-    apadana.html('templates-infoBox-creationDate', apadana.value('data-templates-creationDate-'+name));
-    apadana.html('templates-infoBox-author', apadana.value('data-templates-author-'+name));
-    apadana.html('templates-infoBox-authorEmail', apadana.value('data-templates-authorEmail-'+name));
-    apadana.html('templates-infoBox-license', apadana.value('data-templates-license-'+name));
-    apadana.html('templates-infoBox-description', apadana.value('data-templates-description-'+name));
-    apadana.html('templates-infoBox-positions', apadana.value('data-templates-positions-'+name));
-    apadana.html('templates-infoBox-pages', apadana.value('data-templates-pages-'+name));
-    apadana.html('templates-infoBox-compaction', apadana.value('data-templates-compaction-'+name));
-    apadana.html('templates-infoBox-authorUrl', apadana.value('data-templates-authorUrl-'+name)=='unknown'? 'ناشناخته' : 'مشاهده سایت سازنده');
-    apadana.$('templates-infoBox-authorUrl').href = apadana.value('data-templates-authorUrl-'+name)=='unknown'? 'javascript:void(0)' : apadana.value('data-templates-authorUrl-'+name);
-	apadana.infoBox('#templates-info-box', 1 , 1);
+    apadana.ajax({
+		method: 'get',
+		action: '{admin-page}&section=templates&do=get_info&name='+name,
+		json : 'yes' ,
+		success: function(data)
+		{
+			if (data.result == 'success')
+			{
+				$('#templates-info-box').html(data.info);
+				apadana.infoBox('#templates-info-box',1,1);
+			}
+			else
+			{
+				alert(data.message);
+			}
+		}
+	});
 }
 function templates_startUpload()
 {
@@ -95,20 +98,6 @@ function templates_stopUpload(result)
 </script>
 
 <div id="templates-info-box" style="display:none">
-<center><img src="" id="templates-infoBox-screenshot" width="180" style="margin-top:6px" /></center>
-<ul>
-  <li>نام تم: <strong id="templates-infoBox-name"></strong></li>
-  <li>نگارش تم: <strong id="templates-infoBox-version" dir="ltr"></strong></li>
-  <li>زمان ساخت: <strong id="templates-infoBox-creationDate"></strong></li>
-  <li>نام سازنده: <strong id="templates-infoBox-author"></strong></li>
-  <li>ایمیل سازنده: <strong dir="ltr" id="templates-infoBox-authorEmail"></strong></li>
-  <li>وبسایت سازنده: <strong><a href="" target="_blank" onmouseover="tooltip.show('مشاهده صفحه')" onmouseout="tooltip.hide()" id="templates-infoBox-authorUrl"></a></strong></li>
-  <li>لیسانس تم: <strong id="templates-infoBox-license"></strong></li>
-  <li>موقعیت بلوک ها: <strong id="templates-infoBox-positions"></strong></li>
-  <li>سایر صفحات: <strong id="templates-infoBox-pages"></strong></li>
-  <li>فشرده سازی صفحات: <strong id="templates-infoBox-compaction"></strong></li>
-  <li>توضیحات: <strong id="templates-infoBox-description"></strong></li>
-</ul>
 </div>
 
 <!-- TAB START-->
@@ -137,25 +126,11 @@ function templates_stopUpload(result)
 <tbody>
 [for templates]
   <tr class="{odd-even}">
-	<td align="right">{name}
-	<div style="display:none">
-	<input id="data-templates-version-{name}" type="hidden" value="{info-version}" />
-	<input id="data-templates-creationDate-{name}" type="hidden" value="{info-creationDate}" />
-	<input id="data-templates-author-{name}" type="hidden" value="{info-author}" />
-	<input id="data-templates-authorEmail-{name}" type="hidden" value="{info-authorEmail}" />
-	<input id="data-templates-authorUrl-{name}" type="hidden" value="{info-authorUrl}" />
-	<input id="data-templates-license-{name}" type="hidden" value="{info-license}" />
-	<input id="data-templates-screenshot-{name}" type="hidden" value="{info-screenshot}" />
-	<input id="data-templates-positions-{name}" type="hidden" value="{info-positions}" />
-	<input id="data-templates-pages-{name}" type="hidden" value="{info-pages}" />
-	<input id="data-templates-compaction-{name}" type="hidden" value="{info-compaction}" />
-	<textarea id="data-templates-description-{name}">{info-description}</textarea>
-	</div>
-	</td>
-	<td><a href="javascript:templates_info('{name}')"><img src="{site-url}engine/images/icons/external.png" width="16" height="16" onmouseover="tooltip.show('اطلاعات تم')" onmouseout="tooltip.hide()"></a></td>
-	<td><img src="{site-url}engine/images/icons/[status]tick-button[/status][not-status]exclamation-button[/not-status].png" onmouseover="tooltip.show('[status]این تم سالم است[/status][not-status]این تم ناقص است[/not-status]')" onmouseout="tooltip.hide()"></td>
-	<td><a href="javascript:templates_default('{name}')"><img id="templates-default-{name}" src="{site-url}engine/images/icons/[default]burn[/default][not-default][status]brightness-low[/status][not-status]slash-button[/not-status][/not-default].png" onmouseover="tooltip.show('[default]تم سایت[/default][not-default][status]انتخاب برای تم سایت[/status][not-status]این تم ناقص است[/not-status][/not-default]')" onmouseout="tooltip.hide()"></a></td>
-	<td><a href="{admin-page}&section=templates&do=edit&name={name}"><img src="{site-url}engine/images/icons/document-edit-icon.png" onmouseover="tooltip.show('ویرایش تم')" onmouseout="tooltip.hide()"></a></td>
+	<td align="right">{show-name}</td>
+	<td><a href="javascript:templates_info('{name}')"><img src="{site-url}engine/images/icons/external.png" width="16" height="16" data-tooltip="اطلاعات تم" ></a></td>
+	<td><img src="{site-url}engine/images/icons/[status][compatibility]tick-button[/compatibility][not-compatibility]question-button[/not-compatibility][/status][not-status]exclamation-button[/not-status].png" data-tooltip="[status]این تم سالم است[compatibility] و با نسخه آپادانای شما سازگار است[/compatibility][not-compatibility] ولی با نسخه آپادانای شما سازگار نیست[/not-compatibility][/status][not-status]این تم ناقص است[/not-status]" ></td>
+	<td><a href="javascript:templates_default('{name}')"><img id="templates-default-{name}" src="{site-url}engine/images/icons/[default]burn[/default][not-default][status]brightness-low[/status][not-status]slash-button[/not-status][/not-default].png" data-tooltip="[default]تم سایت[/default][not-default][status]انتخاب برای تم سایت[/status][not-status]این تم ناقص است[/not-status][/not-default]" ></a></td>
+	<td><a href="{admin-page}&section=templates&do=edit&name={name}"><img src="{site-url}engine/images/icons/document-edit-icon.png" data-tooltip="ویرایش تم" ></a></td>
   </tr>
 [/for templates]
 </tbody>

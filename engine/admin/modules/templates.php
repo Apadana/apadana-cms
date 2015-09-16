@@ -28,15 +28,16 @@ function _index()
 		$info = array(
 			'name' => $dir,
 			'version' => '1.0',
-			'creationDate' => date('Y-m-d H:i:s', file_exists(root_dir.'templates/'.$dir.'/body.html')? filemtime(root_dir.'templates/'.$dir.'/body.html') : time()),
+			'compatibility' => '*',
+			'creation-date' => date('Y-m-d H:i:s', file_exists(root_dir.'templates/'.$dir.'/body.html')? filemtime(root_dir.'templates/'.$dir.'/body.html') : time()),
 			'description' => null,
 			'author' => null,
-			'authorEmail' => null,
-			'authorUrl' => null,
+			'author-email' => null,
+			'author-url' => null,
 			'screenshot' => null,
 			'positions' => null,
 			'pages' => null,
-			'compaction' => 0,
+			'html-compression' => 0,
 			'license' => 'GNU/GPL',
 		);
 		
@@ -49,22 +50,25 @@ function _index()
 		$itpl->add_for('templates', array(
 			'{odd-even}' => odd_even(),
 			'{name}' => $dir,
-
-			'{info-version}' => $info['version'],
-			'{info-creationDate}' => jdate('l j F Y ساعت g:i A', strtotime($info['creationDate'])),
+			'{show-name}' => (apadana_strtolower($info['name']) != apadana_strtolower($dir)? $info['name'].' <span style="visibility:hidden;font-size:2px">z</span><span style="color:#487d8c;font-size:10px">('.$dir.')</span><span style="visibility:hidden;font-size:2px">z</span>' : $dir),
+/*			'{info-version}' => $info['version'],
+			'{info-compatibility}' => $info['compatibility'],
+			'{info-creation-date}' => jdate('l j F Y ساعت g:i A', strtotime($info['creation-date'])),
 			'{info-description}' => empty($info['description'])? 'بدون توضیح' : $info['description'],
 			'{info-screenshot}' => empty($info['screenshot']) || !file_exists(root_dir.'templates/'.$dir.'/'.$info['screenshot'])? url.'engine/images/screenshots.png' : url.'templates/'.$dir.'/'.$info['screenshot'],
 			'{info-author}' => empty($info['author'])? 'ناشناخته' : htmlencode($info['author']),
-			'{info-authorEmail}' => !validate_email($info['authorEmail'])? 'ناشناخته' : nohtml($info['authorEmail']),
-			'{info-authorUrl}' => empty($info['authorUrl']) || !validate_url($info['authorUrl'])? 'unknown' : nohtml($info['authorUrl']),
+			'{info-author-email}' => !validate_email($info['author-email'])? 'ناشناخته' : nohtml($info['author-email']),
+			'{info-author-url}' => empty($info['author-url']) || !validate_url($info['author-url'])? 'unknown' : nohtml($info['author-url']),
 			'{info-positions}' => empty($info['positions'])? 'ناشناخته' : nohtml($info['positions']),
 			'{info-pages}' => empty($info['pages'])? 'ناشناخته' : nohtml($info['pages']),
-			'{info-compaction}' => $info['compaction']? 'فعال' : 'غیرفعال',
-			'{info-license}' => empty($info['license'])? 'GNU/GPL' : nohtml($info['license']),
+			'{info-html-compression}' => $info['html-compression']? 'فعال' : 'غیرفعال',
+			'{info-license}' => empty($info['license'])? 'GNU/GPL' : nohtml($info['license']),*/
 			
 			'replace' => array(
 				'#\\[status\\](.*?)\\[/status\\]#s' => template_exists($dir)? '\\1' : '',
 				'#\\[not-status\\](.*?)\\[/not-status\\]#s' => !template_exists($dir)? '\\1' : '',
+				'#\\[compatibility\\](.*?)\\[/compatibility\\]#s' => apadana_compare($info['compatibility'])? '\\1' : '',
+				'#\\[not-compatibility\\](.*?)\\[/not-compatibility\\]#s' => !apadana_compare($info['compatibility'])? '\\1' : '',
 				'#\\[default\\](.*?)\\[/default\\]#s' => $options['theme']==$dir? '\\1' : '',
 				'#\\[not-default\\](.*?)\\[/not-default\\]#s' => $options['theme']!=$dir? '\\1' : '',
 			)
@@ -375,10 +379,62 @@ function _edit()
 	}
 }
 
+function _get_info()
+{
+	$name = get_param($_GET, 'name');
+
+	$json = array(
+		'message' => array(),
+		'result' => 'error'
+	);
+
+	if (!is_alphabet($name))
+	{
+		$json['message'][] = 'نام قالب مورد نظر معتبر نیست!';
+	}
+	else
+	{
+		if (!template_exists($name))
+		{
+			$json['message'][] = 'قالب مورد نظر در سیستم وجود ندارد و یا ناقص است!';
+		}
+	}
+
+	if (count($json['message']))
+	{
+		$json['message'] = implode('<br>', $json['message']);
+	}
+	else
+	{
+		$json['result'] = 'success';
+
+		$info = template_info($name);
+		$screenshot = empty($info['screenshot']) || !file_exists(root_dir.'templates/'.$name.'/'.$info['screenshot'])? url.'engine/images/screenshots.png' : url.'templates/'.$name.'/'.$info['screenshot'];
+		$json['info']  = '<center><img src="'. $screenshot .'" id="templates-infoBox-screenshot" width="180" style="margin:6px" /></center>';
+		$json['info']  .= '<div style="margin-bottom:4px;padding-bottom:4px"><b>نام قالب</b>:&nbsp;&nbsp;'.(apadana_strtolower($info['name']) != apadana_strtolower($name)? $info['name'].' <span style="visibility:hidden;font-size:2px">z</span><span style="color:#487d8c;font-size:10px">('.$name.')</span><span style="visibility:hidden;font-size:2px">z</span>' : $name).'</div>';
+		$json['info'] .= '<div style="margin-bottom:4px;padding-bottom:4px"><b>نگارش قالب</b>:&nbsp;&nbsp;'.translate_number($info['version']).' <span style="visibility:hidden;font-size:2px">z</span><span style="color:#487d8c;font-size:10px">('.(apadana_compare($info['compatibility'])? 'بر اساس گفته سازنده با نسخه آپادانا شما سازگار است' : '<span style="color:red;">با نگارش آپادانا ی شما سازگار نیست</span>').')</span><span style="visibility:hidden;font-size:2px">z</span></div>';
+		$json['info'] .= '<div style="margin-bottom:4px;padding-bottom:4px"><b>تاریخ ساخت</b>:&nbsp;&nbsp;'.apadana_date('l j F Y ساعت g:i A', strtotime($info['creation-date'])).'</div>';
+		$json['info'] .= !empty($info['description']) && $info['description'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>توضیحات سازنده</b>:&nbsp;&nbsp;<br>'.$info['description'].'</div>' : null;
+		$json['info'] .= !empty($info['author']) && $info['author'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>نام سازنده</b>:&nbsp;&nbsp;'.$info['author'].'</div>' : null;
+		$json['info'] .= !empty($info['author-email']) && $info['author-email'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>رایانامه سازنده</b>:&nbsp;&nbsp;'.$info['author-email'].'</div>' : null;
+		$json['info'] .= !empty($info['author-url']) && $info['author-url'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>وب‌سایت سازنده</b>:&nbsp;&nbsp;<a href="'.redirect_link($info['author-url']).'" target="_blank">'.basename($info['author-url']).'</a></div>' : null;
+		$json['info'] .= !empty($info['license']) && $info['license'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>مجوز قالب</b>:&nbsp;&nbsp;'.$info['license'].'</div>' : null;
+		$json['info'] .= !empty($info['positions']) ? '<div style="margin-bottom:4px;padding-bottom:4px"><b>موقعیت ها</b>:&nbsp;&nbsp;'.$info['positions'].'</div>' : null;
+		$json['info'] .= !empty($info['pages']) ? '<div style="margin-bottom:4px;padding-bottom:4px"><b>صفحه ها</b>:&nbsp;&nbsp;'.$info['pages'].'</div>' : null;
+		$json['info'] .= '<div style="margin-bottom:4px;padding-bottom:4px"><b>فشرده سازی اچ تی ام ال</b>:&nbsp;&nbsp;'.($info['html-compression'] ? 'فعال' : 'غیر فعال' ).'</div>';
+	}
+
+	exit(json_encode($json));
+}
+
 $_GET['do'] = get_param($_GET, 'do');
 
 switch($_GET['do'])
 {
+	case 'get_info':
+	_get_info();
+	break;
+
 	case 'default':
 	_default();
 	break;

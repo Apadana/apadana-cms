@@ -237,13 +237,13 @@ function account_status(ID)
 <table class="apadana-table" cellpadding="0" cellspacing="0">
 <thead>
   <tr>
-	<th width="25"># [member-id]<a onmouseover="tooltip.show('چینش بر اساس آی دی کاربر')" onmouseout="tooltip.hide()" href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_id&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-id]</th>
-	<th align="right">نام کاربری [member-name]<a onmouseover="tooltip.show('چینش بر اساس نام کاربری')" onmouseout="tooltip.hide()" href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_name&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-name]</th>
+	<th width="25"># [member-id]<a data-tooltip="چینش بر اساس آی دی کاربر"  href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_id&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-id]</th>
+	<th align="right">نام کاربری [member-name]<a data-tooltip="چینش بر اساس نام کاربری"  href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_name&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-name]</th>
 	<th width="20">پروفایل</th>
 	<th width="20">وضعیت</th>
-	<th width="60">جنسیت [member-gender]<a onmouseover="tooltip.show('چینش بر اساس جنسیت')" onmouseout="tooltip.hide()" href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_gender&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-gender]</th>
-	<th width="60">بازدیدها [member-visits]<a onmouseover="tooltip.show('چینش بر اساس بازدیدها')" onmouseout="tooltip.hide()" href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_visits&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-visits]</th>
-	<th width="140">آخرین بازدید [member-lastvisit]<a onmouseover="tooltip.show('چینش بر اساس آخرین بازدید')" onmouseout="tooltip.hide()" href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_lastvisit&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-lastvisit]</th>
+	<th width="60">جنسیت [member-gender]<a data-tooltip="چینش بر اساس جنسیت"  href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_gender&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-gender]</th>
+	<th width="60">بازدیدها [member-visits]<a data-tooltip="چینش بر اساس بازدیدها"  href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_visits&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-visits]</th>
+	<th width="140">آخرین بازدید [member-lastvisit]<a data-tooltip="چینش بر اساس آخرین بازدید"  href="javascript:void(0)" onClick="tooltip.hide();account_list('{admin-page}&module=account&sort=member_lastvisit&order={order}&total={total}&search={search}&page={page}')">^</a>[/member-lastvisit]</th>
 	<th width="20">عملیات</th>
   </tr>
 </thead>
@@ -271,12 +271,12 @@ function account_status(ID)
 	</div>
 	</td>
 	<td align="right">{name-show}</td>
-	<td><a href="{url}" target="_blank"><img src="{site-url}engine/images/icons/cursor.png" width="16" height="16" onmouseover="tooltip.show('مشاهده پروفایل کاربر')" onmouseout="tooltip.hide()"></a></td>
-	<td><a href="javascript:account_status({id})"><img src="{site-url}engine/images/icons/[status]tick-button[/status][not-status]minus-button[/not-status].png" width="16" height="16" onmouseover="tooltip.show('[status]فعال[/status][not-status]اخراج شده[/not-status]')" onmouseout="tooltip.hide()" id="account-status-{id}" status="{status}"></a></td>
-	<td><img src="{site-url}engine/images/icons/gender[not-gender-male]-female[/not-gender-male].png" onmouseover="tooltip.show('[gender-male]مرد[/gender-male][not-gender-male]زن[/not-gender-male]')" onmouseout="tooltip.hide()" /></td>
+	<td><a href="{url}" target="_blank"><img src="{site-url}engine/images/icons/cursor.png" width="16" height="16" data-tooltip="مشاهده پروفایل کاربر" ></a></td>
+	<td><a href="javascript:account_status({id})"><img src="{site-url}engine/images/icons/[status]tick-button[/status][not-status]minus-button[/not-status].png" width="16" height="16" data-tooltip="[status]فعال[/status][not-status]اخراج شده[/not-status]"  id="account-status-{id}" status="{status}"></a></td>
+	<td><img src="{site-url}engine/images/icons/gender[not-gender-male]-female[/not-gender-male].png" data-tooltip="[gender-male]مرد[/gender-male][not-gender-male]زن[/not-gender-male]"  /></td>
 	<td>{visits}</td>
 	<td>{lastvisit-show}</td>
-	<td><a href="javascript:account_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()"></a></td>
+	<td><a href="javascript:account_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش" ></a></td>
   </tr>
 [/for members]
 </tbody>

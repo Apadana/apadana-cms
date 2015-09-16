@@ -86,7 +86,7 @@
 	<td>{admin}</td>
   </tr>
 </table>
-<span class="label" style="margin-top:13px;" onmouseover="tooltip.show('اطلاعات سرور روزانه آپدیت می شوند مگر اینکه کش را پاک کنید')" onmouseout="tooltip.hide()">اطلاعات سرور</span>
+<span class="label" style="margin-top:13px;" data-tooltip="اطلاعات سرور روزانه آپدیت می شوند مگر اینکه کش را پاک کنید" >اطلاعات سرور</span>
 
 <table class="apadana-table" cellpadding="0" cellspacing="0">
   <tr>
@@ -116,7 +116,7 @@
   <tr>
 	<td>حجم مجاز استفاده از رم</td>
 	<td style="border-left:#999999 1px dashed"><span dir=ltr>{server-memory-limit}</span></td>
-	<td onmouseover="tooltip.show('اگه می خواهید فایلی(یا تصویری) را روی سرور آپلود کنید سرور اجازه نمی دهد حجم آن فایل بیشتر از مقدار مجاز باشد')" onmouseout="tooltip.hide()">حجم مجاز آپلود فایل</td>
+	<td data-tooltip="اگه می خواهید فایلی(یا تصویری) را روی سرور آپلود کنید سرور اجازه نمی دهد حجم آن فایل بیشتر از مقدار مجاز باشد" >حجم مجاز آپلود فایل</td>
 	<td><span dir=ltr>{server-upload-limit}</span></td>
   </tr>
   <tr>

@@ -25,54 +25,53 @@ function _index()
 	{
 		if (!is_dir(root_dir.'modules/'.$dir) || $dir=='.' || $dir=='..') continue;
 		
-		$info = array(
-			'name' => $dir,
-			'version' => '1.0',
-			'creationDate' => date('Y-m-d H:i:s', file_exists(root_dir.'modules/'.$dir.'/config.php')? filemtime(root_dir.'modules/'.$dir.'/config.php') : time()),
-			'description' => null,
-			'author' => 'unknown',
-			'authorEmail' => 'unknown',
-			'authorUrl' => 'unknown',
-			'license' => 'GNU/GPL',
-		);
-		
-		if (file_exists(root_dir.'modules/'.$dir.'/admin.php'))
+		$info = module_info($dir);
+
+		if($info){
+			$tags = array(
+				'{odd-even}' => odd_even(),
+				'{name}' => $dir,
+				'{show-name}' => (apadana_strtolower($info['name']) != apadana_strtolower($dir)? $info['name'].' <span style="visibility:hidden;font-size:2px">z</span><span style="color:#487d8c;font-size:10px">('.$dir.')</span><span style="visibility:hidden;font-size:2px">z</span>' : $dir),
+				'replace' => array(
+					'#\\[status\\](.*?)\\[/status\\]#s' =>  '\\1' ,
+					'#\\[not-status\\](.*?)\\[/not-status\\]#s' => '',
+					'#\\[compatibility\\](.*?)\\[/compatibility\\]#s' => apadana_compare($info['compatibility'])? '\\1' : '',
+					'#\\[not-compatibility\\](.*?)\\[/not-compatibility\\]#s' => !apadana_compare($info['compatibility'])? '\\1' : '',
+					'#\\[active\\](.*?)\\[/active\\]#s' => is_module($dir)? '\\1' : '',
+					'#\\[not-active\\](.*?)\\[/not-active\\]#s' => !is_module($dir)? '\\1' : '',
+					'#\\[install\\](.*?)\\[/install\\]#s' => is_module($dir, false)? '\\1' : '',
+					'#\\[not-install\\](.*?)\\[/not-install\\]#s' => !is_module($dir, false)? '\\1' : '',
+					'#\\[upgrade\\](.*?)\\[/upgrade\\]#s' => is_module($dir, false) && version_compare($info['version'], $modules[$dir]['module_version'], '>')? '\\1' : '',
+					'#\\[not-upgrade\\](.*?)\\[/not-upgrade\\]#s' => !is_module($dir, false) || !version_compare($info['version'], $modules[$dir]['module_version'], '>')? '\\1' : '',
+					'#\\[default\\](.*?)\\[/default\\]#s' => $options['default-module']==$dir? '\\1' : '',
+					'#\\[not-default\\](.*?)\\[/not-default\\]#s' => $options['default-module']!=$dir? '\\1' : '',
+				)
+			);
+		}
+		else
 		{
-			require_once(root_dir.'modules/'.$dir.'/admin.php');
-			if (function_exists('module_'.str_replace('-', '_', $dir).'_info'))
-			{
-				$info = 'module_'.str_replace('-', '_', $dir).'_info';
-				$info = $info();
-			}
+			$tags = array(
+				'{odd-even}' => odd_even(),
+				'{name}' => $dir,
+				'{show-name}' => (apadana_strtolower($info['name']) != apadana_strtolower($dir)? $info['name'].' <span style="visibility:hidden;font-size:2px">z</span><span style="color:#487d8c;font-size:10px">('.$dir.')</span><span style="visibility:hidden;font-size:2px">z</span>' : $dir),
+				'replace' => array(
+					'#\\[status\\](.*?)\\[/status\\]#s' => '',
+					'#\\[not-status\\](.*?)\\[/not-status\\]#s' => '\\1' ,
+					'#\\[compatibility\\](.*?)\\[/compatibility\\]#s' => '',
+					'#\\[not-compatibility\\](.*?)\\[/not-compatibility\\]#s' => '\\1' ,
+					'#\\[active\\](.*?)\\[/active\\]#s' => is_module($dir)? '\\1' : '',
+					'#\\[not-active\\](.*?)\\[/not-active\\]#s' => !is_module($dir)? '\\1' : '',
+					'#\\[install\\](.*?)\\[/install\\]#s' => is_module($dir, false)? '\\1' : '',
+					'#\\[not-install\\](.*?)\\[/not-install\\]#s' => !is_module($dir, false)? '\\1' : '',
+					'#\\[upgrade\\](.*?)\\[/upgrade\\]#s' => is_module($dir, false) && version_compare($info['version'], $modules[$dir]['module_version'], '>')? '\\1' : '',
+					'#\\[not-upgrade\\](.*?)\\[/not-upgrade\\]#s' => !is_module($dir, false) || !version_compare($info['version'], $modules[$dir]['module_version'], '>')? '\\1' : '',
+					'#\\[default\\](.*?)\\[/default\\]#s' => $options['default-module']==$dir? '\\1' : '',
+					'#\\[not-default\\](.*?)\\[/not-default\\]#s' => $options['default-module']!=$dir? '\\1' : '',
+				)
+			);
 		}
 
-		$itpl->add_for('modules', array(
-			'{odd-even}' => odd_even(),
-			'{name}' => $dir,
-
-			'{info-version}' => $info['version'],
-			'{info-creationDate}' => jdate('l j F Y ساعت h:i A', strtotime($info['creationDate'])),
-			'{info-description}' => empty($info['description'])? 'بدون توضیح' : $info['description'],
-			'{info-author}' => $info['author']=='unknown'? 'ناشناخته' : htmlencode($info['author']),
-			'{info-authorEmail}' => $info['authorEmail']=='unknown' || !validate_email($info['authorEmail'])? 'unknown' : nohtml($info['authorEmail']),
-			'{info-authorUrl}' => $info['authorUrl']=='unknown' || !validate_url($info['authorUrl'])? 'unknown' : nohtml($info['authorUrl']),
-			'{info-license}' => empty($info['license'])? 'GNU/GPL' : nohtml($info['license']),
-			
-			'replace' => array(
-				'#\\[status\\](.*?)\\[/status\\]#s' => file_exists(root_dir.'modules/'.$dir.'/config.php')? '\\1' : '',
-				'#\\[not-status\\](.*?)\\[/not-status\\]#s' => !file_exists(root_dir.'modules/'.$dir.'/config.php')? '\\1' : '',
-				'#\\[active\\](.*?)\\[/active\\]#s' => is_module($dir)? '\\1' : '',
-				'#\\[not-active\\](.*?)\\[/not-active\\]#s' => !is_module($dir)? '\\1' : '',
-				'#\\[install\\](.*?)\\[/install\\]#s' => is_module($dir, false)? '\\1' : '',
-				'#\\[not-install\\](.*?)\\[/not-install\\]#s' => !is_module($dir, false)? '\\1' : '',
-				'#\\[uninstall\\](.*?)\\[/uninstall\\]#s' => is_module($dir, false)? '\\1' : '',
-				'#\\[not-uninstall\\](.*?)\\[/not-uninstall\\]#s' => !is_module($dir, false)? '\\1' : '',
-				'#\\[upgrade\\](.*?)\\[/upgrade\\]#s' => is_module($dir, false) && version_compare($info['version'], $modules[$dir]['module_version'], '>')? '\\1' : '',
-				'#\\[not-upgrade\\](.*?)\\[/not-upgrade\\]#s' => !is_module($dir, false) || !version_compare($info['version'], $modules[$dir]['module_version'], '>')? '\\1' : '',
-				'#\\[default\\](.*?)\\[/default\\]#s' => $options['default-module']==$dir? '\\1' : '',
-				'#\\[not-default\\](.*?)\\[/not-default\\]#s' => $options['default-module']!=$dir? '\\1' : '',
-			)
-		));
+		$itpl->add_for('modules', $tags);
 	}
 	closedir($handle);
 	unset($handle, $dir);
@@ -118,7 +117,7 @@ function _default()
 function _require()
 {
 	return array(
-		'account', 'counter', 'error', 'feed', 'posts', 'redirect', 'sitemap', 'search'
+		'account',  'error', 'feed' , 'redirect', 'sitemap', 'search'
 	);
 }
 
@@ -186,90 +185,76 @@ function _active()
 
 function _install()
 {
-	global $tpl, $options, $page, $d, $modules;
+	global $tpl, $options, $page, $d;
 	$name = get_param($_GET, 'name');
 	$name = alphabet($name);
-	if (!is_module($name) && file_exists(root_dir.'modules/'.$name.'/config.php'))
-	{
-		if (file_exists(root_dir.'modules/'.$name.'/admin.php'))
-		{
-			require_once(root_dir.'modules/'.$name.'/admin.php');
-		}
+	if( module_exists($name) ){
 
-		if (function_exists('module_'.str_replace('-', '_', $name).'_install'))
+		if (!is_module($name,false) )
 		{
-			$install = 'module_'.str_replace('-', '_', $name).'_install';
-			$install();
-		}
-		else
-		{
-			$d->insert('modules', array(
-				'module_name' => $name,
-				'module_version' => '1.0',
-				'module_status' => '0',
-			));
-			echo message('ماژول '.$name.' با موفقیت نصب شد.', 'success');
-		}
+			if (file_exists(root_dir.'modules/'.$name.'/admin.php'))
+			{
+				require_once(root_dir.'modules/'.$name.'/admin.php');
+			}
 
-		remove_cache('admin');
-		remove_cache('modules');
-		$modules = $d->get_row("SELECT * FROM `#__modules`", 'assoc', 'module_name');
+			if (function_exists('module_'.str_replace('-', '_', $name).'_install'))
+			{
+				$install = 'module_'.str_replace('-', '_', $name).'_install';
+				$install();
+			}
+			else
+			{
+				$d->insert('modules', array(
+					'module_name' => $name,
+					'module_version' => '1.0',
+					'module_status' => '0'
+				));
+				echo message('ماژول '.$name.' با موفقیت نصب شد.', 'success');
+			}
+
+			remove_cache('admin');
+			remove_cache('modules');
+			$GLOBALS['modules'] = $d->get_row("SELECT * FROM `#__modules`", 'assoc', 'module_name');
+		}
+		elseif (is_module($name,false))
+		{
+			if ($options['default-module'] == $name)
+			{
+				echo message('ماژول صفحه ی نخست را نمی توانید حذف کنید!', 'error');
+			}
+			elseif (in_array($name, _require()))
+			{
+				echo message('ماژول '.$name.' جزو ماژول های اجباری سیستم است و نمی توانید آن را حذف کنید!', 'error');
+			}
+			else{
+
+				if (file_exists(root_dir.'modules/'.$name.'/admin.php'))
+				{
+					require_once(root_dir.'modules/'.$name.'/admin.php');
+				}
+				
+				if (function_exists('module_'.str_replace('-', '_', $name).'_uninstall'))
+				{
+					$uninstall = 'module_'.str_replace('-', '_', $name).'_uninstall';
+					$uninstall();
+				}
+				else
+				{
+					$d->delete('modules', "module_name='".$name."'", 1);
+					echo message('ماژول '.$name.' با موفقیت حذف شد.', 'success');
+				}
+
+				remove_cache('admin');
+				remove_cache('modules');
+				$GLOBALS['modules'] = $d->get_row("SELECT * FROM `#__modules`", 'assoc', 'module_name');
+			}
+		}
 	}
-	elseif (is_module($name))
-	{
-		echo message('ماژول '.$name.' نصب شده است!', 'error');
-	}
-	elseif (!file_exists(root_dir.'modules/'.$name.'/config.php'))
+	else
 	{
 		echo message('ماژول '.$name.' ناقص است!', 'error');
 	}
-	_index();
-}
 
-function _uninstall()
-{
-	global $tpl, $options, $page, $d, $modules;
-	$name = get_param($_GET, 'name');
-	$name = alphabet($name);
-	
-	if ($options['default-module'] == $name)
-	{
-		echo message('ماژول صفحه ی نخست را نمی توانید حذف کنید!', 'error');
-	}
-	elseif (in_array($name, _require()))
-	{
-		echo message('ماژول '.$name.' جزو ماژول های اجباری سیستم است و نمی توانید آن را حذف کنید!', 'error');
-	}	
-	elseif (is_module($name, false))
-	{
-		if (file_exists(root_dir.'modules/'.$name.'/admin.php'))
-		{
-			require_once(root_dir.'modules/'.$name.'/admin.php');
-		}
-		
-		if (function_exists('module_'.str_replace('-', '_', $name).'_uninstall'))
-		{
-			$uninstall = 'module_'.str_replace('-', '_', $name).'_uninstall';
-			$uninstall();
-		}
-		else
-		{
-			$d->delete('modules', "module_name='".$name."'", 1);
-			echo message('ماژول '.$name.' با موفقیت حذف شد.', 'success');
-		}
-
-		remove_cache('admin');
-		remove_cache('modules');
-		$modules = $d->get_row("SELECT * FROM `#__modules`", 'assoc', 'module_name');
-	}
-	elseif (!is_module($name, false))
-	{
-		echo message('ماژول '.$name.' نصب نشده است!', 'error');
-	}
-	elseif (!file_exists(root_dir.'modules/'.$name.'/config.php'))
-	{
-		echo message('ماژول '.$name.' ناقص است!', 'error');
-	}
 	_index();
 }
 
@@ -407,10 +392,59 @@ function _upload()
 	die;
 }
 
+
+function _get_info()
+{
+	$name = get_param($_GET, 'name');
+
+	$json = array(
+		'message' => array(),
+		'result' => 'error'
+	);
+
+	if (!is_alphabet($name))
+	{
+		$json['message'][] = 'نام ماژول مورد نظر معتبر نیست!';
+	}
+	else
+	{
+		if (!module_exists($name))
+		{
+			$json['message'][] = 'ماژول مورد نظر در سیستم وجود ندارد و یا ناقص است!';
+		}
+	}
+
+	if (count($json['message']))
+	{
+		$json['message'] = implode('<br>', $json['message']);
+	}
+	else
+	{
+		$json['result'] = 'success';
+
+		$info = module_info($name);
+
+		$json['info']  = '<div style="margin-bottom:4px;padding-bottom:4px"><b>نام ماژول</b>:&nbsp;&nbsp;'.(apadana_strtolower($info['name']) != apadana_strtolower($name)? $info['name'].' <span style="visibility:hidden;font-size:2px">z</span><span style="color:#487d8c;font-size:10px">('.$name.')</span><span style="visibility:hidden;font-size:2px">z</span>' : $name).'</div>';
+		$json['info'] .= '<div style="margin-bottom:4px;padding-bottom:4px"><b>نگارش ماژول</b>:&nbsp;&nbsp;'.translate_number($info['version']).' <span style="visibility:hidden;font-size:2px">z</span><span style="color:#487d8c;font-size:10px">('.(apadana_compare($info['compatibility'])? 'بر اساس گفته سازنده با نسخه آپادانا شما سازگار است' : '<span style="color:red;">با نگارش آپادانا ی شما سازگار نیست</span>').')</span><span style="visibility:hidden;font-size:2px">z</span></div>';
+		$json['info'] .= '<div style="margin-bottom:4px;padding-bottom:4px"><b>تاریخ ساخت</b>:&nbsp;&nbsp;'.apadana_date('l j F Y ساعت g:i A', strtotime($info['creation-date'])).'</div>';
+		$json['info'] .= !empty($info['description']) && $info['description'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>توضیحات سازنده</b>:&nbsp;&nbsp;<br>'.$info['description'].'</div>' : null;
+		$json['info'] .= !empty($info['author']) && $info['author'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>نام سازنده</b>:&nbsp;&nbsp;'.$info['author'].'</div>' : null;
+		$json['info'] .= !empty($info['author-email']) && $info['author-email'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>رایانامه سازنده</b>:&nbsp;&nbsp;'.$info['author-email'].'</div>' : null;
+		$json['info'] .= !empty($info['author-url']) && $info['author-url'] != 'unknown'? '<div style="margin-bottom:4px;padding-bottom:4px"><b>وب‌سایت سازنده</b>:&nbsp;&nbsp;<a href="'.redirect_link($info['author-url']).'" target="_blank">'.basename($info['author-url']).'</a></div>' : null;
+		$json['info'] .= !empty($info['license']) && $info['license'] != 'unknown'? '<div><b>مجوز ماژول</b>:&nbsp;&nbsp;'.$info['license'].'</div>' : null;
+	}
+
+	exit(json_encode($json));
+}
+
 $_GET['do'] = get_param($_GET, 'do');
 
 switch($_GET['do'])
 {
+	case 'get_info':
+	_get_info();
+	break;
+
 	case 'default':
 	_default();
 	break;
@@ -422,11 +456,7 @@ switch($_GET['do'])
 	case 'install':
 	_install();
 	break;
-	
-	case 'uninstall':
-	_uninstall();
-	break;
-	
+
 	case 'upgrade':
 	_upgrade();
 	break;

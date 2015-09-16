@@ -14,9 +14,9 @@
     <td>{id}</td>
     <td align="right" id="block-title-{id}">{title}</td>
     <td>{position}</td>
-    <td>[reposit]{reposit}[/reposit][not-reposit]<img src="{site-url}engine/images/icons/slash-button.png" width="16" height="16" onmouseover="tooltip.show('این بلوک را نمی توان جابجا کرد')" onmouseout="tooltip.hide()" />[/not-reposit]</td>
-    <td><a href="javascript:void(0)" onclick="block_status({id})"><img src="{site-url}engine/images/icons/[status]plus-button[/status][not-status]minus-button[/not-status].png" width="16" height="16" onmouseover="tooltip.show('[status]فعال[/status][not-status]غیرفعال[/not-status]')" onmouseout="tooltip.hide()" id="block-status-{id}" /></a></td>
-    <td><a href="javascript:void(0)" onclick="block_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()" /></a> <a href="javascript:void(0)" onclick="block_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()" /></a></td>
+    <td>[reposit]{reposit}[/reposit][not-reposit]<img src="{site-url}engine/images/icons/slash-button.png" width="16" height="16" data-tooltip="این بلوک را نمی توان جابجا کرد"  />[/not-reposit]</td>
+    <td><a href="javascript:void(0)" onclick="block_status({id})"><img src="{site-url}engine/images/icons/[status]plus-button[/status][not-status]minus-button[/not-status].png" width="16" height="16" data-tooltip="[status]فعال[/status][not-status]غیرفعال[/not-status]"  id="block-status-{id}" /></a></td>
+    <td><a href="javascript:void(0)" onclick="block_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش"  /></a> <a href="javascript:void(0)" onclick="block_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف"  /></a></td>
   </tr>
 [/for list]
 </table>
@@ -341,7 +341,7 @@ function block_delete(ID)
 	<td><input id="block-title" name="block[title]" type="text" style="width:400px" lang="fa" /></td>
   </tr>
   <tr>
-	<td onmouseover="tooltip.show('Function')" onmouseout="tooltip.hide()">تابع بلوک</td>
+	<td data-tooltip="Function" >تابع بلوک</td>
 	<td><input id="block-function" name="block[function]" type="text" style="width:400px" dir="ltr" /> <font color="#BBBBBB" size="1">(اختیاری)</font></td>
   </tr>
   <tr>
@@ -388,7 +388,7 @@ function block_delete(ID)
 	<td><input id="block-edit-title" name="block[title]" type="text" style="width:400px" lang="fa" /></td>
   </tr>
   <tr>
-	<td onmouseover="tooltip.show('Function')" onmouseout="tooltip.hide()">تابع بلوک</td>
+	<td data-tooltip="Function" >تابع بلوک</td>
 	<td><input id="block-edit-function" name="block[function]" type="text" style="width:400px" dir="ltr" /> <font color="#BBBBBB" size="1">(اختیاری)</font></td>
   </tr>
   <tr>

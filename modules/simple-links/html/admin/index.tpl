@@ -25,10 +25,10 @@
 	</div>
 	</td>
     <td align="right">{title}</td>
-    <td><img src="{site-url}engine/images/icons/[direct-link]fire[/direct-link][not-direct-link]water[/not-direct-link].png" width="16" height="16" onmouseover="tooltip.show('[direct-link]پیوند به صورت مستقیم[/direct-link][not-direct-link]پیوند به صورت غیرمستقیم[/not-direct-link]')" onmouseout="tooltip.hide()"></td>
-    <td><a href="{redirect}" target="_blank"><img src="{site-url}engine/images/icons/eye.png" width="16" height="16" onmouseover="tooltip.show('مشاهده پیوند')" onmouseout="tooltip.hide()"></a></td>
-    <td><a href="javascript:sLink_active({id})"><img src="{site-url}engine/images/icons/[active]plus-button[/active][not-active]minus-button[/not-active].png" width="16" height="16" onmouseover="tooltip.show('[active]فعال[/active][not-active]غیرفعال[/not-active]')" onmouseout="tooltip.hide()" id="sLink-active-{id}"></a></td>
-    <td><a href="javascript:sLink_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()"></a> <a href="javascript:sLink_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()"></a></td>
+    <td><img src="{site-url}engine/images/icons/[direct-link]fire[/direct-link][not-direct-link]water[/not-direct-link].png" width="16" height="16" data-tooltip="[direct-link]پیوند به صورت مستقیم[/direct-link][not-direct-link]پیوند به صورت غیرمستقیم[/not-direct-link]" ></td>
+    <td><a href="{redirect}" target="_blank"><img src="{site-url}engine/images/icons/eye.png" width="16" height="16" data-tooltip="مشاهده پیوند" ></a></td>
+    <td><a href="javascript:sLink_active({id})"><img src="{site-url}engine/images/icons/[active]plus-button[/active][not-active]minus-button[/not-active].png" width="16" height="16" data-tooltip="[active]فعال[/active][not-active]غیرفعال[/not-active]"  id="sLink-active-{id}"></a></td>
+    <td><a href="javascript:sLink_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش" ></a> <a href="javascript:sLink_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف" ></a></td>
   </tr>
 [/for list]
 </table>

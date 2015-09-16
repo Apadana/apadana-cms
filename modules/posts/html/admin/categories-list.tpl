@@ -17,7 +17,7 @@
     <td>{id}</td>
     <td align="right">[child]{depth}{name}[/child][not-child]<b>{depth}{name}</b>[/not-child]</td>
     <td>{parent-name}</td>
-    <td><a href="javascript:void(0)" onclick="category_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" onmouseover="tooltip.show('ویرایش')" onmouseout="tooltip.hide()"></a>&nbsp;<a href="javascript:void(0)" onclick="category_delete({id}, [child]0[/child][not-child]1[/not-child])"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" onmouseover="tooltip.show('حذف')" onmouseout="tooltip.hide()"></a></td>
+    <td><a href="javascript:void(0)" onclick="category_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" width="16" height="16" data-tooltip="ویرایش" ></a>&nbsp;<a href="javascript:void(0)" onclick="category_delete({id}, [child]0[/child][not-child]1[/not-child])"><img src="{site-url}engine/images/icons/cross-script.png" width="16" height="16" data-tooltip="حذف" ></a></td>
   </tr>[/for categories]
 </table>
 [/categories]

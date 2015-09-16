@@ -12,16 +12,16 @@
 <div align="center">
 <div id="wrap">
 <div id="header">
-<a href="{admin-page}" id="logo" onmouseover="tooltip.show('صفحه نخست مدیریت')" onmouseout="tooltip.hide()"></a>
+<a href="{admin-page}" id="logo" data-tooltip="صفحه نخست مدیریت" ></a>
 <div id="menu">
-<a href="{site-url}" target="_blank" id="menu-icon-home" onmouseover="tooltip.show('مشاهده سایت')" onmouseout="tooltip.hide()"></a>
-<a href="{admin-page}&amp;module=counter" id="menu-icon-counter" onmouseover="tooltip.show('آمارگیر')" onmouseout="tooltip.hide()"></a>
-<a href="{admin-page}&amp;section=blocks" id="menu-icon-blocks" onmouseover="tooltip.show('بلوک ها')" onmouseout="tooltip.hide()"></a>
-<a href="{admin-page}&module=posts&amp;do=posts" id="menu-icon-new-post" onmouseover="tooltip.show('پست ها')" onmouseout="tooltip.hide()"></a>
-<a href="{admin-page}&amp;module=account" id="menu-icon-account" onmouseover="tooltip.show('سامانه کاربری')" onmouseout="tooltip.hide()"></a>
-<a href="{admin-page}&amp;section=modules" id="menu-icon-modules" onmouseover="tooltip.show('ماژول ها')" onmouseout="tooltip.hide()"></a>
-<a href="{admin-page}&amp;section=backup" id="menu-icon-backup" onmouseover="tooltip.show('پشتیبان گیری')" onmouseout="tooltip.hide()"></a>
-<a href="{a href='account/logout'}" id="menu-icon-exit" onmouseover="tooltip.show('خروج از سیستم')" onmouseout="tooltip.hide()"></a>
+<a href="{site-url}" target="_blank" id="menu-icon-home" data-tooltip="مشاهده سایت" ></a>
+<a href="{admin-page}&amp;module=counter" id="menu-icon-counter" data-tooltip="آمارگیر" ></a>
+<a href="{admin-page}&amp;section=blocks" id="menu-icon-blocks" data-tooltip="بلوک ها" ></a>
+<a href="{admin-page}&module=posts&amp;do=posts" id="menu-icon-new-post" data-tooltip="پست ها" ></a>
+<a href="{admin-page}&amp;module=account" id="menu-icon-account" data-tooltip="سامانه کاربری" ></a>
+<a href="{admin-page}&amp;section=modules" id="menu-icon-modules" data-tooltip="ماژول ها" ></a>
+<a href="{admin-page}&amp;section=backup" id="menu-icon-backup" data-tooltip="پشتیبان گیری" ></a>
+<a href="{a href='account/logout'}" id="menu-icon-exit" data-tooltip="خروج از سیستم" ></a>
 </div>
 <div class="clear"></div>
 </div>

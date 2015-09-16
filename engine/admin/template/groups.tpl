@@ -26,9 +26,9 @@
 		</td>
 	    <td align="right">{name}</td>
 	    <td>{members}</td>
-	    <td><img src="{site-url}engine/images/icons/[group-admin]tick-button[/group-admin][not-group-admin]minus-button[/not-group-admin].png" onmouseover="tooltip.show('[group-admin]کاربران این گروه مدیران سایت هستند[/group-admin][not-group-admin]کاربرن گروه به بخش مدیریت دسترسی ندارند[/not-group-admin]')" onmouseout="tooltip.hide()"></td>
-	    <td><img src="{site-url}engine/images/icons/[group-super-admin]crown[/group-super-admin][not-group-super-admin]minus-button[/not-group-super-admin].png" onmouseover="tooltip.show('[group-super-admin]کاربران این گروه در سایت دسترسی مدیرکل دارند[/group-super-admin][not-group-super-admin]کاربران این گروه دسترسی مدیرکل را ندارند[/not-group-super-admin]')" onmouseout="tooltip.hide()"></td>
-	    <td><a href="javascript:groups_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" onmouseover="tooltip.show('ویرایش گروه')" onmouseout="tooltip.hide()"></a>&nbsp;[group-delete]<a href="javascript:groups_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" onmouseover="tooltip.show('حذف گروه')" onmouseout="tooltip.hide()"></a>[/group-delete][not-group-delete]<img src="{site-url}engine/images/icons/cross-script-x.png" onmouseover="tooltip.show('امکان حذف این گروه وجود ندارد!')" onmouseout="tooltip.hide()">[/not-group-delete]</td>
+	    <td><img src="{site-url}engine/images/icons/[group-admin]tick-button[/group-admin][not-group-admin]minus-button[/not-group-admin].png" data-tooltip="[group-admin]کاربران این گروه مدیران سایت هستند[/group-admin][not-group-admin]کاربرن گروه به بخش مدیریت دسترسی ندارند[/not-group-admin]" ></td>
+	    <td><img src="{site-url}engine/images/icons/[group-super-admin]crown[/group-super-admin][not-group-super-admin]minus-button[/not-group-super-admin].png" data-tooltip="[group-super-admin]کاربران این گروه در سایت دسترسی مدیرکل دارند[/group-super-admin][not-group-super-admin]کاربران این گروه دسترسی مدیرکل را ندارند[/not-group-super-admin]" ></td>
+	    <td><a href="javascript:groups_edit({id})"><img src="{site-url}engine/images/icons/document-edit-icon.png" data-tooltip="ویرایش گروه" ></a>&nbsp;[group-delete]<a href="javascript:groups_delete({id})"><img src="{site-url}engine/images/icons/cross-script.png" data-tooltip="حذف گروه" ></a>[/group-delete][not-group-delete]<img src="{site-url}engine/images/icons/cross-script-x.png" data-tooltip="امکان حذف این گروه وجود ندارد!" >[/not-group-delete]</td>
 	  </tr>
 [/for groups]
 </tbody>
